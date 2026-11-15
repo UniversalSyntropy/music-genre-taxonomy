@@ -11,6 +11,7 @@ The viewer is a web page that draws the genre tree. Open it at [universalsyntrop
 | Click a name | Open or close its branch and show its detail card |
 | Type in the search box | Find a genre, open the path to it and zoom to it |
 | Theme menu | Change the colour theme (light or dark) |
+| View menu | Change between the tree and the point cloud. The point cloud shows each genre as one dot and pulls linked genres together. Click a dot to show its detail card. Add `?view=cloud` to the address to open it at the start |
 | Breadcrumb bar | Shows the drawn path from "All genres" to the selected genre. Click a step to go to it |
 | Fit | Fit the whole tree in the window |
 | Open one more level | Open the next level of branches |

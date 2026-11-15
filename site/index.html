@@ -100,6 +100,14 @@ svg:active{cursor:grabbing}
 .node.tag text{font-weight:650}
 .node.sel text,.node:focus-visible text{fill:var(--ink);font-weight:650}
 .node.sel circle,.node:focus-visible circle{stroke:var(--ink);stroke-width:3}
+/* Point cloud view: every genre is one dot; a force layout pulls linked genres together. */
+#cloud path{fill:none;stroke:var(--line);stroke-width:.5}
+#cloud circle{fill:var(--muted);cursor:pointer}
+#cloud circle.tag{fill:var(--ink)}
+#cloud circle.sel{fill:var(--bg);stroke:var(--ink);stroke-width:2}
+#cloud text{font-size:6px;fill:var(--text);pointer-events:none}
+#cloud text.pick{font-size:9px;font-weight:650;fill:var(--ink)}
+svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
 .crumbs{position:absolute;top:12px;left:max(16px,env(safe-area-inset-left));z-index:3;display:flex;align-items:center;gap:2px;overflow-x:auto;white-space:nowrap;
   max-width:calc(100% - 348px);font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
 .crumbs button{all:unset;cursor:pointer;color:var(--ink);padding:6px 4px;border-radius:4px;text-decoration:underline;text-underline-offset:2px}
@@ -146,7 +154,7 @@ svg:active{cursor:grabbing}
   .meta{display:none}
   .grow{display:none}
   .search{flex:1 1 100%;max-width:none}
-  select{flex:1 1 100%;max-width:none}
+  select{flex:1 1 40%;max-width:none;min-width:0}
   .bar button{flex:1 1 auto}
   #card{top:auto;bottom:0;left:0;right:0;width:auto;max-width:none;max-height:55%;border-radius:12px 12px 0 0;border-width:1px 0 0}
   .legend .tip{display:none}
@@ -178,12 +186,17 @@ svg:active{cursor:grabbing}
     <option value="slate">Dark theme: Slate (grey)</option>
     <option value="dusk">Dark theme: Dusk (navy)</option>
   </select>
+  <label class="sr" for="mode">View</label>
+  <select id="mode" title="View">
+    <option value="tree">View: Tree</option>
+    <option value="cloud">View: Point cloud</option>
+  </select>
   <button id="fit" type="button">Fit</button>
   <button id="lvl" type="button">Open one more level</button>
   <button id="shut" type="button">Close all</button>
 </header>
 <main class="stage">
-  <svg id="svg" role="group" aria-label="Genre tree. Use the search box to jump to a genre."><g id="view"><g id="links"></g><g id="nodes"></g></g></svg>
+  <svg id="svg" role="group" aria-label="Genre tree. Use the search box to jump to a genre."><g id="view"><g id="links"></g><g id="nodes"></g><g id="cloud"></g></g></svg>
   <nav id="crumbs" class="crumbs" aria-label="Path to the selected genre" hidden></nav>
   <div class="legend">
     <span><i class="dot t"></i>Tag level (can be a file tag)</span>
@@ -293,6 +306,7 @@ function start(D){
       .attr('aria-expanded', function(d){ return d._kids ? (d.children ? 'true' : 'false') : null; });
     g.select('text').text(label);
     g.select('title').text(function(d){ return d._kids ? (d.children ? 'Click to close' : 'Click to open') : d.data.name; });
+    markCloud();
   }
   function toggle(d){ if (!d._kids) return; d.children = d.children ? null : d._kids; draw(); }
   function fit(){
@@ -305,6 +319,12 @@ function start(D){
     var w = svg.node().clientWidth, h = svg.node().clientHeight, k = near ? 1.9 : Math.max(1, d3.zoomTransform(svg.node()).k);
     /* On a phone the sheet covers the lower half: centre in the upper part. */
     var cy = (window.innerWidth <= 640 && !$('card').hidden) ? h * 0.25 : h / 2;
+    if (mode === 'cloud') {
+      var p = P.get(d.data.id); if (!p) return;
+      k = near ? 3 : Math.max(1.5, d3.zoomTransform(svg.node()).k);
+      svg.transition().duration(ms(near ? 600 : 300)).call(zoom.transform, d3.zoomIdentity.translate(w / 2 - k * p.x, cy - k * p.y).scale(k));
+      return;
+    }
     svg.transition().duration(ms(near ? 600 : 300)).call(zoom.transform, d3.zoomIdentity.translate(w / 2 - k * (d.y + 60), cy - k * d.x).scale(k));
   }
   function go(key, near){
@@ -312,6 +332,51 @@ function start(D){
     for (var p = d.parent; p; p = p.parent) if (!p.children) p.children = p._kids;
     pick(d); centre(d, near);
     return true;
+  }
+
+  /* ---- point cloud ---- */
+  var mode = 'tree', P = null, gc = d3.select('#cloud'), modeSel = $('mode');
+  function buildCloud(){
+    var pts = Array.from(N.values()).map(function(n){ return {id:n.key, n:n}; });
+    var ls = D.links.map(function(l){ return {source:l.child, target:l.parent}; });
+    /* Fixed tick count, no timer: the layout is the same on each load. */
+    d3.forceSimulation(pts).force('link', d3.forceLink(ls).id(function(p){ return p.id; }).distance(24).strength(0.6))
+      .force('charge', d3.forceManyBody().strength(-22).distanceMax(380))
+      .force('x', d3.forceX(0).strength(0.05)).force('y', d3.forceY(0).strength(0.05)).stop().tick(220);
+    P = new Map(pts.map(function(p){ return [p.id, p]; }));
+    var path = '';
+    ls.forEach(function(l){ path += 'M' + l.source.x.toFixed(1) + ',' + l.source.y.toFixed(1) + 'L' + l.target.x.toFixed(1) + ',' + l.target.y.toFixed(1); });
+    gc.append('path').attr('d', path);
+    gc.selectAll('circle').data(pts).join('circle')
+      .attr('cx', function(p){ return p.x; }).attr('cy', function(p){ return p.y; }).attr('r', function(p){ return p.n.tag ? 3 : 1.8; })
+      .attr('class', function(p){ return p.n.tag ? 'tag' : null; })
+      .on('click', function(ev, p){ var d = at.get(p.id); if (d) pick(d); })
+      .append('title').text(function(p){ return p.n.name; });
+    gc.selectAll('text.lab').data(pts.filter(function(p){ return p.n.tag; })).join('text').attr('class', 'lab')
+      .attr('x', function(p){ return p.x + 4; }).attr('y', function(p){ return p.y + 2; }).text(function(p){ return p.n.name; });
+    gc.append('text').attr('class', 'pick');
+  }
+  function markCloud(){
+    if (!P) return;
+    var p = sel ? P.get(sel.data.id) : null;
+    gc.selectAll('circle').classed('sel', function(c){ return c === p; });
+    gc.select('text.pick').text(p ? p.n.name : '').attr('x', p ? p.x + 5 : 0).attr('y', p ? p.y - 5 : 0);
+  }
+  function setMode(m){
+    mode = m === 'cloud' ? 'cloud' : 'tree'; modeSel.value = mode;
+    if (mode === 'cloud' && !P) buildCloud();
+    svg.classed('cloud', mode === 'cloud');
+    $('lvl').disabled = $('shut').disabled = mode === 'cloud';
+    markCloud();
+    /* Cloud: its centre goes to the centre of the page. Tree: back to the selection. */
+    if (mode === 'tree' && sel) centre(sel, false); else fit();
+  }
+  modeSel.addEventListener('change', function(){ setMode(modeSel.value); });
+  /* Tree start view on a wide screen: the root is at one third of the width. */
+  function home(d){
+    var w = svg.node().clientWidth, h = svg.node().clientHeight;
+    if (w <= 640) { centre(d, false); return; }
+    svg.call(zoom.transform, d3.zoomIdentity.translate(w / 3 - root.y, h / 2 - d.x));
   }
 
   /* ---- card ---- */
@@ -438,8 +503,9 @@ function start(D){
   var want = null;
   try { want = new URLSearchParams(location.search).get('g'); } catch (e) {}
   if (want && at.has(want)) go(want, true);
-  else if (first && !want) go(START, false);
+  else if (first && !want) { pick(first); home(first); }
   else requestAnimationFrame(fit);
+  try { if (new URLSearchParams(location.search).get('view') === 'cloud') setMode('cloud'); } catch (e) {}
   /* Refit on width change only: a phone keyboard changes the height and must not reset the view. */
   var lastW = window.innerWidth;
   window.addEventListener('resize', function(){ if (window.innerWidth !== lastW) { lastW = window.innerWidth; if (card.hidden) fit(); } });
