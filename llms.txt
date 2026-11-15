@@ -17,7 +17,7 @@ Use the JSON file for code. Each node has a stable `key`. Each link goes from `c
 - [README](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/README.md): start here, three code examples, counts, related work
 - [Data guide](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/docs/data-guide.md): every field, the normal form, walk recipes, DAG caveats, SKOS map, version and pin rule
 - [Sources](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/docs/sources.md): each source, its licence, how the tree is built, what is hand-made, known limits
-- [Viewer guide](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/docs/viewer.md): controls, hues, deep links, privacy
+- [Viewer guide](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/docs/viewer.md): controls, themes, deep links, privacy
 - [Disclaimer](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/DISCLAIMER.md): no tie to any service, data as is
 - [Contributing](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/CONTRIBUTING.md): report a wrong link, privacy and writing rules, checks
 - [Changelog](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/CHANGELOG.md): releases
