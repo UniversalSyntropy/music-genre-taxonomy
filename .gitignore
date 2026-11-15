@@ -1,0 +1,13 @@
+# Private notes and launch drafts: never commit
+local/*
+
+# OS and tooling
+.DS_Store
+__pycache__/
+.venv/
+node_modules/
+LIVE-STATUS.md
+test-results/
+
+# Generated site output
+_site/

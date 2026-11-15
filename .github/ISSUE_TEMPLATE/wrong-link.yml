@@ -1,0 +1,32 @@
+name: Wrong link
+description: A genre has a parent that is wrong, or a parent is missing.
+title: "Wrong link: "
+labels: ["data"]
+body:
+  - type: input
+    id: key
+    attributes:
+      label: Genre key
+      description: The key of the genre, for example acid-house. The viewer shows it as ?g=KEY in the address.
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: Name the parent that is wrong or missing, and say what it should be.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Public source URL
+      description: A public page that supports your claim, for example a Wikipedia, Wikidata or MusicBrainz page. Do not use a closed source.
+    validations:
+      required: true
+  - type: checkboxes
+    id: upstream
+    attributes:
+      label: Upstream
+      options:
+        - label: I fixed it in Wikidata or MusicBrainz first, or I cannot.

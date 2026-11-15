@@ -1,0 +1,106 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://universalsyntropy.github.io/music-genre-taxonomy/schema/taxonomy.schema.json",
+ "title": "Music Genre Taxonomy",
+ "description": "A tree of music genres with sources, licences, external ids and name aliases.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["$schema", "name", "schema_version", "version", "tree_version", "licence", "counts", "sources", "nodes", "links", "aliases"],
+ "properties": {
+  "$schema": {"description": "The URL of the schema that the file follows.", "type": "string", "format": "uri"},
+  "name": {"description": "The name of the data set.", "type": "string", "minLength": 1},
+  "schema_version": {"description": "Version of this file layout, as semantic version.", "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+  "version": {"description": "Version of the data, as semantic version.", "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+  "tree_version": {"description": "Short digest that identifies the build of the source tree.", "type": "string", "pattern": "^[0-9a-f]{6,64}$"},
+  "licence": {"description": "SPDX licence id of the data set as a whole.", "$ref": "#/$defs/licence"},
+  "counts": {
+   "description": "Row counts. They must equal the real lengths of the arrays.",
+   "type": "object", "additionalProperties": false,
+   "required": ["nodes", "links", "aliases", "tag_level"],
+   "properties": {
+    "nodes": {"description": "Number of nodes.", "type": "integer", "minimum": 0},
+    "links": {"description": "Number of links.", "type": "integer", "minimum": 0},
+    "aliases": {"description": "Number of aliases.", "type": "integer", "minimum": 0},
+    "tag_level": {"description": "Number of nodes with tag_level true.", "type": "integer", "minimum": 0}
+   }
+  },
+  "sources": {
+   "description": "The sources that gave at least one published row.",
+   "type": "array",
+   "items": {
+    "type": "object", "additionalProperties": false,
+    "required": ["code", "name", "url", "licence", "licence_url", "retrieved"],
+    "properties": {
+     "code": {"description": "Short code of the source. Rows refer to it.", "type": "string", "pattern": "^[a-z0-9-]+$"},
+     "name": {"description": "Human name of the source.", "type": "string", "minLength": 1},
+     "url": {"description": "Home page of the source.", "type": "string", "format": "uri"},
+     "licence": {"description": "SPDX licence id of the data taken from the source.", "$ref": "#/$defs/licence"},
+     "licence_url": {"description": "Link to the licence text.", "type": "string", "format": "uri"},
+     "retrieved": {"description": "Date the source was read, with a note when needed.", "type": "string", "minLength": 1}
+    }
+   }
+  },
+  "nodes": {
+   "description": "The genres. One entry per genre.",
+   "type": "array",
+   "items": {
+    "type": "object", "additionalProperties": false,
+    "required": ["key", "name", "tag_level", "source", "licence", "seen_in", "external"],
+    "properties": {
+     "key": {"description": "Stable id of the genre: lowercase letters and digits (any script), joined by single hyphens.", "type": "string", "pattern": "^[^\\s-]+(-[^\\s-]+)*$"},
+     "name": {"description": "Display name.", "type": "string", "minLength": 1},
+     "tag_level": {"description": "True when the genre is at the depth that a file genre tag usually uses, for example House or Techno.", "type": "boolean"},
+     "source": {"description": "Code of the source that first gave the genre.", "$ref": "#/$defs/sourceCode"},
+     "licence": {"description": "SPDX licence id of the node row.", "$ref": "#/$defs/licence"},
+     "seen_in": {"description": "Codes of every source that lists this genre.", "type": "array", "items": {"$ref": "#/$defs/sourceCode"}, "uniqueItems": true},
+     "external": {
+      "description": "Ids of the same genre in other data sets. Missing ids are left out.",
+      "type": "object", "additionalProperties": false,
+      "properties": {
+       "musicbrainz_id": {"description": "MusicBrainz genre id (UUID).", "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+       "wikidata_id": {"description": "Wikidata item id, such as Q123.", "type": "string", "pattern": "^Q[0-9]+$"},
+       "discogs_name": {"description": "Name of the genre or style in the Discogs data.", "type": "string", "minLength": 1},
+       "discogs_kind": {"description": "Whether Discogs lists it as a genre or as a style.", "enum": ["genre", "style"]}
+      }
+     }
+    }
+   }
+  },
+  "links": {
+   "description": "Child to parent links between nodes.",
+   "type": "array",
+   "items": {
+    "type": "object", "additionalProperties": false,
+    "required": ["child", "parent", "relation", "source", "licence", "basis", "evidence"],
+    "properties": {
+     "child": {"description": "Key of the narrower genre.", "type": "string"},
+     "parent": {"description": "Key of the broader genre.", "type": "string"},
+     "relation": {"description": "Kind of link. Only subgenre_of exists.", "const": "subgenre_of"},
+     "source": {"description": "Code of the source that gave the link.", "$ref": "#/$defs/sourceCode"},
+     "licence": {"description": "SPDX licence id of the link row.", "$ref": "#/$defs/licence"},
+     "basis": {"description": "sourced: stated by the source. derived: computed from source data.", "enum": ["sourced", "derived"]},
+     "evidence": {"description": "Short text that shows why the link exists, such as a Wikidata statement or a Discogs co-occurrence figure.", "type": "string", "minLength": 1}
+    }
+   }
+  },
+  "aliases": {
+   "description": "Other spellings of a genre name.",
+   "type": "array",
+   "items": {
+    "type": "object", "additionalProperties": false,
+    "required": ["name", "normal", "node", "source", "licence"],
+    "properties": {
+     "name": {"description": "The spelling as written in the source.", "type": "string", "minLength": 1},
+     "normal": {"description": "Normal form of the name: Unicode NFKC, case folded, & read as and, then only letters and digits kept.", "type": "string"},
+     "node": {"description": "Key of the node the name points to.", "type": "string"},
+     "source": {"description": "Code of the source that gave the alias.", "$ref": "#/$defs/sourceCode"},
+     "licence": {"description": "SPDX licence id of the alias row.", "$ref": "#/$defs/licence"}
+    }
+   }
+  }
+ },
+ "$defs": {
+  "licence": {"description": "SPDX licence id, for example CC0-1.0 or CC-BY-4.0.", "type": "string", "pattern": "^[A-Za-z0-9.+-]+$"},
+  "sourceCode": {"description": "Code of an entry in sources.", "type": "string", "pattern": "^[a-z0-9-]+$"}
+ }
+}

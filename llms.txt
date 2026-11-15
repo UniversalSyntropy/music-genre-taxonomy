@@ -1,0 +1,30 @@
+# Music Genre Taxonomy
+
+> An open music genre taxonomy: <!--count:nodes-->2,450<!--/count--> genres and subgenres in a hierarchy (a directed acyclic graph) as JSON and CSV, with MusicBrainz, Wikidata and Discogs ids and name aliases. Every parent link has a source, licence and evidence. Data and documents are CC BY 4.0, code is MIT, source data is CC0. Not affiliated with any named service. Data is "as is" and genre classification is opinion ([disclaimer](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/DISCLAIMER.md)).
+
+Use the JSON file for code. Each node has a stable `key`. Each link goes from `child` to `parent`. A genre can have many parents. `tag_level: true` marks a genre that suits a file's genre tag. Look up tag spellings in the aliases by their `normal` form (NFKC, case fold, `&` to `and`, letters and digits only).
+
+## Data
+
+- [taxonomy.json](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/taxonomy.json): the full data set: sources, <!--count:nodes-->2,450<!--/count--> nodes, <!--count:links-->2,938<!--/count--> links, <!--count:aliases-->2,993<!--/count--> aliases
+- [nodes.csv](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/nodes.csv): one row per genre, with ids and a parents column
+- [links.csv](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/links.csv): one row per parent link, with source, basis and evidence
+- [aliases.csv](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/aliases.csv): one row per name spelling, with its normal form
+- [taxonomy.schema.json](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/schema/taxonomy.schema.json): JSON Schema (draft 2020-12)
+
+## Documents
+
+- [README](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/README.md): start here, three code examples, counts, related work
+- [Data guide](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/docs/data-guide.md): every field, the normal form, walk recipes, DAG caveats, SKOS map, version and pin rule
+- [Sources](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/docs/sources.md): each source, its licence, how the tree is built, what is hand-made, known limits
+- [Viewer guide](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/docs/viewer.md): controls, hues, deep links, privacy
+- [Disclaimer](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/DISCLAIMER.md): no tie to any service, data as is
+- [Contributing](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/CONTRIBUTING.md): report a wrong link, privacy and writing rules, checks
+- [Changelog](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/CHANGELOG.md): releases
+- [Citation](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/CITATION.cff): how to cite
+
+## Optional
+
+- [Full text of all documents](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/llms-full.txt): README, docs, disclaimer, contributing and changelog in one file
+- [Live viewer](https://universalsyntropy.github.io/music-genre-taxonomy/): browse the tree
+- [Agent rules](https://github.com/UniversalSyntropy/music-genre-taxonomy/blob/main/CLAUDE.md): rules for agents that change this repo

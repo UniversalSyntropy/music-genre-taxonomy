@@ -1,0 +1,31 @@
+name: Missing genre
+description: A genre or a name spelling is not in the data.
+title: "Missing genre: "
+labels: ["data"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Genre name or spelling
+      description: The name as people write it.
+    validations:
+      required: true
+  - type: input
+    id: key
+    attributes:
+      label: Related genre key
+      description: The key of the genre it belongs to, or its parent, for example house. Leave empty if you do not know.
+  - type: textarea
+    id: what
+    attributes:
+      label: What is missing
+      description: Say if this is a new genre or another spelling of a genre that exists.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Public source URL
+      description: A public page that shows the genre or the spelling. Do not use a closed source.
+    validations:
+      required: true

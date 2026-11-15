@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Music Genre Taxonomy: interactive tree of 2,450 music genres and subgenres</title>
+<meta name="description" content="Explore 2,450 music genres and subgenres in a zoomable tree. Every parent link names its source. Open data from Discogs, MusicBrainz and Wikidata, CC BY 4.0.">
+<link rel="canonical" href="https://universalsyntropy.github.io/music-genre-taxonomy/">
+<meta name="theme-color" content="#f4f2ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#19191a" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Music Genre Taxonomy">
+<meta property="og:title" content="Music Genre Taxonomy: interactive tree of 2,450 music genres">
+<meta property="og:description" content="Zoomable tree of 2,450 music genres and subgenres with sourced parent links. Open data, CC BY 4.0.">
+<meta property="og:url" content="https://universalsyntropy.github.io/music-genre-taxonomy/">
+<meta property="og:image" content="https://universalsyntropy.github.io/music-genre-taxonomy/og.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="The genre tree with the Techno branch open, on a dark background.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Music Genre Taxonomy: interactive tree of 2,450 music genres">
+<meta name="twitter:description" content="Zoomable tree of 2,450 music genres and subgenres with sourced parent links. Open data, CC BY 4.0.">
+<meta name="twitter:image" content="https://universalsyntropy.github.io/music-genre-taxonomy/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2319191a'/%3E%3Cpath d='M7 16h8M15 16l8-7M15 16l8 7' stroke='%23ebeae6' stroke-width='2' fill='none'/%3E%3Ccircle cx='7' cy='16' r='3' fill='%23ff5a1f'/%3E%3Ccircle cx='24' cy='9' r='3' fill='%23ebeae6'/%3E%3Ccircle cx='24' cy='23' r='3' fill='%23ebeae6'/%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Music Genre Taxonomy",
+  "description": "A taxonomy of 2,450 music genres and subgenres with sourced parent links, aliases and links to Discogs, MusicBrainz and Wikidata.",
+  "url": "https://universalsyntropy.github.io/music-genre-taxonomy/",
+  "version": "1.0.0",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "keywords": ["music genres", "subgenres", "taxonomy", "genre tree", "music metadata", "Discogs", "MusicBrainz", "Wikidata", "open data"],
+  "creator": {"@type": "Organization", "name": "music-genre-taxonomy contributors"},
+  "isBasedOn": [
+    {"@type": "Dataset", "name": "Discogs data dumps (genres and styles)", "url": "https://data.discogs.com/"},
+    {"@type": "Dataset", "name": "MusicBrainz genres", "url": "https://musicbrainz.org/genres"},
+    {"@type": "Dataset", "name": "Wikidata", "url": "https://www.wikidata.org/"}
+  ],
+  "distribution": [
+    {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://universalsyntropy.github.io/music-genre-taxonomy/data/taxonomy.json"},
+    {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://universalsyntropy.github.io/music-genre-taxonomy/data/nodes.csv"},
+    {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://universalsyntropy.github.io/music-genre-taxonomy/data/links.csv"},
+    {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://universalsyntropy.github.io/music-genre-taxonomy/data/aliases.csv"}
+  ]
+}
+</script>
+<style>
+/* Colour sets. Chalk is the default. Auto (no data-hue) follows the system: Chalk in light, Slate in dark.
+   --ink is the accent used as text, dot fill and focus ring. Chalk orange (#ff5a1f) is 2.8:1 on its
+   background, so Chalk uses a darker orange (#b43a08, 5.3:1) there. The other three accents pass as they are. */
+:root{
+  --bg:#f4f2ec; --panel:#e9e6de; --line:#d6d2c8; --text:#161616; --muted:#5f5c56;
+  --accent:#ff5a1f; --ink:#b43a08; color-scheme:light;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-hue]){--bg:#19191a;--panel:#222224;--line:#303033;--text:#ebeae6;--muted:#908d86;--accent:#ff5a1f;--ink:#ff5a1f;color-scheme:dark}
+}
+:root[data-hue="chalk"]{--bg:#f4f2ec;--panel:#e9e6de;--line:#d6d2c8;--text:#161616;--muted:#5f5c56;--accent:#ff5a1f;--ink:#b43a08;color-scheme:light}
+:root[data-hue="frost"]{--bg:#e8f0f7;--panel:#d9e5f0;--line:#bccde0;--text:#0e1a2b;--muted:#4b6180;--accent:#1d4ed8;--ink:#1d4ed8;color-scheme:light}
+:root[data-hue="slate"]{--bg:#19191a;--panel:#222224;--line:#303033;--text:#ebeae6;--muted:#908d86;--accent:#ff5a1f;--ink:#ff5a1f;color-scheme:dark}
+:root[data-hue="dusk"]{--bg:#10162a;--panel:#182039;--line:#28324f;--text:#e7ecf8;--muted:#93a0c0;--accent:#ffb020;--ink:#ffb020;color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font:14px/1.4 var(--font);display:flex;flex-direction:column;overflow:hidden}
+a{color:var(--ink)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));
+  background:var(--panel);border-bottom:1px solid var(--line)}
+h1{font-size:18px;font-weight:650;margin:0;letter-spacing:-.01em}
+.meta{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.grow{flex:1 1 20px}
+.search{position:relative;flex:1 1 220px;max-width:340px;min-width:0}
+input,button,select{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;min-height:34px}
+input{width:100%}
+button,select{cursor:pointer}
+button:hover,select:hover{border-color:var(--muted)}
+select{max-width:230px}
+#hits{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:6;background:var(--panel);border:1px solid var(--line);border-radius:6px;
+  max-height:50vh;overflow:auto;margin:0;padding:4px;list-style:none}
+#hits button{display:flex;justify-content:space-between;gap:8px;width:100%;border:0;background:none;text-align:left;padding:6px 8px}
+#hits button:hover,#hits button:focus-visible{background:var(--bg)}
+#hits small{color:var(--muted)}
+#hits .none{padding:6px 8px;color:var(--muted)}
+.stage{position:relative;flex:1 1 0;min-height:0}
+svg{width:100%;height:100%;display:block;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
+svg:active{cursor:grabbing}
+.link{fill:none;stroke:var(--muted);stroke-width:1.2;opacity:.45}
+.link.d{stroke-dasharray:4 3}
+.node{cursor:pointer;outline:none}
+.node .hit{fill:transparent}
+.node circle{fill:var(--bg);stroke:var(--muted);stroke-width:1.4}
+.node.tag circle{fill:var(--ink);stroke:var(--ink)}
+.node.shut circle{stroke-width:3}
+.node text{fill:var(--text);font-size:11.5px;paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round}
+.node.tag text{font-weight:650}
+.node.sel text,.node:focus-visible text{fill:var(--ink);font-weight:650}
+.node.sel circle,.node:focus-visible circle{stroke:var(--ink);stroke-width:3}
+.legend{position:absolute;left:max(16px,env(safe-area-inset-left));bottom:12px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);
+  background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 10px;max-width:calc(100% - 32px)}
+.legend i{display:inline-block;vertical-align:middle;margin-right:5px}
+.dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted)}
+.dot.t{background:var(--ink);border-color:var(--ink)}
+.ln{width:18px;height:0;border-top:2px solid var(--muted)}
+.ln.d{border-top-style:dashed}
+#card{position:absolute;top:12px;right:max(16px,env(safe-area-inset-right));width:300px;max-width:calc(100% - 32px);max-height:calc(100% - 24px);overflow:auto;z-index:4;
+  background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overscroll-behavior:contain}
+#card h2{font-size:17px;margin:0 36px 2px 0;overflow-wrap:anywhere}
+#card code{font-size:12px;color:var(--muted)}
+#card dl{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin:10px 0 0}
+#card dt{color:var(--muted)}
+#card dd{margin:0;min-width:0;overflow-wrap:anywhere}
+#card .jump{display:block;border:0;background:none;padding:2px 0;min-height:0;color:var(--ink);text-decoration:underline;text-align:left}
+#card .jump small{color:var(--muted);text-decoration:none}
+#card .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+#card .links a{color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;text-decoration:none;font-size:13px}
+#card .links a:hover{border-color:var(--ink);color:var(--ink)}
+#card .note{color:var(--muted);font-size:12px;margin:8px 0 0}
+#card .page{display:inline-block;margin-top:10px}
+#card .x{position:absolute;top:6px;right:6px;width:36px;border:0;background:none;font-size:20px;line-height:1;padding:0}
+.pill{display:inline-block;border:1px solid var(--ink);color:var(--ink);border-radius:99px;padding:0 8px;font-size:12px;font-weight:650}
+.foot{padding:6px max(16px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+  background:var(--panel);border-top:1px solid var(--line);color:var(--muted);font-size:12px;display:flex;flex-wrap:wrap;gap:2px 14px}
+.msg{position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:24px;text-align:center;z-index:7;background:var(--bg)}
+.msg.on{display:flex}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:640px),(pointer:coarse){
+  input,button,select{min-height:44px}
+  select{height:44px}
+  #card .links a{display:inline-flex;align-items:center;min-height:44px}
+  #card .jump{min-height:44px;display:flex;align-items:center}
+  #card .x{width:44px;height:44px;top:2px;right:2px}
+  #hits button{min-height:44px;align-items:center}
+}
+@media (max-width:640px){
+  .meta{display:none}
+  .grow{display:none}
+  .search{flex:1 1 100%;max-width:none}
+  select{flex:1 1 100%;max-width:none}
+  .bar button{flex:1 1 auto}
+  #card{top:auto;bottom:0;left:0;right:0;width:auto;max-width:none;max-height:55%;border-radius:12px 12px 0 0;border-width:1px 0 0}
+  .legend .tip{display:none}
+  .foot{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<!-- d3 v7.8.5 is vendored at vendor/d3.min.js. Source: npm package d3@7.8.5, dist/d3.min.js.
+     sha512-M7nHCiNUOwFt6Us3r8alutZLm9qMt4s9951uo8jqO4UwJ1hziseL6O3ndFyigx6+LREfZqnhHxYjKRJ8ZQ69DQ== -->
+<header class="bar">
+  <h1>Music Genre Taxonomy</h1>
+  <span class="meta" id="meta"></span>
+  <span class="grow"></span>
+  <div class="search">
+    <label class="sr" for="q">Find a genre</label>
+    <input id="q" type="search" placeholder="Find a genre, for example Goa Trance" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="hits" aria-autocomplete="list">
+    <ul id="hits" hidden></ul>
+    <div class="sr" id="live" role="status" aria-live="polite"></div>
+  </div>
+  <label class="sr" for="hue">Colour hue</label>
+  <select id="hue">
+    <option value="">Hue: Auto (follows system)</option>
+    <option value="chalk">Hue: Chalk</option>
+    <option value="frost">Hue: Frost</option>
+    <option value="slate">Hue: Slate</option>
+    <option value="dusk">Hue: Dusk</option>
+  </select>
+  <button id="fit" type="button">Fit</button>
+  <button id="lvl" type="button">Open one more level</button>
+  <button id="shut" type="button">Close all</button>
+</header>
+<main class="stage">
+  <svg id="svg" role="group" aria-label="Genre tree. Use the search box to jump to a genre."><g id="view"><g id="links"></g><g id="nodes"></g></g></svg>
+  <div class="legend">
+    <span><i class="dot t"></i>Tag level (can be a file tag)</span>
+    <span><i class="dot"></i>Other genre</span>
+    <span><i class="ln"></i>Parent from Wikidata</span>
+    <span><i class="ln d"></i>Parent from Discogs</span>
+    <span class="tip">Drag to move. Scroll or pinch to zoom. Click a name to open it.</span>
+  </div>
+  <aside id="card" hidden aria-label="Genre details"></aside>
+  <div class="msg" id="msg" role="alert"></div>
+  <noscript><div class="msg on"><p>This tree needs JavaScript. The <a href="genre/">A to Z list of all genres</a> and the <a href="data/taxonomy.json">data file</a> work without it.</p></div></noscript>
+</main>
+<footer class="foot">
+  <a href="genre/">All genres A to Z</a>
+  <a href="https://github.com/UniversalSyntropy/music-genre-taxonomy">GitHub repository</a>
+  <a href="data/taxonomy.json">Data file (JSON)</a>
+  <a href="https://creativecommons.org/licenses/by/4.0/">Licence: CC BY 4.0</a>
+  <span>Not affiliated with Discogs, MetaBrainz, MusicBrainz or the Wikimedia Foundation.</span>
+</footer>
+<script src="vendor/d3.min.js"></script>
+<script>
+"use strict";
+var SRC = {discogs:'Discogs', musicbrainz:'MusicBrainz', wikidata:'Wikidata', hand:'Hand-added'};
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var ms = function(n){ return reduce ? 0 : n; };
+var $ = function(id){ return document.getElementById(id); };
+
+/* ---- hue ---- */
+var HUES = ['chalk','frost','slate','dusk'];
+var hueSel = $('hue');
+function setHue(v){
+  if (HUES.indexOf(v) < 0) { document.documentElement.removeAttribute('data-hue'); v = ''; }
+  else document.documentElement.setAttribute('data-hue', v);
+  hueSel.value = v;
+}
+hueSel.addEventListener('change', function(){
+  setHue(hueSel.value);
+  try { localStorage.setItem('hue', hueSel.value); } catch (e) {}
+});
+try { setHue(localStorage.getItem('hue') || ''); } catch (e) {}
+
+/* ---- data ---- */
+function fail(text){ var m = $('msg'); m.textContent = text; m.classList.add('on'); }
+fetch('data/taxonomy.json').then(function(r){
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}).then(start).catch(function(e){
+  fail('The genre data could not be loaded (' + e.message + '). Reload the page, or open data/taxonomy.json directly.');
+});
+
+function start(D){
+  var N = new Map();
+  D.nodes.forEach(function(n){
+    N.set(n.key, {key:n.key, name:n.name, tag:!!n.tag_level, source:n.source, seen:n.seen_in || [], ext:n.external || {}, parents:[], kids:[], aka:[]});
+  });
+  D.links.forEach(function(l){
+    var a = N.get(l.child), b = N.get(l.parent);
+    if (a && b) a.parents.push({key:l.parent, source:l.source, basis:l.basis, evidence:l.evidence});
+  });
+  D.aliases.forEach(function(a){ var n = N.get(a.node); if (n && a.name !== n.name) n.aka.push(a.name); });
+  /* One home per genre: Wikidata parent first (closer), then Discogs, then key order. */
+  N.forEach(function(n){
+    n.parents.sort(function(a, b){
+      return (a.source === 'wikidata' ? 0 : 1) - (b.source === 'wikidata' ? 0 : 1) || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
+    });
+    if (n.parents.length) { n.home = n.parents[0]; N.get(n.home.key).kids.push(n); }
+  });
+  var byName = function(a, b){ return a.name.localeCompare(b.name); };
+  function make(n){ return {id:n.key, ref:n, name:n.name, src:n.home ? n.home.source : 'x', children:n.kids.sort(byName).map(make)}; }
+  var tops = Array.from(N.values()).filter(function(n){ return !n.home; });
+  var fam = tops.filter(function(n){ return n.kids.length; }).map(make);
+  var lone = tops.filter(function(n){ return !n.kids.length; }).sort(byName).map(make);
+  var root = d3.hierarchy({id:'*', name:'All genres', src:'x', children:fam.concat([{id:'*lone', name:'No parent and no child', src:'x', children:lone}])});
+  root.each(function(d){ d.size = d.descendants().length - 1; });
+  root.children.sort(function(a, b){ return (a.data.id === '*lone') - (b.data.id === '*lone') || b.size - a.size; });
+  var at = new Map();
+  root.each(function(d){ at.set(d.data.id, d); });
+  root.descendants().forEach(function(d){ d._kids = d.children; if (d.depth >= 1) d.children = null; });
+  $('meta').textContent = N.size.toLocaleString('en-US') + ' genres · ' + D.links.length.toLocaleString('en-US') + ' links · ' +
+    Array.from(N.values()).filter(function(n){ return n.tag; }).length + ' tag level · version ' + D.version;
+
+  var svg = d3.select('#svg'), view = d3.select('#view'), gl = d3.select('#links'), gn = d3.select('#nodes');
+  var zoom = d3.zoom().scaleExtent([0.03, 5]).on('zoom', function(e){ view.attr('transform', e.transform); });
+  svg.call(zoom).on('dblclick.zoom', null);
+  var layout = d3.tree().nodeSize([17, 230]);
+  var linkPath = d3.linkHorizontal().x(function(d){ return d.y; }).y(function(d){ return d.x; });
+  var sel = null;
+
+  function label(d){ return d.data.name + (!d.children && d._kids ? '  +' + d.size : ''); }
+  function draw(){
+    layout(root);
+    gl.selectAll('path').data(root.links(), function(d){ return d.target.data.id; }).join('path')
+      .attr('class', function(d){ return 'link ' + (d.target.data.src === 'discogs' ? 'd' : 'w'); }).attr('d', linkPath);
+    var g = gn.selectAll('g.node').data(root.descendants(), function(d){ return d.data.id; }).join(function(en){
+      var e = en.append('g').attr('role', 'button').attr('tabindex', 0)
+        .on('click', function(ev, d){ toggle(d); pick(d); })
+        .on('keydown', function(ev, d){ if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(d); pick(d); } });
+      e.append('rect').attr('class', 'hit').attr('x', -8).attr('y', -9).attr('height', 18).attr('width', 200);
+      e.append('circle').attr('r', 4.2);
+      e.append('text').attr('x', 9).attr('dy', '0.32em');
+      e.append('title');
+      return e;
+    });
+    g.attr('class', function(d){ return 'node' + (d.data.ref && d.data.ref.tag ? ' tag' : '') + (!d.children && d._kids ? ' shut' : '') + (d === sel ? ' sel' : ''); })
+      .attr('transform', function(d){ return 'translate(' + d.y + ',' + d.x + ')'; })
+      .attr('aria-label', label)
+      .attr('aria-expanded', function(d){ return d._kids ? (d.children ? 'true' : 'false') : null; });
+    g.select('text').text(label);
+    g.select('title').text(function(d){ return d._kids ? (d.children ? 'Click to close' : 'Click to open') : d.data.name; });
+  }
+  function toggle(d){ if (!d._kids) return; d.children = d.children ? null : d._kids; draw(); }
+  function fit(){
+    var b = view.node().getBBox(), w = svg.node().clientWidth, h = svg.node().clientHeight;
+    if (!b.width || !w) return;
+    var k = Math.min(2, 0.94 * Math.min(w / b.width, h / b.height));
+    svg.transition().duration(ms(250)).call(zoom.transform, d3.zoomIdentity.translate(w / 2 - k * (b.x + b.width / 2), h / 2 - k * (b.y + b.height / 2)).scale(k));
+  }
+  function centre(d, near){
+    var w = svg.node().clientWidth, h = svg.node().clientHeight, k = near ? 1.9 : Math.max(1, d3.zoomTransform(svg.node()).k);
+    /* On a phone the sheet covers the lower half: centre in the upper part. */
+    var cy = (window.innerWidth <= 640 && !$('card').hidden) ? h * 0.25 : h / 2;
+    svg.transition().duration(ms(near ? 600 : 300)).call(zoom.transform, d3.zoomIdentity.translate(w / 2 - k * (d.y + 60), cy - k * d.x).scale(k));
+  }
+  function go(key, near){
+    var d = at.get(key); if (!d) return false;
+    for (var p = d.parent; p; p = p.parent) if (!p.children) p.children = p._kids;
+    pick(d); centre(d, near);
+    return true;
+  }
+
+  /* ---- card ---- */
+  var card = $('card');
+  function setUrl(key){
+    try {
+      var u = new URL(location.href); u.search = key ? '?g=' + encodeURIComponent(key) : '';
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+    } catch (e) {}
+  }
+  function el(tag, text, cls){ var e = document.createElement(tag); if (text != null) e.textContent = text; if (cls) e.className = cls; return e; }
+  function closeCard(){ card.hidden = true; sel = null; draw(); setUrl(null); }
+  function pick(d){
+    sel = d; draw();
+    var n = d.data.ref;
+    card.hidden = false; card.textContent = '';
+    var x = el('button', '×', 'x'); x.type = 'button'; x.setAttribute('aria-label', 'Close details'); x.addEventListener('click', closeCard); card.append(x);
+    card.append(el('h2', d.data.name));
+    if (!n) { card.append(el('p', d.size.toLocaleString('en-US') + ' genres below.')); setUrl(null); return; }
+    card.append(el('code', n.key));
+    var dl = el('dl');
+    function row(k, v){ dl.append(el('dt', k)); var dd = el('dd'); if (typeof v === 'string') dd.textContent = v; else dd.append.apply(dd, v); dl.append(dd); }
+    row('Level', n.tag ? [el('span', 'Tag level', 'pill')] : 'Not tag level');
+    row('Name from', SRC[n.source] || n.source);
+    if (n.seen.length) row('Seen in', n.seen.map(function(c){ return SRC[c] || c; }).join(', '));
+    if (n.parents.length) row(n.parents.length > 1 ? 'Parents' : 'Parent', n.parents.map(function(p){
+      var b = el('button', N.get(p.key).name, 'jump'); b.type = 'button';
+      b.append(el('small', ' (' + (SRC[p.source] || p.source) + ', ' + p.basis + ')'));
+      b.title = p.evidence || '';
+      b.addEventListener('click', function(){ go(p.key, false); });
+      return b;
+    }));
+    else row('Parent', 'None');
+    row('Below', d.size ? d._kids.length + ' direct, ' + d.size + ' in total' : 'None');
+    if (n.aka.length) row('Also known as', n.aka.slice(0, 8).join(', ') + (n.aka.length > 8 ? ', and ' + (n.aka.length - 8) + ' more' : ''));
+    card.append(dl);
+    var L = [], e = n.ext;
+    if (e.wikidata_id) {
+      L.push(['Wikipedia', 'https://www.wikidata.org/wiki/Special:GoToLinkedPage/enwiki/' + e.wikidata_id]);
+      L.push(['Wikidata', 'https://www.wikidata.org/wiki/' + e.wikidata_id]);
+    }
+    if (e.musicbrainz_id) L.push(['MusicBrainz', 'https://musicbrainz.org/genre/' + e.musicbrainz_id]);
+    if (e.discogs_name) L.push(['Discogs', 'https://www.discogs.com/' + (e.discogs_kind === 'genre' ? 'genre' : 'style') + '/' + encodeURIComponent(e.discogs_name.toLowerCase()).replace(/%20/g, '+')]);
+    L.push(['Beatport search', 'https://www.beatport.com/search?q=' + encodeURIComponent(n.name)]);
+    var box = el('div', null, 'links');
+    L.forEach(function(p){ var a = el('a', p[0] + ' ↗'); a.href = p[1]; a.target = '_blank'; a.rel = 'noopener noreferrer'; box.append(a); });
+    card.append(box, el('p', 'Each link opens in a new tab.', 'note'));
+    var pg = el('a', 'Open the page for this genre', 'page'); pg.href = 'genre/' + encodeURIComponent(n.key) + '.html'; card.append(pg);
+    setUrl(n.key);
+  }
+
+  /* ---- search ---- */
+  var q = $('q'), hits = $('hits'), live = $('live');
+  var all = Array.from(N.values());
+  function showHits(open){ hits.hidden = !open; q.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  function choose(n){ showHits(false); q.value = n.name; go(n.key, true); }
+  function search(){
+    var s = q.value.trim().toLowerCase(); hits.textContent = '';
+    if (s.length < 2) { showHits(false); live.textContent = ''; return; }
+    var found = all.filter(function(n){
+      return n.name.toLowerCase().indexOf(s) >= 0 || n.key.indexOf(s) >= 0 || n.aka.some(function(a){ return a.toLowerCase().indexOf(s) >= 0; });
+    }).sort(function(a, b){
+      return (a.name.toLowerCase().indexOf(s) === 0 ? 0 : 1) - (b.name.toLowerCase().indexOf(s) === 0 ? 0 : 1) || a.name.length - b.name.length || a.name.localeCompare(b.name);
+    }).slice(0, 14);
+    found.forEach(function(n){
+      var li = el('li'), b = el('button'); b.type = 'button';
+      b.append(el('span', n.name), el('small', n.tag ? 'tag level' : (n.home ? N.get(n.home.key).name : '')));
+      b.addEventListener('click', function(){ choose(n); });
+      li.append(b); hits.append(li);
+    });
+    if (!found.length) hits.append(el('li', 'No genre has that name.', 'none'));
+    live.textContent = found.length ? found.length + ' results' : 'No results';
+    showHits(true);
+  }
+  q.addEventListener('input', search);
+  q.addEventListener('keydown', function(e){
+    var bs = hits.querySelectorAll('button');
+    if (e.key === 'Enter') { if (bs[0]) { e.preventDefault(); bs[0].click(); } }
+    else if (e.key === 'Escape') showHits(false);
+    else if (e.key === 'ArrowDown' && bs[0]) { e.preventDefault(); bs[0].focus(); }
+  });
+  hits.addEventListener('keydown', function(e){
+    var bs = Array.from(hits.querySelectorAll('button')), i = bs.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); (bs[i + 1] || bs[0]).focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); if (i <= 0) q.focus(); else bs[i - 1].focus(); }
+    else if (e.key === 'Escape') { showHits(false); q.focus(); }
+  });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.search')) showHits(false); });
+
+  /* ---- buttons ---- */
+  $('fit').addEventListener('click', fit);
+  $('shut').addEventListener('click', function(){ at.forEach(function(d){ if (d.depth >= 1 && d._kids) d.children = null; }); draw(); fit(); });
+  $('lvl').addEventListener('click', function(){
+    root.descendants().filter(function(d){ return !d.children && d._kids && d.data.id !== '*lone'; }).forEach(function(d){ d.children = d._kids; });
+    draw(); fit();
+  });
+
+  /* ---- first view ---- */
+  var first = at.get('electronic'); if (first && first._kids) first.children = first._kids;
+  draw();
+  var want = null;
+  try { want = new URLSearchParams(location.search).get('g'); } catch (e) {}
+  if (want && at.has(want)) go(want, true);
+  else requestAnimationFrame(fit);
+  /* Refit on width change only: a phone keyboard changes the height and must not reset the view. */
+  var lastW = window.innerWidth;
+  window.addEventListener('resize', function(){ if (window.innerWidth !== lastW) { lastW = window.innerWidth; if (card.hidden) fit(); } });
+  window.__tree = {ready:true, nodes:N.size};
+}
+</script>
+</body>
+</html>

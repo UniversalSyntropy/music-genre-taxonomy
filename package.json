@@ -1,0 +1,16 @@
+{
+  "name": "music-genre-taxonomy",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Browser tests for the genre tree viewer.",
+  "type": "module",
+  "scripts": {
+    "build:site": "python3 tools/build_site.py",
+    "test:browser": "python3 tools/build_site.py && node tests/viewer.smoke.mjs",
+    "shots": "python3 tools/build_site.py && node tools/shots.mjs",
+    "check": "python3 tools/check.py"
+  },
+  "devDependencies": {
+    "playwright": "1.65.1"
+  }
+}

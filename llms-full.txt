@@ -1,0 +1,694 @@
+# Music Genre Taxonomy: full text
+
+This file joins the documents of https://github.com/UniversalSyntropy/music-genre-taxonomy in one text. Relative links point to files in that repo. The index is llms.txt.
+
+---
+
+FILE: README.md
+
+# Music Genre Taxonomy
+
+An open music genre taxonomy: <!--count:nodes-->2,450<!--/count--> genres and subgenres in a hierarchy (a directed graph, not a strict tree). It ships as JSON and CSV with MusicBrainz, Discogs and Wikidata ids, and every parent link names its source, licence and evidence.
+
+[![CI](https://github.com/UniversalSyntropy/music-genre-taxonomy/actions/workflows/ci.yml/badge.svg)](https://github.com/UniversalSyntropy/music-genre-taxonomy/actions/workflows/ci.yml)
+[![Data licence: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-blue)](LICENSE-docs)
+[![Code licence: MIT](https://img.shields.io/badge/code-MIT-green)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/UniversalSyntropy/music-genre-taxonomy)](https://github.com/UniversalSyntropy/music-genre-taxonomy/releases)
+
+[![Screenshot of the genre viewer: a zoomable tree of music genres with a detail card for one genre.](docs/viewer.png)](https://universalsyntropy.github.io/music-genre-taxonomy/)
+
+Open the [live viewer](https://universalsyntropy.github.io/music-genre-taxonomy/) to explore the genre tree in your browser.
+
+## Start here
+
+| I want to | Go to |
+| --- | --- |
+| Explore the genre tree | [Live viewer](https://universalsyntropy.github.io/music-genre-taxonomy/) and the [viewer guide](docs/viewer.md) |
+| Load the data in code | [`data/taxonomy.json`](data/taxonomy.json) and the [data guide](docs/data-guide.md) |
+| Open the data in a spreadsheet | [`nodes.csv`](data/nodes.csv), [`links.csv`](data/links.csv), [`aliases.csv`](data/aliases.csv) |
+| Validate the file | [JSON Schema](schema/taxonomy.schema.json) |
+| Check sources and licences | [Sources](docs/sources.md) |
+| Give an LLM the whole project | [`llms.txt`](llms.txt) or [`llms-full.txt`](llms-full.txt) |
+| Report a wrong link | [Open an issue](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new/choose) |
+
+## Use the data
+
+Each example reads the file from GitHub and does one task. To pin a version, replace `main` in the URL with a release tag such as `v1.0.0`.
+
+Python (standard library only): find the parents of `acid-house`, then walk up to its tag-level ancestor. Tag level marks the depth that a file's genre tag usually uses, for example House, Techno or Ambient.
+
+```python
+import json, urllib.request
+from collections import deque
+
+URL = "https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/taxonomy.json"
+data = json.load(urllib.request.urlopen(URL))
+
+nodes = {n["key"]: n for n in data["nodes"]}
+parents = {}
+for link in data["links"]:
+    parents.setdefault(link["child"], set()).add(link["parent"])
+
+print("Parents of acid-house:", sorted(parents["acid-house"]))
+
+def tag_level_ancestor(key):
+    queue, seen = deque([key]), {key}
+    while queue:
+        k = queue.popleft()
+        if nodes[k]["tag_level"]:
+            return k
+        for p in sorted(parents.get(k, ())):
+            if p not in seen:
+                seen.add(p)
+                queue.append(p)
+    return None
+
+print("Tag-level ancestor of 2-step:", tag_level_ancestor("2-step"))
+```
+
+JavaScript (Node 18 or later, or a browser): resolve the tag spelling "Drum n Bass" to a genre.
+
+```javascript
+const URL = "https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/taxonomy.json";
+
+const normal = (s) =>
+  [...s.normalize("NFKC").toLowerCase().replaceAll("&", " and ")]
+    .filter((c) => /[\p{L}\p{N}]/u.test(c))
+    .join("");
+
+const data = await (await fetch(URL)).json();
+const byAlias = new Map(data.aliases.map((a) => [a.normal, a.node]));
+const key = byAlias.get(normal("Drum n Bass"));
+console.log(key, data.nodes.find((n) => n.key === key).name);
+```
+
+`curl` and `jq`: list the parents of `acid-house` with the source and evidence of each link.
+
+```bash
+curl -s https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/taxonomy.json | jq -r '.links[] | select(.child == "acid-house") | [.parent, .source, .evidence] | @tsv'
+```
+
+More recipes (children, all ancestors, alias lookup rules) are in the [data guide](docs/data-guide.md).
+
+## What is in the data
+
+| Item | Count |
+| --- | --- |
+| Genres (nodes) | <!--count:nodes-->2,450<!--/count--> |
+| Parent links | <!--count:links-->2,938<!--/count--> |
+| Name aliases | <!--count:aliases-->2,993<!--/count--> |
+| Tag-level genres | <!--count:tag_level-->135<!--/count--> |
+| Genres with no parent (roots) | <!--count:roots-->557<!--/count--> |
+| Genres with no parent and no child | <!--count:isolated-->481<!--/count--> |
+| Genres with two or more different parents | <!--count:multi_parent-->709<!--/count--> |
+| Names from MusicBrainz / Discogs | <!--count:nodes_musicbrainz-->1,684<!--/count--> / <!--count:nodes_discogs-->766<!--/count--> |
+| Links from Wikidata / Discogs | <!--count:links_wikidata-->1,845<!--/count--> / <!--count:links_discogs-->1,093<!--/count--> |
+| Genres with a MusicBrainz id / Wikidata id / Discogs name | <!--count:with_musicbrainz_id-->2,221<!--/count--> / <!--count:with_wikidata_id-->1,655<!--/count--> / <!--count:with_discogs_name-->766<!--/count--> |
+
+## Sources and licences
+
+| Source | What this repo takes | Licence |
+| --- | --- | --- |
+| [MusicBrainz](https://musicbrainz.org/genres) | Genre names, ids, aliases | CC0 |
+| [Discogs data dumps](https://data.discogs.com/) | Genre and style names, co-occurrence links | CC0 |
+| [Wikidata](https://www.wikidata.org/) | "Subclass of" links | CC0 |
+
+CC0 does not require credit. This repo gives credit anyway. This repo's own compilation, schema, hand aliases and documents are CC BY 4.0. The code is MIT. Details and attribution text: [Sources](docs/sources.md).
+
+## Known limits
+
+- **Names:** simple title case, so `Edm` not `EDM`.
+- **Links:** Discogs links are statistical, not editorial. Wikidata "subclass of" links contain errors that this repo passes on.
+- **Gaps:** <!--count:isolated-->481<!--/count--> genres have no link. Some common tag spellings have no alias yet.
+
+The full list is in [Sources](docs/sources.md#known-limits).
+
+## Related work
+
+I checked that each repo exists and read its licence field on GitHub. I took no data from any of them.
+
+| Repo | What it is (from its GitHub description) | Licence field |
+| --- | --- | --- |
+| [beetbox/beets](https://github.com/beetbox/beets) | Music library manager and MusicBrainz tagger. Holds `genres-tree.yaml` for its lastgenre plugin. | MIT |
+| [metabrainz/genre-matching](https://github.com/metabrainz/genre-matching) | Experiments to match external genre datasets to MusicBrainz genres | none shown |
+| [MTG/acousticbrainz-genre-dataset](https://github.com/MTG/acousticbrainz-genre-dataset) | The AcousticBrainz Genre Dataset | none shown |
+| [FlakyBlueJay/mb-rym-hierarchy](https://github.com/FlakyBlueJay/mb-rym-hierarchy) | Rate Your Music genre hierarchy for MusicBee | none shown |
+| [OliverMoscow/Categorized-Music-Genres-JSON](https://github.com/OliverMoscow/Categorized-Music-Genres-JSON) | Categorized list of music genres sourced from Wikipedia | none shown |
+| [yuichkun/music-taxonomy-graph](https://github.com/yuichkun/music-taxonomy-graph) | Interactive music genre taxonomy | none shown |
+| [HomoBernardus/music-genre-tree](https://github.com/HomoBernardus/music-genre-tree) | No description | none shown |
+| [frankie-muller/alchemy](https://github.com/frankie-muller/alchemy) | Offline genre taxonomy, artist classifier and discovery engine | MIT |
+
+"None shown" means GitHub reports no licence for the repo. It does not mean the data is free to use.
+
+What this repo adds:
+
+- Three open sources joined in one file.
+- A source, licence and evidence on every link.
+- External ids (MusicBrainz, Wikidata, Discogs).
+- A versioned JSON Schema.
+- A viewer with one static page per genre.
+
+## Cite
+
+Use [`CITATION.cff`](CITATION.cff). GitHub shows a "Cite this repository" button from it.
+
+## Contribute
+
+Found a wrong link or a missing genre? Open an issue with the form. Read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+
+## Licence
+
+- **Data, schema and documents:** [CC BY 4.0](LICENSE-docs). Credit "music-genre-taxonomy contributors" and link to this repo.
+- **Code:** [MIT](LICENSE).
+- **Disclaimer:** no tie to any named service. See [DISCLAIMER.md](DISCLAIMER.md).
+
+---
+
+FILE: docs/data-guide.md
+
+# Data guide
+
+This guide shows how to read the genre taxonomy files in code. It lists every field and gives short recipes for the common tasks. For the origin of the data, see [Sources](sources.md).
+
+The data is a directed acyclic graph (DAG) of <!--count:nodes-->2,450<!--/count--> genres. A genre can have more than one parent, so it is not a strict tree.
+
+## Files
+
+| File | Holds | Use it for |
+| --- | --- | --- |
+| [`data/taxonomy.json`](../data/taxonomy.json) | Everything: header, sources, nodes, links, aliases | Code. This is the main file. |
+| [`data/nodes.csv`](../data/nodes.csv) | One row per genre, with ids and a `parents` column | Spreadsheets |
+| [`data/links.csv`](../data/links.csv) | One row per parent link | Spreadsheets, SQL import |
+| [`data/aliases.csv`](../data/aliases.csv) | One row per name spelling | Tag matching |
+| [`schema/taxonomy.schema.json`](../schema/taxonomy.schema.json) | JSON Schema (draft 2020-12) for the JSON file | Validation |
+
+The CSV files hold the same rows as the JSON file. `tools/check.py` tests that the row counts match.
+
+## Top-level fields
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `$schema` | string | URL of the schema |
+| `name` | string | Always `Music Genre Taxonomy` |
+| `schema_version` | string | Semantic version of the file layout |
+| `version` | string | Semantic version of the data |
+| `tree_version` | string | 12-character content hash from the build |
+| `licence` | string | SPDX id of the whole file: `CC-BY-4.0` |
+| `counts` | object | `nodes`, `links`, `aliases`, `tag_level`. They equal the array lengths. |
+| `sources` | array | One entry per source (see below) |
+| `nodes`, `links`, `aliases` | arrays | The data |
+
+## Nodes
+
+One node is one genre.
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `key` | string | Stable id. Lowercase letters and digits in any script, joined by single hyphens. Example: `acid-house`. |
+| `name` | string | Display name in simple title case |
+| `tag_level` | boolean | `true` if the genre is a good value for a file's genre tag. `false` for a genre that is broader (for example Electronic) or narrower than that depth. |
+| `source` | string | Code of the source that gave the genre first |
+| `licence` | string | SPDX id of this row |
+| `seen_in` | array | Codes of every source that lists the genre |
+| `external.musicbrainz_id` | string | MusicBrainz genre id (UUID). Left out if unknown. |
+| `external.wikidata_id` | string | Wikidata item id, such as `Q341364`. Left out if unknown. |
+| `external.discogs_name` | string | Name in the Discogs data. Left out if unknown. |
+| `external.discogs_kind` | string | `genre` or `style`, as Discogs lists it |
+
+The `nodes.csv` file adds a `parents` column with the parent keys.
+
+## Links
+
+One link says "child is a sub-genre of parent". Every link carries its source and evidence.
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `child` | string | Key of the narrower genre |
+| `parent` | string | Key of the broader genre |
+| `relation` | string | Always `subgenre_of` |
+| `source` | string | Code of the source that gave the link: `wikidata` or `discogs` |
+| `licence` | string | SPDX id of this row |
+| `basis` | string | `sourced`: the source states the link. `derived`: this repo computed it from source data. |
+| `evidence` | string | Text that shows why the link exists |
+
+Evidence examples:
+
+- `wikidata Q341364 subclass of Q20502`: a Wikidata statement.
+- `co-occurrence 1.00 of 26187 releases`: a Discogs style and genre occur together on nearly all releases in the dump.
+
+The same child and parent pair can come from two sources. That gives two link rows. Count distinct parents, not rows.
+
+## Aliases
+
+An alias is one spelling of a genre name. Use aliases to match free-text tag values to a node.
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `name` | string | The spelling as the source writes it |
+| `normal` | string | The normal form of the name (see below) |
+| `node` | string | Key of the genre |
+| `source` | string | `musicbrainz`, `discogs` or `hand` |
+| `licence` | string | SPDX id of this row |
+
+Three aliases are hand-made: `Goa` to `goa-trance`, `Drum n Bass` to `drum-and-bass` and `House Music` to `house`. They carry the licence CC-BY-4.0.
+
+In this release no normal form points to two nodes. Do not rely on that for later releases: handle a list of nodes per normal form.
+
+## Sources
+
+Each entry in `sources` holds `code`, `name`, `url`, `licence`, `licence_url` and `retrieved`. The `retrieved` field says when the source was read. See [Sources](sources.md) for the values.
+
+## Normal form for alias lookup
+
+Compute the normal form of your input, then look it up in the `normal` field of the aliases. The steps are:
+
+1. Apply Unicode NFKC.
+2. Fold the case.
+3. Replace `&` with ` and `.
+4. Keep only letters and digits, in any script.
+
+Example: `Drum & Bass` becomes `drumandbass`.
+
+Python:
+
+```python
+import unicodedata
+
+def normal(name: str) -> str:
+    s = unicodedata.normalize("NFKC", name).casefold().replace("&", " and ")
+    return "".join(ch for ch in s if ch.isalnum())
+
+print(normal("Drum & Bass"))
+```
+
+JavaScript:
+
+```javascript
+const normal = (name) =>
+  [...name.normalize("NFKC").toLowerCase().replaceAll("&", " and ")]
+    .filter((c) => /[\p{L}\p{N}]/u.test(c))
+    .join("");
+
+console.log(normal("Drum & Bass"));
+```
+
+> **Note:** Python `casefold()` and JavaScript `toLowerCase()` differ for a few characters, such as the German sharp s. The data was built with Python. For exact results in JavaScript, test your input against the alias list.
+
+## Walk recipes
+
+All recipes use these two lookups. Build them once.
+
+```python
+import json
+from collections import defaultdict, deque
+
+data = json.load(open("data/taxonomy.json", encoding="utf-8"))
+nodes = {n["key"]: n for n in data["nodes"]}
+parents, children = defaultdict(set), defaultdict(set)
+for link in data["links"]:
+    parents[link["child"]].add(link["parent"])
+    children[link["parent"]].add(link["child"])
+alias_to_node = defaultdict(set)
+for a in data["aliases"]:
+    alias_to_node[a["normal"]].add(a["node"])
+```
+
+Children of a genre:
+
+```python
+print(sorted(children["house"]))
+```
+
+All ancestors of a genre (every parent, grandparent and so on):
+
+```python
+def ancestors(key):
+    seen, queue = set(), deque([key])
+    while queue:
+        for p in parents[queue.popleft()]:
+            if p not in seen:
+                seen.add(p)
+                queue.append(p)
+    return seen
+
+print(sorted(ancestors("acid-house")))
+```
+
+The tag-level ancestor: walk the parents breadth-first until a node has `tag_level` true. A tag-level node returns itself. Sort the parents so the result is the same each time.
+
+```python
+def tag_level_ancestor(key):
+    seen, queue = {key}, deque([key])
+    while queue:
+        k = queue.popleft()
+        if nodes[k]["tag_level"]:
+            return k
+        for p in sorted(parents[k]):
+            if p not in seen:
+                seen.add(p)
+                queue.append(p)
+    return None
+
+print(tag_level_ancestor("2-step"))
+```
+
+Resolve a tag value to genres. The function returns a list because a later release can map one spelling to several genres.
+
+```python
+def normal(name):
+    import unicodedata
+    s = unicodedata.normalize("NFKC", name).casefold().replace("&", " and ")
+    return "".join(ch for ch in s if ch.isalnum())
+
+print(sorted(alias_to_node[normal("Drum n Bass")]))
+```
+
+The function returns `None` when no ancestor is tag-level.
+
+## DAG caveats
+
+- **Many parents:** <!--count:multi_parent-->709<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
+- **Roots:** <!--count:roots-->557<!--/count--> genres have no parent. <!--count:isolated-->481<!--/count--> of them have no child either.
+- **No cycles:** `tools/check.py` tests that the graph has no cycle.
+- **Duplicate rows:** a pair from two sources has two rows. Use a set of parents.
+
+## Map to SKOS and schema.org
+
+The data file is not SKOS. SKOS cannot hold the source, licence, basis and evidence of each link without reification. The table shows how the fields map if you want to convert.
+
+| This data | SKOS |
+| --- | --- |
+| Whole file | `skos:ConceptScheme` |
+| Node | `skos:Concept` |
+| `name` | `skos:prefLabel` |
+| Alias | `skos:altLabel` |
+| Link `subgenre_of` (child to parent) | `skos:broader` |
+| `external` ids | `skos:exactMatch` |
+
+The website emits `Dataset` and `DefinedTerm` JSON-LD for search engines. The data file is not schema.org. `DefinedTermSet` has no parent relation and no per-link provenance.
+
+## Versions and pinning
+
+| Field | Rule |
+| --- | --- |
+| `schema_version` | Semantic version of the file layout. Changes when the shape of the file changes. |
+| `version` | Semantic version of the data. Major: a key is removed or renamed, or the schema breaks. Minor: nodes, links or aliases are added. Patch: corrections. |
+| `tree_version` | Content hash from the build. It changes when the content changes. |
+
+Keys are stable and never reused. A key you store today still names the same genre later, unless a major release says otherwise.
+
+To pin a version, read the file at a git tag and compare `tree_version`. Both URLs below give version 1.0.0.
+
+- `https://cdn.jsdelivr.net/gh/UniversalSyntropy/music-genre-taxonomy@v1.0.0/data/taxonomy.json`
+- `https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/v1.0.0/data/taxonomy.json`
+
+## Changelog rule
+
+Every release adds an entry to [CHANGELOG.md](../CHANGELOG.md) with the new `version`, the counts and the `tree_version`. A removed or renamed key is always listed there.
+
+---
+
+FILE: docs/sources.md
+
+# Sources
+
+This page says where each row comes from, how the tree is built, what a person made by hand and where the data is weak. The numbers come from [`data/taxonomy.json`](../data/taxonomy.json).
+
+## Source table
+
+| Source | Taken | Licence | Official licence page | Retrieved |
+| --- | --- | --- | --- | --- |
+| MusicBrainz genres | Genre names (<!--count:nodes_musicbrainz-->1,684<!--/count--> nodes), MusicBrainz ids, name aliases | CC0 | [Data license](https://musicbrainz.org/doc/About/Data_License) | 2026-11-15 |
+| Discogs data dumps | Genre and style names (<!--count:nodes_discogs-->766<!--/count--> nodes), co-occurrence links (<!--count:links_discogs-->1,093<!--/count-->), name aliases | CC0 | [Discogs data dumps](https://data.discogs.com/) | 2026-11-15 (dump stamp 20261101) |
+| Wikidata | "Subclass of" links (<!--count:links_wikidata-->1,845<!--/count-->), Wikidata ids | CC0 | [Wikidata:Licensing](https://www.wikidata.org/wiki/Wikidata:Licensing) | 2026-11-15 |
+| This repo | Compilation, schema, three hand aliases, documents | CC BY 4.0 | [LICENSE-docs](../LICENSE-docs) | 2026-11-15 |
+
+What each licence page says (read on 2026-11-15):
+
+- **MusicBrainz:** "The core data of the database is licensed under the CC0." The MusicBrainz database page lists genres as core data. Tags and genre votes on entities are supplementary data under a non-commercial licence. This repo takes the genre list only, not the votes.
+- **Discogs:** "This data is made available under the CC0 No Rights Reserved license."
+- **Wikidata:** "All structured data (i.e. the main, Property, Lexeme, and EntitySchema namespaces) is released into the public domain." Wikidata describes this as CC0.
+
+## Attribution
+
+CC0 asks for no credit. This repo gives credit anyway. If you reuse this data, use this line:
+
+> Genre data from [music-genre-taxonomy](https://github.com/UniversalSyntropy/music-genre-taxonomy) by music-genre-taxonomy contributors, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Built from MusicBrainz, Discogs and Wikidata (CC0).
+
+## How the tree is built
+
+The pipeline that derives the tree is not in this repo. This repo holds the output and the tools that build the public files from it.
+
+1. **Names.** MusicBrainz genres and Discogs genres and styles give the genre names. A genre in both lists is one node.
+2. **Links.** Wikidata gives a link when the genre has a "subclass of" statement. Discogs gives a link when a style and a genre occur together on nearly all releases in the dump. The evidence field holds the figure, for example `co-occurrence 1.00 of 26187 releases`.
+3. **Ids.** The build matches names to MusicBrainz ids. A Wikidata id comes from the match between a MusicBrainz genre and a Wikidata item. A Discogs name comes from an exact or normal-form match.
+4. **Aliases.** Every MusicBrainz and Discogs spelling becomes an alias with its normal form.
+5. **Filter.** The build drops any row whose source is not marked as publishable in the input list.
+6. **Output.** `python tools/build.py --source DIR` writes the JSON and CSV files. The same input gives the same bytes.
+
+Then run `python tools/check.py` and `python tools/build_site.py`. The check tool tests the schema, the links between rows, the CSV row counts, the document counts and the privacy rules.
+
+## What is made by hand
+
+| Item | What |
+| --- | --- |
+| Three aliases | `Goa` to `goa-trance`, `Drum n Bass` to `drum-and-bass`, `House Music` to `house`. Source code `hand`. |
+| An ignore list | A list of source entries that the pipeline skips. It lives in the private pipeline input. |
+| The tag-level rule | A person decided which genres are tag-level. <!--count:tag_level-->135<!--/count--> nodes carry the mark. |
+
+Everything else is computed from the three sources.
+
+## Known limits
+
+- **Names:** the names use simple title case. A name reads `Edm`, not `EDM`.
+- **Conflicting parents:** 32 genres have a Wikidata parent and a Discogs parent where no parent is an ancestor of another and none is shared. This repo keeps both.
+- **Isolated genres:** <!--count:isolated-->481<!--/count--> genres have no parent and no child.
+- **Statistical links:** Discogs links come from co-occurrence on releases. They are not editorial decisions.
+- **Wikidata errors:** Wikidata "subclass of" links contain errors. This repo passes them on.
+- **Missing aliases:** some common tag spellings have no alias yet.
+- **Single tag-level mark:** one rule decides tag-level. Your use case can need a different cut.
+- **Opinion:** genre classification is a matter of opinion. See [DISCLAIMER.md](../DISCLAIMER.md).
+
+## Report a wrong link
+
+1. Open the genre in the [viewer](https://universalsyntropy.github.io/music-genre-taxonomy/) and copy its key.
+2. Open the [wrong-link form](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=wrong-link.yml).
+3. Name the link, say what is wrong and give a public source.
+
+If the link comes from Wikidata, fix it in Wikidata first. The next build then takes the fix. See [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+---
+
+FILE: docs/viewer.md
+
+# Viewer guide
+
+The viewer is a web page that draws the genre tree. Open it at [universalsyntropy.github.io/music-genre-taxonomy](https://universalsyntropy.github.io/music-genre-taxonomy/).
+
+## Controls
+
+| Action | Result |
+| --- | --- |
+| Drag | Move the tree |
+| Scroll or pinch | Zoom |
+| Click a name | Open or close its branch and show its detail card |
+| Type in the search box | Find a genre, open the path to it and zoom to it |
+| Hues menu | Change the colour set |
+| Fit | Fit the whole tree in the window |
+| Open one more level | Open the next level of branches |
+| Close all | Close every branch |
+
+## Reading the tree
+
+- **Filled dot:** a tag-level genre. It is a good value for a file's genre tag.
+- **Hollow dot:** a genre that is not tag level. It is broader or narrower than a usual file tag.
+- **One place per genre:** the tree shows each genre once, under its nearest parent. The detail card lists every parent.
+
+## Detail card
+
+The card shows the name, the parents and the ids. Its links open in a new tab:
+
+- Wikipedia
+- Wikidata
+- MusicBrainz
+- Discogs
+- Beatport search
+
+The Beatport link is a search for the genre name. The viewer does not know if Beatport uses that name.
+
+## Hues
+
+| Hue | Type |
+| --- | --- |
+| Chalk | Light |
+| Frost | Light |
+| Slate | Dark |
+| Dusk | Dark |
+| Auto | Follows the system setting |
+
+The viewer remembers your choice in the local storage of your browser.
+
+## Deep links and genre pages
+
+- **Deep link:** add `?g=<key>` to the viewer address. The viewer opens that genre. Example: `?g=acid-house`.
+- **Genre page:** each genre has one static page at `genre/<key>.html`. These pages give search engines one address per genre.
+
+## Privacy
+
+- The viewer sets no cookie.
+- The viewer has no tracker.
+- The viewer makes no request to another site. The d3 library is in the repo (`site/vendor/`).
+- Links on the detail card go to other sites only when you click them.
+
+## Build the site
+
+Run `python tools/build_site.py` after `python tools/build.py` and `python tools/check.py`. The [data guide](data-guide.md) describes the data that the viewer reads.
+
+---
+
+FILE: DISCLAIMER.md
+
+# Disclaimer
+
+This repository is a data set and a viewer. It is not a service. Read this page before you rely on it.
+
+## No tie to any service
+
+- **Not affiliated:** this project has no tie to Discogs, MetaBrainz or MusicBrainz, the Wikimedia Foundation or Wikidata, Beatport, or any other named service. None of them checked or endorsed it.
+- **Trademarks:** all names are trademarks of their owners. This repo uses them only to say where data comes from.
+- **Links:** the viewer links to some of these sites. A link is not an endorsement by them or a claim of any tie.
+
+## Data as is
+
+- **No warranty:** the data comes "as is". The authors make no promise about accuracy, completeness or fitness for any purpose.
+- **Can be wrong:** links, names and ids can be wrong or out of date. Some errors come from the sources. See [Sources](docs/sources.md#known-limits).
+- **Use at your own risk:** you use the data and the tools at your own risk. The authors take no responsibility for loss or damage that comes from their use.
+
+## Genre classification is opinion
+
+There is no single correct music genre hierarchy. People disagree about names, parents and borders. A link in this data is a statement by a source or a statistic. It is not an authority on what a genre is.
+
+## Licences
+
+The data and documents are [CC BY 4.0](LICENSE-docs). The code is [MIT](LICENSE). Source data is CC0. See [Sources](docs/sources.md).
+
+---
+
+FILE: CONTRIBUTING.md
+
+# Contributing
+
+You can report a wrong link or a missing genre without writing code. This page says how, what a good report holds and which rules apply to changes.
+
+## Report a wrong link or a missing genre
+
+Use an issue form:
+
+- [Wrong link](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=wrong-link.yml): a genre has a parent that is wrong, or lacks one.
+- [Missing genre](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=missing-genre.yml): a genre or a name spelling is not in the data.
+
+A good report holds:
+
+- **The genre key**, for example `acid-house`. The viewer shows it in the address as `?g=<key>`.
+- **What is wrong**, in one or two sentences.
+- **A public source URL** that supports your claim. A Wikipedia page, a Wikidata item or a MusicBrainz page is a good source.
+
+## Fix it upstream first
+
+Many links come from Wikidata and the genre list comes from MusicBrainz. A fix there helps every user of those sources. The next build of this repo takes the fix.
+
+| Problem | Where to fix it first |
+| --- | --- |
+| Wrong "subclass of" link | The Wikidata item. Edit the "subclass of" statement and cite a source. |
+| Missing or misspelled genre name | MusicBrainz. Ask its community. I did not check who can edit the genre list there. |
+| Wrong Discogs link or missing alias | This repo. Open an issue. |
+
+Open an issue here as well. A maintainer can then check the next build. If upstream does not take the fix, say so in the issue.
+
+## Privacy rules
+
+Treat the repo as public. Git history is permanent.
+
+- **No personal data:** no names, e-mail addresses, home paths, host names, network addresses or account details in files, commit messages or code comments.
+- **No data from closed sources:** do not add data from Rate Your Music, Spotify lists or any other source that is not open. Name a source with an open licence for every row.
+- **No private collection data:** do not add file names, tag values or counts from your own music library.
+
+`python tools/check.py` scans tracked and new files for common personal-data patterns. Put your own words to block in `local/privacy-words.txt`, one on each line. The file is git-ignored.
+
+## Writing rules
+
+Write documents in Simplified Technical English. This is a short form of the rules.
+
+- **Short sentences:** 25 words at most. Steps 20 words at most.
+- **One idea each:** one idea in each sentence and each paragraph.
+- **Active voice:** "The tool checks the links", not "The links are checked".
+- **One word for one thing:** do not swap synonyms. Use "genre", "link", "alias" and "key" as the [data guide](docs/data-guide.md) uses them.
+- **Answer first:** put the result before the reason.
+- **Tables:** use a table for structured facts.
+- **No marketing words:** no superlatives and no claims you did not check.
+
+## Numbers in documents
+
+Write each count from the data as a count marker, for example `<!--count:nodes-->2,450<!--/count-->`. The check tool compares the marker text with the data. To refresh the markers after a build, run:
+
+```bash
+uv run --with jsonschema python tools/check.py --fix-counts
+```
+
+Supported names: `nodes`, `links`, `aliases`, `tag_level`, `roots`, `isolated`, `multi_parent`, `nodes_musicbrainz`, `nodes_discogs`, `links_wikidata`, `links_discogs`, `with_musicbrainz_id`, `with_wikidata_id`, `with_discogs_name`.
+
+## Data files are generated
+
+Do not edit `data/taxonomy.json` or the CSV files by hand. `tools/build.py` writes them from the pipeline output. A fix to a link goes into the pipeline input, then you build again.
+
+## Run the checks
+
+Run these commands before each push. The first one needs `jsonschema`.
+
+```bash
+uv run --with jsonschema python tools/check.py
+python3 tools/llms_full.py --check
+```
+
+If `llms_full.py --check` fails, run `python3 tools/llms_full.py` and commit `llms-full.txt`.
+
+## Push rule
+
+1. Push your change to a branch. Do not push to `main`.
+2. Wait for CI to pass.
+3. Fast-forward `main` to the branch.
+
+## Update the docs with the change
+
+When you add, rename or remove a document, update `llms.txt` and `CHANGELOG.md` in the same change. Fix a broken link in the same commit that breaks it.
+
+## Licence of contributions
+
+By contributing, you agree that your documents and data are licensed under [CC BY 4.0](LICENSE-docs) and your code under the [MIT licence](LICENSE). Credit goes to "music-genre-taxonomy contributors". Do not add personal names to licence or copyright lines.
+
+---
+
+FILE: CHANGELOG.md
+
+# Changelog
+
+All notable changes to the data, schema, documents and tools. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The data version follows semantic versioning as the [data guide](docs/data-guide.md#versions-and-pinning) describes.
+
+## [1.0.0] - 2026-11-15
+
+First public release.
+
+### Added
+
+- **Data:** <!--count:nodes-->2,450<!--/count--> genres, <!--count:links-->2,938<!--/count--> parent links and <!--count:aliases-->2,993<!--/count--> aliases in `data/taxonomy.json`, with CSV copies of each table.
+- **Tag level:** <!--count:tag_level-->135<!--/count--> genres marked as tag-level.
+- **Sources:** names from MusicBrainz and Discogs, links from Wikidata and Discogs. Every link has a source, licence, basis and evidence.
+- **Ids:** MusicBrainz id on <!--count:with_musicbrainz_id-->2,221<!--/count--> genres, Wikidata id on <!--count:with_wikidata_id-->1,655<!--/count-->, Discogs name on <!--count:with_discogs_name-->766<!--/count-->.
+- **Schema:** JSON Schema 1.0.0 in `schema/taxonomy.schema.json`.
+- **Viewer:** a web viewer, one static page per genre and website metadata for search engines.
+- **Tools:** `tools/build.py`, `tools/check.py`, `tools/build_site.py` and `tools/llms_full.py`.
+- **Documents:** README, data guide, sources, viewer guide, disclaimer, contributing guide, `llms.txt`, `llms-full.txt` and `CITATION.cff`.
+
+`schema_version` 1.0.0, `version` 1.0.0, `tree_version` `47461e523d86`.
+
+[1.0.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.0.0
