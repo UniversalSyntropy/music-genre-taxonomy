@@ -44,6 +44,10 @@ async function run(name, type) {
     ok((await page.locator('#nodes g.node').count()) < labels, '"Close all" shrinks the tree');
 
     // search, then CLICK a result
+    for (const [typed, want] of [['K Pop', 'K-pop'], ['kpop', 'K-pop'], ['drum & bass', 'Drum n Bass'], ['Drum and Bass', 'Drum n Bass'], ['ye ye', 'Yé-Yé'], ['r&b', 'R&b']]) {
+      await page.fill('#q', typed);
+      ok((await page.locator('#hits button span').first().textContent()) === want, `search "${typed}" lists ${want} first`);
+    }
     await page.fill('#q', 'techno');
     const hit = page.locator('#hits button').filter({ hasText: /^Techno/ }).first();
     await hit.waitFor();
