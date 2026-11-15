@@ -91,15 +91,23 @@ async function run(name, type) {
       ok((await cardName(p2)) === 'Pop', 'default genre is Pop');
       await p2.selectOption('#mode', 'cloud'); await p2.waitForTimeout(900);
       const c = await p2.evaluate(() => { const b = document.querySelector('#cloud').getBoundingClientRect(), s = document.querySelector('#svg').getBoundingClientRect();
-        return { n: document.querySelectorAll('#cloud circle').length, dx: (b.left + b.right) / 2 - (s.left + s.right) / 2, dy: (b.top + b.bottom) / 2 - (s.top + s.bottom) / 2,
-          treeHidden: getComputedStyle(document.querySelector('#nodes')).display === 'none', sel: document.querySelectorAll('#cloud circle.sel').length }; });
+        return { n: document.querySelectorAll('#cloud circle.dot').length, dx: (b.left + b.right) / 2 - (s.left + s.right) / 2, dy: (b.top + b.bottom) / 2 - (s.top + s.bottom) / 2,
+          treeHidden: getComputedStyle(document.querySelector('#nodes')).display === 'none', sel: document.querySelectorAll('#cloud circle.dot.sel').length }; });
       ok(c.n === 2450 && c.treeHidden, `point cloud shows 2,450 dots and hides the tree (${c.n})`);
       ok(Math.abs(c.dx) < 3 && Math.abs(c.dy) < 3, `point cloud centre is at the page centre (${c.dx.toFixed(1)}, ${c.dy.toFixed(1)})`);
       ok(c.sel === 1, 'point cloud marks the selected genre');
+      const vis = () => p2.evaluate(() => Array.from(document.querySelectorAll('#cloud circle.dot.root')).filter((e) => getComputedStyle(e).display !== 'none').length);
+      ok((await vis()) === 1, 'root genres are hidden at the start; the selected root (Pop) still shows');
+      await p2.check('#roots'); await p2.waitForTimeout(500);
+      { const v = await vis(); ok(v > 50 && v < 100, `the "Show root genres" box shows the root genres that have sub-genres (${v})`); }
+      await p2.uncheck('#roots'); await p2.waitForTimeout(500);
       await p2.fill('#q', 'K Pop'); await p2.locator('#hits button').first().click(); await p2.waitForTimeout(800);
-      ok((await cardName(p2)) === 'K-pop' && (await p2.locator('#cloud text.pick').textContent()) === 'K-pop', 'search works in the point cloud');
-      await p2.locator('#cloud circle.tag').first().click({ force: true });
+      ok((await cardName(p2)) === 'K-pop' && (await p2.locator('#cloud text.lab.sel').textContent()) === 'K-pop', 'search works in the point cloud');
+      await p2.locator('#cloud circle.dot.tag:not(.root):not(.sel)').first().dispatchEvent('click');
       ok((await cardName(p2)) !== 'K-pop', 'a click on a dot opens its card');
+      ok(p2.url().includes('view=cloud'), 'the address keeps view=cloud');
+      await p2.goto(BASE + '/?g=techno&view=cloud'); await p2.waitForFunction(() => window.__tree && window.__tree.ready); await p2.waitForTimeout(700);
+      ok((await p2.inputValue('#mode')) === 'cloud' && (await cardName(p2)) === 'Techno', '?g=techno&view=cloud opens the cloud on Techno');
       await p2.selectOption('#mode', 'tree');
       ok(await p2.evaluate(() => getComputedStyle(document.querySelector('#nodes')).display !== 'none' && getComputedStyle(document.querySelector('#cloud')).display === 'none'), 'tree view comes back');
       await p2.close();

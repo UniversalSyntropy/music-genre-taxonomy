@@ -100,14 +100,27 @@ svg:active{cursor:grabbing}
 .node.tag text{font-weight:650}
 .node.sel text,.node:focus-visible text{fill:var(--ink);font-weight:650}
 .node.sel circle,.node:focus-visible circle{stroke:var(--ink);stroke-width:3}
-/* Point cloud view: every genre is one dot; a force layout pulls linked genres together. */
-#cloud path{fill:none;stroke:var(--line);stroke-width:.5}
-#cloud circle{fill:var(--muted);cursor:pointer}
-#cloud circle.tag{fill:var(--ink)}
-#cloud circle.sel{fill:var(--bg);stroke:var(--ink);stroke-width:2}
-#cloud text{font-size:6px;fill:var(--text);pointer-events:none}
-#cloud text.pick{font-size:9px;font-weight:650;fill:var(--ink)}
+/* Point cloud view: packed circles, no simulation. One dot = one genre; an outline = a genre with sub-genres; a family = one top genre. */
+#cloud circle.grp{fill:none;stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke}
+#cloud circle.grp.d1{stroke:var(--muted);stroke-width:1.5;fill:var(--panel);fill-opacity:.4}
+#cloud circle.dot{fill:var(--muted);cursor:pointer}
+#cloud circle.dot.tag{fill:var(--ink)}
+#cloud circle.dot.sel{fill:var(--bg);stroke:var(--ink);stroke-width:3}
+#cloud text{text-anchor:middle;pointer-events:none;fill:var(--text)}
+#cloud text.fam{fill:var(--muted);font-weight:650;paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round}
+/* Zoomed in: the family names step back; the breadcrumb bar names the family. */
+#cloud.z2 text.fam{opacity:.18}
+#cloud text.lab{display:none}
+/* Names show by zoom level: tag-level names first, then all names. */
+#cloud.z1 text.lab.tag,#cloud.z2 text.lab,#cloud.z1 text.lab.sel{display:block}
+#cloud text.lab.sel,#cloud text.pick{fill:var(--ink);font-weight:650}
+#cloud.z1 text.pick{display:none}
 svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
+/* Root genres are the family names. Their own dots are hidden unless the user asks for them. The selected dot always shows. */
+#cloud.noroots .root:not(.sel){display:none}
+.chk{display:inline-flex;align-items:center;gap:6px;font-size:13px;min-height:32px;white-space:nowrap}
+.chk[hidden],button[hidden]{display:none!important}
+.chk input{flex:none;width:16px;height:16px;margin:0}
 .crumbs{position:absolute;top:12px;left:max(16px,env(safe-area-inset-left));z-index:3;display:flex;align-items:center;gap:2px;overflow-x:auto;white-space:nowrap;
   max-width:calc(100% - 348px);font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
 .crumbs button{all:unset;cursor:pointer;color:var(--ink);padding:6px 4px;border-radius:4px;text-decoration:underline;text-underline-offset:2px}
@@ -191,6 +204,7 @@ svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
     <option value="tree">View: Tree</option>
     <option value="cloud">View: Point cloud</option>
   </select>
+  <label class="chk" id="rootsBox" hidden><input type="checkbox" id="roots"> Show root genres</label>
   <button id="fit" type="button">Fit</button>
   <button id="lvl" type="button">Open one more level</button>
   <button id="shut" type="button">Close all</button>
@@ -279,7 +293,10 @@ function start(D){
     Array.from(N.values()).filter(function(n){ return n.tag; }).length + ' tag level · version ' + D.version;
 
   var svg = d3.select('#svg'), view = d3.select('#view'), gl = d3.select('#links'), gn = d3.select('#nodes');
-  var zoom = d3.zoom().scaleExtent([0.03, 5]).on('zoom', function(e){ view.attr('transform', e.transform); });
+  var zoom = d3.zoom().scaleExtent([0.03, 8]).on('zoom', function(e){
+    view.attr('transform', e.transform);
+    d3.select('#cloud').classed('z1', e.transform.k > 0.9).classed('z2', e.transform.k > 1.9);
+  });
   svg.call(zoom).on('dblclick.zoom', null);
   var layout = d3.tree().nodeSize([17, 230]);
   var linkPath = d3.linkHorizontal().x(function(d){ return d.y; }).y(function(d){ return d.x; });
@@ -321,7 +338,7 @@ function start(D){
     var cy = (window.innerWidth <= 640 && !$('card').hidden) ? h * 0.25 : h / 2;
     if (mode === 'cloud') {
       var p = P.get(d.data.id); if (!p) return;
-      k = near ? 3 : Math.max(1.5, d3.zoomTransform(svg.node()).k);
+      k = near ? 3.2 : Math.max(2, d3.zoomTransform(svg.node()).k);
       svg.transition().duration(ms(near ? 600 : 300)).call(zoom.transform, d3.zoomIdentity.translate(w / 2 - k * p.x, cy - k * p.y).scale(k));
       return;
     }
@@ -337,41 +354,54 @@ function start(D){
   /* ---- point cloud ---- */
   var mode = 'tree', P = null, gc = d3.select('#cloud'), modeSel = $('mode');
   function buildCloud(){
-    var pts = Array.from(N.values()).map(function(n){ return {id:n.key, n:n}; });
-    var ls = D.links.map(function(l){ return {source:l.child, target:l.parent}; });
-    /* Fixed tick count, no timer: the layout is the same on each load. */
-    d3.forceSimulation(pts).force('link', d3.forceLink(ls).id(function(p){ return p.id; }).distance(24).strength(0.6))
-      .force('charge', d3.forceManyBody().strength(-22).distanceMax(380))
-      .force('x', d3.forceX(0).strength(0.05)).force('y', d3.forceY(0).strength(0.05)).stop().tick(220);
+    /* Each genre is a leaf. A genre with sub-genres is also a group that holds its own leaf and its children. */
+    function conv(d){
+      var kids = (d._kids || []).map(conv), me = {id:d.data.id, n:d.data.ref, leaf:1};
+      if (!kids.length) return me;
+      return {id:d.data.id + '/', name:d.data.name, top:d.depth === 1, children:(d.data.ref ? [me] : []).concat(kids)};
+    }
+    var h = d3.hierarchy(conv(root)).sum(function(x){ return x.leaf ? 1 : 0; }).sort(function(a, b){ return b.value - a.value; });
+    d3.pack().size([2400, 2400]).padding(function(d){ return d.depth === 0 ? 46 : d.depth === 1 ? 12 : 3; })(h);
+    var groups = h.descendants().filter(function(d){ return d.children && d.depth; }), pts = h.leaves();
+    pts.forEach(function(p){ p.id = p.data.id; p.n = p.data.n; p.root = p.parent.data.top && p.parent.data.id === p.id + '/'; });
     P = new Map(pts.map(function(p){ return [p.id, p]; }));
-    var path = '';
-    ls.forEach(function(l){ path += 'M' + l.source.x.toFixed(1) + ',' + l.source.y.toFixed(1) + 'L' + l.target.x.toFixed(1) + ',' + l.target.y.toFixed(1); });
-    gc.append('path').attr('d', path);
-    gc.selectAll('circle').data(pts).join('circle')
-      .attr('cx', function(p){ return p.x; }).attr('cy', function(p){ return p.y; }).attr('r', function(p){ return p.n.tag ? 3 : 1.8; })
-      .attr('class', function(p){ return p.n.tag ? 'tag' : null; })
+    gc.selectAll('circle.grp').data(groups).join('circle')
+      .attr('class', function(d){ return 'grp' + (d.depth === 1 ? ' d1' : ''); })
+      .attr('cx', function(d){ return d.x; }).attr('cy', function(d){ return d.y; }).attr('r', function(d){ return d.r; });
+    gc.selectAll('circle.dot').data(pts).join('circle')
+      .attr('class', function(p){ return 'dot' + (p.n.tag ? ' tag' : '') + (p.root ? ' root' : ''); })
+      .attr('cx', function(p){ return p.x; }).attr('cy', function(p){ return p.y; }).attr('r', function(p){ return p.r * 0.42; })
       .on('click', function(ev, p){ var d = at.get(p.id); if (d) pick(d); })
       .append('title').text(function(p){ return p.n.name; });
-    gc.selectAll('text.lab').data(pts.filter(function(p){ return p.n.tag; })).join('text').attr('class', 'lab')
-      .attr('x', function(p){ return p.x + 4; }).attr('y', function(p){ return p.y + 2; }).text(function(p){ return p.n.name; });
-    gc.append('text').attr('class', 'pick');
+    gc.selectAll('text.lab').data(pts).join('text')
+      .attr('class', function(p){ return 'lab' + (p.n.tag ? ' tag' : '') + (p.root ? ' root' : ''); })
+      .attr('x', function(p){ return p.x; }).attr('y', function(p){ return p.y + p.r * 0.92; }).attr('font-size', function(p){ return p.r * 0.36; })
+      .text(function(p){ return p.n.name; });
+    /* Family name on the top edge of its circle. Size follows the circle, inside limits. */
+    gc.selectAll('text.fam').data(groups.filter(function(d){ return d.depth === 1; })).join('text').attr('class', 'fam')
+      .attr('x', function(d){ return d.x; }).attr('y', function(d){ return d.y - d.r - 5; })
+      .attr('font-size', function(d){ return Math.max(11, Math.min(46, d.r * 0.3)); }).text(function(d){ return d.data.name; });
+    gc.append('text').attr('class', 'pick').attr('font-size', 30);
   }
   function markCloud(){
     if (!P) return;
     var p = sel ? P.get(sel.data.id) : null;
-    gc.selectAll('circle').classed('sel', function(c){ return c === p; });
-    gc.select('text.pick').text(p ? p.n.name : '').attr('x', p ? p.x + 5 : 0).attr('y', p ? p.y - 5 : 0);
+    gc.selectAll('circle.dot,text.lab').classed('sel', function(c){ return c === p; });
+    gc.select('text.pick').text(p ? p.n.name : '').attr('x', p ? p.x : 0).attr('y', p ? p.y - p.r - 6 : 0);
   }
   function setMode(m){
     mode = m === 'cloud' ? 'cloud' : 'tree'; modeSel.value = mode;
     if (mode === 'cloud' && !P) buildCloud();
     svg.classed('cloud', mode === 'cloud');
-    $('lvl').disabled = $('shut').disabled = mode === 'cloud';
+    $('lvl').hidden = $('shut').hidden = mode === 'cloud';   /* tree-only buttons */
+    $('rootsBox').hidden = mode !== 'cloud'; gc.classed('noroots', !$('roots').checked);
+    setUrl(sel && sel.data.ref ? sel.data.id : null);
     markCloud();
     /* Cloud: its centre goes to the centre of the page. Tree: back to the selection. */
     if (mode === 'tree' && sel) centre(sel, false); else fit();
   }
   modeSel.addEventListener('change', function(){ setMode(modeSel.value); });
+  $('roots').addEventListener('change', function(){ gc.classed('noroots', !$('roots').checked); fit(); });
   /* Tree start view on a wide screen: the root is at one third of the width. */
   function home(d){
     var w = svg.node().clientWidth, h = svg.node().clientHeight;
@@ -383,7 +413,7 @@ function start(D){
   var card = $('card');
   function setUrl(key){
     try {
-      var u = new URL(location.href); u.search = key ? '?g=' + encodeURIComponent(key) : '';
+      var u = new URL(location.href); u.search = (key ? '?g=' + encodeURIComponent(key) : '') + (mode === 'cloud' ? (key ? '&' : '?') + 'view=cloud' : '');
       history.replaceState(null, '', u.pathname + u.search + u.hash);
     } catch (e) {}
   }
@@ -500,12 +530,12 @@ function start(D){
   var START = 'pop';
   var first = at.get(START); if (first && first._kids) first.children = first._kids;
   draw();
-  var want = null;
-  try { want = new URLSearchParams(location.search).get('g'); } catch (e) {}
+  var want = null, startCloud = false;
+  try { var qs = new URLSearchParams(location.search); want = qs.get('g'); startCloud = qs.get('view') === 'cloud'; } catch (e) {}
   if (want && at.has(want)) go(want, true);
   else if (first && !want) { pick(first); home(first); }
   else requestAnimationFrame(fit);
-  try { if (new URLSearchParams(location.search).get('view') === 'cloud') setMode('cloud'); } catch (e) {}
+  if (startCloud) setMode('cloud');
   /* Refit on width change only: a phone keyboard changes the height and must not reset the view. */
   var lastW = window.innerWidth;
   window.addEventListener('resize', function(){ if (window.innerWidth !== lastW) { lastW = window.innerWidth; if (card.hidden) fit(); } });
