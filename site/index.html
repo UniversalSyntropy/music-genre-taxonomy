@@ -401,11 +401,14 @@ function start(D){
   });
 
   /* ---- first view ---- */
-  var first = at.get('electronic'); if (first && first._kids) first.children = first._kids;
+  /* Default genre: Pop, open with its card. A ?g= link wins. */
+  var START = 'pop';
+  var first = at.get(START); if (first && first._kids) first.children = first._kids;
   draw();
   var want = null;
   try { want = new URLSearchParams(location.search).get('g'); } catch (e) {}
   if (want && at.has(want)) go(want, true);
+  else if (first) go(START, false);
   else requestAnimationFrame(fit);
   /* Refit on width change only: a phone keyboard changes the height and must not reset the view. */
   var lastW = window.innerWidth;
