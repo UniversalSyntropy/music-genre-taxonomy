@@ -121,6 +121,7 @@ svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
 .chk{display:inline-flex;align-items:center;gap:6px;font-size:13px;min-height:32px;white-space:nowrap}
 .chk[hidden],button[hidden]{display:none!important}
 .chk input{flex:none;width:16px;height:16px;margin:0}
+.chk input[type=range]{width:110px;height:24px}
 .crumbs{position:absolute;top:12px;left:max(16px,env(safe-area-inset-left));z-index:3;display:flex;align-items:center;gap:2px;overflow-x:auto;white-space:nowrap;
   max-width:calc(100% - 348px);font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
 .crumbs button{all:unset;cursor:pointer;color:var(--ink);padding:6px 4px;border-radius:4px;text-decoration:underline;text-underline-offset:2px}
@@ -204,6 +205,8 @@ svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
     <option value="tree">View: Tree</option>
     <option value="cloud">View: Point cloud</option>
   </select>
+  <label class="chk"><input type="checkbox" id="follow" checked> Follow selection</label>
+  <label class="chk" id="zoomBox">Zoom <input type="range" id="zoomLvl" min="0" max="100" value="53" aria-label="Zoom level for the selected genre"></label>
   <label class="chk" id="rootsBox" hidden><input type="checkbox" id="roots"> Show root genres</label>
   <button id="fit" type="button">Fit</button>
   <button id="lvl" type="button">Open one more level</button>
@@ -309,8 +312,8 @@ function start(D){
       .attr('class', function(d){ return 'link ' + (d.target.data.src === 'discogs' ? 'd' : 'w'); }).attr('d', linkPath);
     var g = gn.selectAll('g.node').data(root.descendants(), function(d){ return d.data.id; }).join(function(en){
       var e = en.append('g').attr('role', 'button').attr('tabindex', 0)
-        .on('click', function(ev, d){ toggle(d); pick(d); })
-        .on('keydown', function(ev, d){ if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(d); pick(d); } });
+        .on('click', function(ev, d){ toggle(d); pick(d); follow(d); })
+        .on('keydown', function(ev, d){ if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(d); pick(d); follow(d); } });
       e.append('rect').attr('class', 'hit').attr('x', -8).attr('y', -9).attr('height', 18).attr('width', 200);
       e.append('circle').attr('r', 4.2);
       e.append('text').attr('x', 9).attr('dy', '0.32em');
@@ -332,13 +335,17 @@ function start(D){
     var k = Math.min(2, 0.94 * Math.min(w / b.width, h / b.height));
     svg.transition().duration(ms(250)).call(zoom.transform, d3.zoomIdentity.translate(w / 2 - k * (b.x + b.width / 2), h / 2 - k * (b.y + b.height / 2)).scale(k));
   }
+  /* Slider 0 to 100 on a log scale. Tree 0.5x to 3x, cloud 0.8x to 6x; the default 53 gives about 1.3x and 2.3x. */
+  function zk(){ var r = mode === 'cloud' ? [0.8, 6] : [0.5, 3]; return r[0] * Math.pow(r[1] / r[0], $('zoomLvl').value / 100); }
+  function follow(d){ if ($('follow').checked) centre(d, false); }
   function centre(d, near){
-    var w = svg.node().clientWidth, h = svg.node().clientHeight, k = near ? 1.9 : Math.max(1, d3.zoomTransform(svg.node()).k);
+    var F = $('follow').checked;   /* Follow on: the slider sets the zoom. */
+    var w = svg.node().clientWidth, h = svg.node().clientHeight, k = F ? zk() : near ? 1.9 : Math.max(1, d3.zoomTransform(svg.node()).k);
     /* On a phone the sheet covers the lower half: centre in the upper part. */
     var cy = (window.innerWidth <= 640 && !$('card').hidden) ? h * 0.25 : h / 2;
     if (mode === 'cloud') {
       var p = P.get(d.data.id); if (!p) return;
-      k = near ? 3.2 : Math.max(2, d3.zoomTransform(svg.node()).k);
+      if (!F) k = near ? 3.2 : Math.max(2, d3.zoomTransform(svg.node()).k);
       svg.transition().duration(ms(near ? 600 : 300)).call(zoom.transform, d3.zoomIdentity.translate(w / 2 - k * p.x, cy - k * p.y).scale(k));
       return;
     }
@@ -371,7 +378,7 @@ function start(D){
     gc.selectAll('circle.dot').data(pts).join('circle')
       .attr('class', function(p){ return 'dot' + (p.n.tag ? ' tag' : '') + (p.root ? ' root' : ''); })
       .attr('cx', function(p){ return p.x; }).attr('cy', function(p){ return p.y; }).attr('r', function(p){ return p.r * 0.42; })
-      .on('click', function(ev, p){ var d = at.get(p.id); if (d) pick(d); })
+      .on('click', function(ev, p){ var d = at.get(p.id); if (d) { pick(d); follow(d); } })
       .append('title').text(function(p){ return p.n.name; });
     gc.selectAll('text.lab').data(pts).join('text')
       .attr('class', function(p){ return 'lab' + (p.n.tag ? ' tag' : '') + (p.root ? ' root' : ''); })
@@ -401,6 +408,8 @@ function start(D){
     if (mode === 'tree' && sel) centre(sel, false); else fit();
   }
   modeSel.addEventListener('change', function(){ setMode(modeSel.value); });
+  $('follow').addEventListener('change', function(){ $('zoomBox').hidden = !$('follow').checked; if (sel) follow(sel); });
+  $('zoomLvl').addEventListener('input', function(){ if (sel) follow(sel); });
   $('roots').addEventListener('change', function(){ gc.classed('noroots', !$('roots').checked); fit(); });
   /* Tree start view on a wide screen: the root is at one third of the width. */
   function home(d){

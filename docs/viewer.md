@@ -13,6 +13,8 @@ The viewer is a web page that draws the genre tree. Open it at [universalsyntrop
 | Theme menu | Change the colour theme (light or dark) |
 | View menu | Change between the tree and the point cloud. The point cloud shows each genre as one dot. A circle holds a genre and its sub-genres, and each large circle is one top genre. Names appear as you zoom in. Click a dot to show its detail card. Add `view=cloud` to the address to open it at the start |
 | Show root genres box | Point cloud only. The top genres show as circle names. Tick the box to show their own dots too |
+| Follow selection box | On at the start. The view moves to each genre that you select |
+| Zoom slider | Shows when Follow selection is on. It sets the zoom for the selected genre: 0.5x to 3x in the tree, 0.8x to 6x in the point cloud |
 | Breadcrumb bar | Shows the drawn path from "All genres" to the selected genre. Click a step to go to it |
 | Fit | Fit the whole tree in the window |
 | Open one more level | Open the next level of branches |

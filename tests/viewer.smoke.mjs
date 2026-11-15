@@ -112,6 +112,26 @@ async function run(name, type) {
       ok(await p2.evaluate(() => getComputedStyle(document.querySelector('#nodes')).display !== 'none' && getComputedStyle(document.querySelector('#cloud')).display === 'none'), 'tree view comes back');
       await p2.close();
     }
+    { // follow selection and the zoom slider
+      const p3 = await ctx.newPage();
+      await p3.goto(BASE + '/'); await p3.waitForFunction(() => window.__tree && window.__tree.ready);
+      const K = () => p3.evaluate(() => d3.zoomTransform(document.querySelector('#svg')).k);
+      const X = () => p3.evaluate(() => { const t = d3.zoomTransform(document.querySelector('#svg')); return Math.round(t.x) + ',' + Math.round(t.y); });
+      ok((await p3.isChecked('#follow')) && (await p3.isVisible('#zoomLvl')), 'Follow selection is on at the start and the zoom slider shows');
+      await p3.fill('#q', 'techno'); await p3.locator('#hits button').first().click(); await p3.waitForTimeout(900);
+      let k = await K(); ok(Math.abs(k - 1.29) < 0.05, `follow zooms to the slider default (${k.toFixed(2)}x)`);
+      await p3.evaluate(() => { const e = document.getElementById('zoomLvl'); e.value = 100; e.dispatchEvent(new Event('input', { bubbles: true })); }); await p3.waitForTimeout(600);
+      k = await K(); ok(Math.abs(k - 3) < 0.05, `slider at the top end gives 3x (${k.toFixed(2)}x)`);
+      const before = await X();
+      await p3.locator('#nodes g.node', { hasText: 'Moombahton' }).first().dispatchEvent('click'); await p3.waitForTimeout(600);
+      ok((await cardName(p3)) === 'Moombahton' && (await X()) !== before, 'a click on a genre moves the view to it');
+      await p3.uncheck('#follow');
+      ok(!(await p3.isVisible('#zoomLvl')), 'Follow off hides the slider');
+      const still = await X();
+      await p3.locator('#nodes g.node', { hasText: 'Nortec' }).first().dispatchEvent('click'); await p3.waitForTimeout(600);
+      ok((await cardName(p3)) === 'Nortec' && (await X()) === still, 'Follow off: a click selects but does not move the view');
+      await p3.close();
+    }
     // hues (start in dark so Auto = Slate and every pick differs from the last)
     await page.emulateMedia({ colorScheme: 'dark' });
     let last = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
