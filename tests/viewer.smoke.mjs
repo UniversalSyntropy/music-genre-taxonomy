@@ -57,6 +57,13 @@ async function run(name, type) {
     const par = await page.locator('#card dl').innerText();
     ok(/Parents/.test(par) && /Electronic/.test(par), 'card lists its parents (Electronic)');
     ok(page.url().endsWith('?g=techno'), 'URL updated to ?g=techno');
+    {
+      const parts = await page.locator('#crumbs button, #crumbs b').allTextContents();
+      ok(parts[0] === 'All genres' && parts.length >= 3 && parts[parts.length - 1] === 'Techno', `breadcrumb ends at Techno (${parts.join(' > ')})`);
+      await page.locator('#crumbs button').nth(1).click();
+      ok((await cardName(page)) === parts[1], `breadcrumb click selects ${parts[1]}`);
+      await page.fill('#q', 'techno'); await page.locator('#hits button').first().click();
+    }
     ok(await page.locator('#nodes g.node.sel').count() === 1, 'the selected node is drawn');
     ok(await page.locator('#card a.page').getAttribute('href') === 'genre/techno.html', 'card links to the genre page');
 

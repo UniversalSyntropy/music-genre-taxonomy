@@ -100,6 +100,12 @@ svg:active{cursor:grabbing}
 .node.tag text{font-weight:650}
 .node.sel text,.node:focus-visible text{fill:var(--ink);font-weight:650}
 .node.sel circle,.node:focus-visible circle{stroke:var(--ink);stroke-width:3}
+.crumbs{position:absolute;top:12px;left:max(16px,env(safe-area-inset-left));z-index:3;display:flex;align-items:center;gap:2px;overflow-x:auto;white-space:nowrap;
+  max-width:calc(100% - 348px);font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+.crumbs button{all:unset;cursor:pointer;color:var(--ink);padding:6px 4px;border-radius:4px;text-decoration:underline;text-underline-offset:2px}
+.crumbs button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.crumbs b{color:var(--text);padding:6px 4px;font-weight:650}
+.crumbs i{font-style:normal;padding:0 2px}
 .legend{position:absolute;left:max(16px,env(safe-area-inset-left));bottom:12px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);
   background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 10px;max-width:calc(100% - 32px)}
 .legend i{display:inline-block;vertical-align:middle;margin-right:5px}
@@ -144,6 +150,8 @@ svg:active{cursor:grabbing}
   .bar button{flex:1 1 auto}
   #card{top:auto;bottom:0;left:0;right:0;width:auto;max-width:none;max-height:55%;border-radius:12px 12px 0 0;border-width:1px 0 0}
   .legend .tip{display:none}
+  .crumbs{max-width:calc(100% - 32px)}
+  .crumbs button,.crumbs b{padding:13px 6px}
   .foot{font-size:11px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
@@ -176,6 +184,7 @@ svg:active{cursor:grabbing}
 </header>
 <main class="stage">
   <svg id="svg" role="group" aria-label="Genre tree. Use the search box to jump to a genre."><g id="view"><g id="links"></g><g id="nodes"></g></g></svg>
+  <nav id="crumbs" class="crumbs" aria-label="Path to the selected genre" hidden></nav>
   <div class="legend">
     <span><i class="dot t"></i>Tag level (can be a file tag)</span>
     <span><i class="dot"></i>Other genre</span>
@@ -314,9 +323,22 @@ function start(D){
     } catch (e) {}
   }
   function el(tag, text, cls){ var e = document.createElement(tag); if (text != null) e.textContent = text; if (cls) e.className = cls; return e; }
-  function closeCard(){ card.hidden = true; sel = null; draw(); setUrl(null); }
+  /* Breadcrumb: the drawn path from the top to the selected genre. Each step is a button. */
+  var crumbs = $('crumbs');
+  function trail(d){
+    crumbs.textContent = ''; crumbs.hidden = !d; if (!d) return;
+    d.ancestors().reverse().forEach(function(a, i, all){
+      if (i) { var s = el('i', '›'); s.setAttribute('aria-hidden', 'true'); crumbs.append(s); }
+      if (i === all.length - 1) { var c = el('b', a.data.name); c.setAttribute('aria-current', 'location'); crumbs.append(c); return; }
+      var b = el('button', a.data.name); b.type = 'button';
+      b.addEventListener('click', function(){ if (a.depth) go(a.data.id, false); else { closeCard(); fit(); } });
+      crumbs.append(b);
+    });
+    crumbs.scrollLeft = crumbs.scrollWidth;
+  }
+  function closeCard(){ card.hidden = true; sel = null; trail(null); draw(); setUrl(null); }
   function pick(d){
-    sel = d; draw();
+    sel = d; trail(d); draw();
     var n = d.data.ref;
     card.hidden = false; card.textContent = '';
     var x = el('button', '×', 'x'); x.type = 'button'; x.setAttribute('aria-label', 'Close details'); x.addEventListener('click', closeCard); card.append(x);
