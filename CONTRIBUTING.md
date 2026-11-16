@@ -51,7 +51,7 @@ Write documents in Simplified Technical English. This is a short form of the rul
 
 ## Numbers in documents
 
-Write each count from the data as a count marker, for example `<!--count:nodes-->2,450<!--/count-->`. The check tool compares the marker text with the data. To refresh the markers after a build, run:
+Write each count from the data as a count marker, for example `<!--count:nodes-->2,453<!--/count-->`. The check tool compares the marker text with the data. To refresh the markers after a build, run:
 
 ```bash
 uv run --with jsonschema python tools/check.py --fix-counts

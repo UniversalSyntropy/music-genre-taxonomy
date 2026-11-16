@@ -8,7 +8,7 @@ FILE: README.md
 
 # Music Genre Taxonomy
 
-An open music genre taxonomy: <!--count:nodes-->2,450<!--/count--> genres and subgenres in a hierarchy (a directed graph, not a strict tree). It ships as JSON and CSV with MusicBrainz, Discogs and Wikidata ids, and every parent link names its source, licence and evidence.
+An open music genre taxonomy: <!--count:nodes-->2,453<!--/count--> genres and subgenres in a hierarchy (a directed graph, not a strict tree). It ships as JSON and CSV with MusicBrainz, Discogs and Wikidata ids, and every parent link names its source, licence and evidence.
 
 [![CI](https://github.com/UniversalSyntropy/music-genre-taxonomy/actions/workflows/ci.yml/badge.svg)](https://github.com/UniversalSyntropy/music-genre-taxonomy/actions/workflows/ci.yml)
 [![Data licence: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-blue)](LICENSE-docs)
@@ -94,16 +94,16 @@ More recipes (children, all ancestors, alias lookup rules) are in the [data guid
 
 | Item | Count |
 | --- | --- |
-| Genres (nodes) | <!--count:nodes-->2,450<!--/count--> |
-| Parent links | <!--count:links-->4,743<!--/count--> |
-| Name aliases | <!--count:aliases-->3,002<!--/count--> |
+| Genres (nodes) | <!--count:nodes-->2,453<!--/count--> |
+| Parent links | <!--count:links-->4,753<!--/count--> |
+| Name aliases | <!--count:aliases-->3,007<!--/count--> |
 | Tag-level genres | <!--count:tag_level-->136<!--/count--> |
-| Genres with no parent (roots) | <!--count:roots-->338<!--/count--> |
-| Genres with no parent and no child | <!--count:isolated-->289<!--/count--> |
+| Genres with no parent (roots) | <!--count:roots-->331<!--/count--> |
+| Genres with no parent and no child | <!--count:isolated-->282<!--/count--> |
 | Genres with two or more different parents | <!--count:multi_parent-->863<!--/count--> |
 | Names from MusicBrainz / Discogs | <!--count:nodes_musicbrainz-->1,684<!--/count--> / <!--count:nodes_discogs-->766<!--/count--> |
 | Links from Wikidata / MusicBrainz / Discogs | <!--count:links_wikidata-->2,036<!--/count--> / <!--count:links_musicbrainz-->1,603<!--/count--> / <!--count:links_discogs-->1,093<!--/count--> |
-| Links with confidence high / medium / low | <!--count:links_high-->3,498<!--/count--> / <!--count:links_medium-->152<!--/count--> / <!--count:links_low-->1,093<!--/count--> |
+| Links with confidence high / medium / low | <!--count:links_high-->3,508<!--/count--> / <!--count:links_medium-->152<!--/count--> / <!--count:links_low-->1,093<!--/count--> |
 | Genres with a MusicBrainz id / Wikidata id / Discogs name | <!--count:with_musicbrainz_id-->2,221<!--/count--> / <!--count:with_wikidata_id-->2,216<!--/count--> / <!--count:with_discogs_name-->766<!--/count--> |
 
 ## Sources and licences
@@ -120,7 +120,7 @@ CC0 does not require credit. This repo gives credit anyway. This repo's own comp
 
 - **Names:** simple title case, so `Edm` not `EDM`.
 - **Links:** Discogs links are statistical, not editorial, so they have `confidence: low`. Wikidata "subclass of" links contain errors that this repo passes on.
-- **Gaps:** <!--count:isolated-->289<!--/count--> genres have no link. Some common tag spellings have no alias yet.
+- **Gaps:** <!--count:isolated-->282<!--/count--> genres have no link. Some common tag spellings have no alias yet.
 
 The full list is in [Sources](docs/sources.md#known-limits).
 
@@ -171,7 +171,7 @@ FILE: docs/data-guide.md
 
 This guide shows how to read the genre taxonomy files in code. It lists every field and gives short recipes for the common tasks. For the origin of the data, see [Sources](sources.md).
 
-The data is a directed acyclic graph (DAG) of <!--count:nodes-->2,450<!--/count--> genres. A genre can have more than one parent, so it is not a strict tree.
+The data is a directed acyclic graph (DAG) of <!--count:nodes-->2,453<!--/count--> genres. A genre can have more than one parent, so it is not a strict tree.
 
 ## Files
 
@@ -244,7 +244,7 @@ Confidence rule. The value follows from `source` and `basis` only. It does not c
 
 | Confidence | Links | Rule |
 | --- | --- | --- |
-| `high` | <!--count:links_high-->3,498<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of", or a hand link that cites the page |
+| `high` | <!--count:links_high-->3,508<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of", or a hand link that cites the page |
 | `medium` | <!--count:links_medium-->152<!--/count--> | A chain of two Wikidata "subclass of" statements |
 | `low` | <!--count:links_low-->1,093<!--/count--> | A statistic: Discogs co-occurrence. Co-occurrence does not state a hierarchy |
 
@@ -384,7 +384,7 @@ The function returns `None` when no ancestor is tag-level.
 ## DAG caveats
 
 - **Many parents:** <!--count:multi_parent-->863<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
-- **Roots:** <!--count:roots-->338<!--/count--> genres have no parent. <!--count:isolated-->289<!--/count--> of them have no child either.
+- **Roots:** <!--count:roots-->331<!--/count--> genres have no parent. <!--count:isolated-->282<!--/count--> of them have no child either.
 - **No cycles:** `tools/check.py` tests that the graph has no cycle.
 - **Duplicate rows:** a pair from two sources has two rows. Use a set of parents.
 
@@ -438,7 +438,7 @@ This page says where each row comes from, how the tree is built, what a person m
 | MusicBrainz core data dump | "Subgenre of" links (<!--count:links_musicbrainz-->1,603<!--/count-->), genre to Wikidata links | CC0 | [Data license](https://musicbrainz.org/doc/About/Data_License) | 2026-11-16 (dump 20261114-002230) |
 | Discogs data dumps | Genre and style names (<!--count:nodes_discogs-->766<!--/count--> nodes), co-occurrence links (<!--count:links_discogs-->1,093<!--/count-->), name aliases | CC0 | [Discogs data dumps](https://data.discogs.com/) | 2026-11-15 (dump stamp 20261101) |
 | Wikidata | "Subclass of" links (<!--count:links_wikidata-->2,036<!--/count-->), Wikidata ids | CC0 | [Wikidata:Licensing](https://www.wikidata.org/wiki/Wikidata:Licensing) | 2026-11-15; ancestor chains 2026-11-16 |
-| This repo | Compilation, schema, three hand aliases, documents | CC BY 4.0 | [LICENSE-docs](../LICENSE-docs) | 2026-11-15 |
+| This repo | Compilation, schema, hand aliases, hand nodes and hand links, documents | CC BY 4.0 | [LICENSE-docs](../LICENSE-docs) | 2026-11-15 |
 
 What each licence page says (read on 2026-11-15):
 
@@ -472,8 +472,8 @@ Then run `python tools/check.py` and `python tools/build_site.py`. The check too
 
 | Item | What |
 | --- | --- |
-| Three aliases | `Goa` to `goa-trance`, `Drum n Bass` to `drum-and-bass`, `House Music` to `house`. Source code `hand`. |
-| Hand links | <!--count:links_hand-->11<!--/count--> parent links, source code `hand`. Each reason names the Wikipedia or Wikidata page that states the link. |
+| Hand aliases | <!--count:aliases_hand-->17<!--/count--> aliases, source code `hand`, for example `Goa` to `goa-trance` and `Drum n Bass` to `drum-and-bass`. |
+| Hand links | <!--count:links_hand-->21<!--/count--> parent links, source code `hand`. Each reason names the Wikipedia or Wikidata page that states the link. |
 | An ignore list | A list of source entries that the pipeline skips. It lives in the private pipeline input. |
 | The tag-level rule | A person decided which genres are tag-level. <!--count:tag_level-->136<!--/count--> nodes carry the mark. |
 
@@ -483,7 +483,7 @@ Everything else is computed from the three sources.
 
 - **Names:** the names use simple title case. A name reads `Edm`, not `EDM`.
 - **Conflicting parents:** some genres have parents from two sources where no parent is an ancestor of another. This repo keeps all of them. The `confidence` field helps you choose.
-- **Isolated genres:** <!--count:isolated-->289<!--/count--> genres have no parent and no child.
+- **Isolated genres:** <!--count:isolated-->282<!--/count--> genres have no parent and no child.
 - **Statistical links:** Discogs links come from co-occurrence on releases. They are not editorial decisions.
 - **Wikidata errors:** Wikidata "subclass of" links contain errors. This repo passes them on. Two-step links have `confidence: medium`; some lead to a broad parent, such as Brass Band to Orchestral.
 - **Review list:** <!--count:proposals-->212<!--/count--> possible parents in `data/proposals.csv` are not checked. Most lead to a very broad family, such as Latin or Folk, through a regional group.
@@ -657,7 +657,7 @@ Write documents in Simplified Technical English. This is a short form of the rul
 
 ## Numbers in documents
 
-Write each count from the data as a count marker, for example `<!--count:nodes-->2,450<!--/count-->`. The check tool compares the marker text with the data. To refresh the markers after a build, run:
+Write each count from the data as a count marker, for example `<!--count:nodes-->2,453<!--/count-->`. The check tool compares the marker text with the data. To refresh the markers after a build, run:
 
 ```bash
 uv run --with jsonschema python tools/check.py --fix-counts
@@ -702,15 +702,30 @@ FILE: CHANGELOG.md
 
 All notable changes to the data, schema, documents and tools. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The data version follows semantic versioning as the [data guide](docs/data-guide.md#versions-and-pinning) describes.
 
+## [1.2.0] - 2026-11-16
+
+### Added
+
+- **New genre Korean Folk** (`korean-folk`, Korean folk music or minsogak, Wikidata Q107000797), under Folk. Aliases "Korean Folk Music" and "Minsogak".
+- **Four links under it:** Pansori, Sanjo, Sinawi and Muak. Wikidata gives each as a subclass of Korean folk music.
+- **New genres Sampler-based Music and Tracker Music** (Wikidata Q2271846 and Q106423092). The chain is Demostyle, Tracker Music, Sampler-based Music, Bit Music, with one Wikidata "subclass of" statement per link.
+- **Two folk links:** Kan Ha Diskan (Wikidata: Breton folk music) and Puirt À Beul (Wikipedia: traditional song of Scotland) go under Folk.
+
+### Changed
+
+- **Counts:** <!--count:nodes-->2,453<!--/count--> genres, <!--count:links-->4,753<!--/count--> links, <!--count:aliases-->3,007<!--/count--> aliases. Isolated genres go down to <!--count:isolated-->282<!--/count-->.
+
+`schema_version` 1.1.0, `version` 1.2.0, `tree_version` `d344f2c9e382`.
+
 ## [1.1.1] - 2026-11-16
 
 ### Added
 
-- **Hand links:** 11 parent links for 10 isolated genres, with source `hand`. Each one names the Wikipedia or Wikidata page that states it. Candidates came from an AI review of the isolated genres, and each was checked against the cited page. Isolated genres go down from 300 to <!--count:isolated-->289<!--/count-->.
+- **Hand links:** 11 parent links for 10 isolated genres, with source `hand`. Each one names the Wikipedia or Wikidata page that states it. Candidates came from an AI review of the isolated genres, and each was checked against the cited page. Isolated genres go down from 300 to 289.
 
 ### Changed
 
-- **Counts:** <!--count:links-->4,743<!--/count--> links; confidence `high` on <!--count:links_high-->3,498<!--/count-->.
+- **Counts:** 4,743 links; confidence `high` on 3,498.
 - **Hand links in the files:** licence CC BY 4.0 and basis `sourced`, the same as the other rows this repo makes. No schema change.
 
 `schema_version` 1.1.0, `version` 1.1.1, `tree_version` `c9b1909cbab4`.
@@ -751,6 +766,7 @@ First public release.
 
 `schema_version` 1.0.0, `version` 1.0.0, `tree_version` `47461e523d86`.
 
+[1.2.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.2.0
 [1.1.1]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.1.1
 [1.1.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.1.0
 [1.0.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.0.0

@@ -71,6 +71,7 @@ def stats(doc):
         "links_discogs": sum(1 for l in links if l["source"] == "discogs"),
         "links_musicbrainz": sum(1 for l in links if l["source"] == "musicbrainz"),
         "links_hand": sum(1 for l in links if l["source"] == "hand"),
+        "aliases_hand": sum(1 for a in doc["aliases"] if a["source"] == "hand"),
         "links_high": sum(1 for l in links if l.get("confidence") == "high"),
         "links_medium": sum(1 for l in links if l.get("confidence") == "medium"),
         "links_low": sum(1 for l in links if l.get("confidence") == "low"),

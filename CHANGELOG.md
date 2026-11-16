@@ -2,15 +2,30 @@
 
 All notable changes to the data, schema, documents and tools. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The data version follows semantic versioning as the [data guide](docs/data-guide.md#versions-and-pinning) describes.
 
+## [1.2.0] - 2026-11-16
+
+### Added
+
+- **New genre Korean Folk** (`korean-folk`, Korean folk music or minsogak, Wikidata Q107000797), under Folk. Aliases "Korean Folk Music" and "Minsogak".
+- **Four links under it:** Pansori, Sanjo, Sinawi and Muak. Wikidata gives each as a subclass of Korean folk music.
+- **New genres Sampler-based Music and Tracker Music** (Wikidata Q2271846 and Q106423092). The chain is Demostyle, Tracker Music, Sampler-based Music, Bit Music, with one Wikidata "subclass of" statement per link.
+- **Two folk links:** Kan Ha Diskan (Wikidata: Breton folk music) and Puirt À Beul (Wikipedia: traditional song of Scotland) go under Folk.
+
+### Changed
+
+- **Counts:** <!--count:nodes-->2,453<!--/count--> genres, <!--count:links-->4,753<!--/count--> links, <!--count:aliases-->3,007<!--/count--> aliases. Isolated genres go down to <!--count:isolated-->282<!--/count-->.
+
+`schema_version` 1.1.0, `version` 1.2.0, `tree_version` `d344f2c9e382`.
+
 ## [1.1.1] - 2026-11-16
 
 ### Added
 
-- **Hand links:** 11 parent links for 10 isolated genres, with source `hand`. Each one names the Wikipedia or Wikidata page that states it. Candidates came from an AI review of the isolated genres, and each was checked against the cited page. Isolated genres go down from 300 to <!--count:isolated-->289<!--/count-->.
+- **Hand links:** 11 parent links for 10 isolated genres, with source `hand`. Each one names the Wikipedia or Wikidata page that states it. Candidates came from an AI review of the isolated genres, and each was checked against the cited page. Isolated genres go down from 300 to 289.
 
 ### Changed
 
-- **Counts:** <!--count:links-->4,743<!--/count--> links; confidence `high` on <!--count:links_high-->3,498<!--/count-->.
+- **Counts:** 4,743 links; confidence `high` on 3,498.
 - **Hand links in the files:** licence CC BY 4.0 and basis `sourced`, the same as the other rows this repo makes. No schema change.
 
 `schema_version` 1.1.0, `version` 1.1.1, `tree_version` `c9b1909cbab4`.
@@ -51,6 +66,7 @@ First public release.
 
 `schema_version` 1.0.0, `version` 1.0.0, `tree_version` `47461e523d86`.
 
+[1.2.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.2.0
 [1.1.1]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.1.1
 [1.1.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.1.0
 [1.0.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.0.0

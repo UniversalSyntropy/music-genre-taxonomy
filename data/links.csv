@@ -1213,6 +1213,7 @@ delta-blues,blues,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz b0702eb4-2
 delta-blues,blues,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1127539 subclass of Q9759,high
 delta-blues,country-blues,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1127539 subclass of Q649823,high
 dembow,reggaeton,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Dominican_dembow says mostly described as a subgenre or derivative form of reggaeton (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
+demostyle,tracker-music,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q125799361 subclass of tracker music (Q106423092) (checked 2026-11-16),high
 dennery-segment,soca,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 69059728-4972-43d8-86d2-e0c7f081f9af subgenre of b251cd9a-990c-49f6-8da3-db3457aa2114,high
 dennery-segment,soca,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q108297227 subclass of Q1051735,high
 denpa,j-pop,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q11660484 subclass of Q131578,high
@@ -2414,6 +2415,7 @@ kai,central-asian-throat-singing,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q
 kakawin,poetry,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 1aa9ef73-2d01-4bd6-9cc2-b6de4e858eb4 subgenre of 15570d3c-756e-429e-ad67-653cb29ae886,high
 kakawin,southeast-asian-classical,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q131459053 subclass of Q106586998,high
 kalon-ny-fahiny,operetta,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q114702536 subclass of Q170384,high
+kan-ha-diskan,folk,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q3083000 subclass of Breton folk music (checked 2026-11-16),high
 kankyō-ongaku,ambient,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz d5541aec-ffc2-4bc5-834d-d72f0718996a subgenre of 608b0471-7531-4854-a348-e698c69cb699,high
 kankyō-ongaku,ambient,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q112159506 subclass of Q110592449 subclass of Q193207,medium
 karaoke,pop,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.95 of 8190 releases,low
@@ -2456,6 +2458,7 @@ korean-ballad,pop,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q55648025 subcla
 korean-classical,classical,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 47791b14-968a-4f20-bd4d-3326b10d5b0f subgenre of 6ed4e4d1-9a97-4e2c-b8df-083754f154f4,high
 korean-classical,classical,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q708228 subclass of Q106586249 subclass of Q1583807,medium
 korean-court-music,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 350 releases,low
+korean-folk,folk,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q107000797 subclass of East Asian folk music; Folk is the nearest node (checked 2026-11-16),high
 korean-revolutionary-opera,beijing-opera,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q196077 subclass of Q335101,high
 korean-revolutionary-opera,chinese-opera,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz c9f8b4ce-1f3b-4c6e-aa46-805e8672a7c0 subgenre of f369323a-f515-4aea-a3cf-2963f0a39c5e,high
 krautrock,electronic,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.52 of 29534 releases,low
@@ -2869,6 +2872,7 @@ movimiento-alterado,norteño,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz
 mozarabic-chant,plainchant,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz b04c4c80-a4fa-400f-af1a-13525ea1ea0c subgenre of f1934903-1841-42bf-90e7-302359efeb30,high
 mozarabic-chant,plainchant,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q2956246 subclass of Q2707688,high
 mpb,latin,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.99 of 50687 releases,low
+muak,korean-folk,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q4207331 subclass of Korean folk music; https://en.wikipedia.org/wiki/Musok_eumak says traditional Korean shamanistic music (checked 2026-11-16),high
 mugham,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.98 of 758 releases,low
 mugham,islamic-modal-music,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 94338c63-5167-4e6b-ad36-38cbaca22583 subgenre of 3e298bf0-de7b-4d66-ac14-b8f82e379291,high
 mugham,islamic-modal-music,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1474372 subclass of Q98528260,high
@@ -3254,6 +3258,7 @@ paisley-underground,neo-psychedelia,subgenre_of,musicbrainz,CC0-1.0,sourced,musi
 paisley-underground,neo-psychedelia,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1432934 subclass of Q703778,high
 palingsound,nederpop,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q2047814 subclass of Q1936659,high
 palingsound,pop,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 3e61a9eb-4bd3-4d0a-b59c-89847d5554ec subgenre of 911c7bbb-172d-4df8-9478-dbff4296e791,high
+pansori,korean-folk,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q482981 subclass of Korean folk music (checked 2026-11-16),high
 paramaribop,jazz,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 34983571-5e75-4a91-93c6-be77cdbdf239 subgenre of a715278f-1580-409f-8078-4ffbc800e08b,high
 paramaribop,jazz,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q2178442 subclass of Q8341,high
 parang,folk,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q3365745 subclass of Q3328681 subclass of Q43343,medium
@@ -3553,6 +3558,7 @@ public-broadcast,non-music,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.8
 public-broadcast,pop,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.29 of 10635 releases,low
 public-broadcast,rock,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.40 of 10635 releases,low
 public-service-announcement,non-music,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.97 of 2056 releases,low
+puirt-à-beul,folk,subgenre_of,hand,CC-BY-4.0,sourced,https://en.wikipedia.org/wiki/Puirt_%C3%A0_beul says a traditional form of song native to Scotland (checked 2026-11-16),high
 pumpcore,modern-hardtek,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 156557a7-d3fe-4dfc-9129-256b3237cfa4 subgenre of cb27e80f-44d6-478c-b30c-59dddbfa73fa,high
 pumpcore,modern-hardtek,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q137442001 subclass of Q113600471,high
 punk,rock,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 591684 releases,low
@@ -3832,6 +3838,8 @@ sambass,liquid-funk,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz ea1dbc68
 sample-drill,drill,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q110643230 subclass of Q15697534,high
 sample-drill,new-york-drill,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 57a2964f-bf1d-41ad-99b1-3a09e4082e5c subgenre of 803ee1ab-e961-434e-a53f-424a405f6342,high
 sampledelia,electronic,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 1384a044-7eff-4fb3-b948-a74703cf4010 subgenre of 89255676-1f14-4dd8-bbad-fca839d6aff4,high
+sampler-based-music,bit-music,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q2271846 subclass of bit music (Q106422444) (checked 2026-11-16),high
+sanjo,korean-folk,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q710917 subclass of Korean folk music (checked 2026-11-16),high
 sankyoku,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 22 releases,low
 sarum-chant,gregorian-chant,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz d8602ee4-8947-4549-8853-345f753a2d26 subgenre of 711668e0-53bd-4268-8db0-92cfdd255eda,high
 sarum-chant,gregorian-chant,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q109523071 subclass of Q26473,high
@@ -3942,6 +3950,7 @@ sierreño,norteño,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz edd7dcee-
 sierreño,norteño,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q101440473 subclass of Q1780056,high
 sigilkore,trap,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 655210c4-70ea-4fc5-ba32-281a3579de5a subgenre of 9a339aa8-a0e5-450c-95a7-b11517bb508f,high
 sigilkore,trap,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q115485183 subclass of Q2913982,high
+sinawi,korean-folk,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q4216001 subclass of Korean folk music (checked 2026-11-16),high
 sinfonia-concertante,concerto,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1136846 subclass of Q9748,high
 sinfonia-concertante,symphony,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1136846 subclass of Q9734,high
 sinfonia-concertante,western-classical,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 3759c812-1331-4b7a-8e5d-3f4aaffaaad2 subgenre of bf9955d6-c3eb-466d-95ca-30f3848fc9ea,high
@@ -4417,6 +4426,7 @@ toytown-pop,pop,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 03db4625-33c
 toytown-pop,pop,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q133862566 subclass of Q37073,high
 toytown-techno,edm,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz b3d3eddf-092e-482c-8d77-63dee15ad982 subgenre of 3976e9ba-16d0-461d-b732-99408a0374ba,high
 toytown-techno,edm,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q22909461 subclass of Q851213,high
+tracker-music,sampler-based-music,subgenre_of,hand,CC-BY-4.0,sourced,https://www.wikidata.org/wiki/Q106423092 subclass of sampler-based music (Q2271846) (checked 2026-11-16),high
 traditional-black-gospel,gospel,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 90a57b35-f01e-4935-b54e-a40fe8fd3bf3 subgenre of 08289b42-7e41-4987-9263-c28bb4c59da0,high
 traditional-black-gospel,gospel,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q880270 subclass of Q106085531 subclass of Q180268,medium
 traditional-bluegrass,bluegrass,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 40b3034b-7360-4b5d-898a-01e71c334fc5 subgenre of a1a7b40d-f6e6-48c1-a5fc-b15af73d7381,high

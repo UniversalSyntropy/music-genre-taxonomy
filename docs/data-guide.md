@@ -2,7 +2,7 @@
 
 This guide shows how to read the genre taxonomy files in code. It lists every field and gives short recipes for the common tasks. For the origin of the data, see [Sources](sources.md).
 
-The data is a directed acyclic graph (DAG) of <!--count:nodes-->2,450<!--/count--> genres. A genre can have more than one parent, so it is not a strict tree.
+The data is a directed acyclic graph (DAG) of <!--count:nodes-->2,453<!--/count--> genres. A genre can have more than one parent, so it is not a strict tree.
 
 ## Files
 
@@ -75,7 +75,7 @@ Confidence rule. The value follows from `source` and `basis` only. It does not c
 
 | Confidence | Links | Rule |
 | --- | --- | --- |
-| `high` | <!--count:links_high-->3,498<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of", or a hand link that cites the page |
+| `high` | <!--count:links_high-->3,508<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of", or a hand link that cites the page |
 | `medium` | <!--count:links_medium-->152<!--/count--> | A chain of two Wikidata "subclass of" statements |
 | `low` | <!--count:links_low-->1,093<!--/count--> | A statistic: Discogs co-occurrence. Co-occurrence does not state a hierarchy |
 
@@ -215,7 +215,7 @@ The function returns `None` when no ancestor is tag-level.
 ## DAG caveats
 
 - **Many parents:** <!--count:multi_parent-->863<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
-- **Roots:** <!--count:roots-->338<!--/count--> genres have no parent. <!--count:isolated-->289<!--/count--> of them have no child either.
+- **Roots:** <!--count:roots-->331<!--/count--> genres have no parent. <!--count:isolated-->282<!--/count--> of them have no child either.
 - **No cycles:** `tools/check.py` tests that the graph has no cycle.
 - **Duplicate rows:** a pair from two sources has two rows. Use a set of parents.
 

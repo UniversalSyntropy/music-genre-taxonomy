@@ -10,7 +10,7 @@ This page says where each row comes from, how the tree is built, what a person m
 | MusicBrainz core data dump | "Subgenre of" links (<!--count:links_musicbrainz-->1,603<!--/count-->), genre to Wikidata links | CC0 | [Data license](https://musicbrainz.org/doc/About/Data_License) | 2026-11-16 (dump 20261114-002230) |
 | Discogs data dumps | Genre and style names (<!--count:nodes_discogs-->766<!--/count--> nodes), co-occurrence links (<!--count:links_discogs-->1,093<!--/count-->), name aliases | CC0 | [Discogs data dumps](https://data.discogs.com/) | 2026-11-15 (dump stamp 20261101) |
 | Wikidata | "Subclass of" links (<!--count:links_wikidata-->2,036<!--/count-->), Wikidata ids | CC0 | [Wikidata:Licensing](https://www.wikidata.org/wiki/Wikidata:Licensing) | 2026-11-15; ancestor chains 2026-11-16 |
-| This repo | Compilation, schema, three hand aliases, documents | CC BY 4.0 | [LICENSE-docs](../LICENSE-docs) | 2026-11-15 |
+| This repo | Compilation, schema, hand aliases, hand nodes and hand links, documents | CC BY 4.0 | [LICENSE-docs](../LICENSE-docs) | 2026-11-15 |
 
 What each licence page says (read on 2026-11-15):
 
@@ -44,8 +44,8 @@ Then run `python tools/check.py` and `python tools/build_site.py`. The check too
 
 | Item | What |
 | --- | --- |
-| Three aliases | `Goa` to `goa-trance`, `Drum n Bass` to `drum-and-bass`, `House Music` to `house`. Source code `hand`. |
-| Hand links | <!--count:links_hand-->11<!--/count--> parent links, source code `hand`. Each reason names the Wikipedia or Wikidata page that states the link. |
+| Hand aliases | <!--count:aliases_hand-->17<!--/count--> aliases, source code `hand`, for example `Goa` to `goa-trance` and `Drum n Bass` to `drum-and-bass`. |
+| Hand links | <!--count:links_hand-->21<!--/count--> parent links, source code `hand`. Each reason names the Wikipedia or Wikidata page that states the link. |
 | An ignore list | A list of source entries that the pipeline skips. It lives in the private pipeline input. |
 | The tag-level rule | A person decided which genres are tag-level. <!--count:tag_level-->136<!--/count--> nodes carry the mark. |
 
@@ -55,7 +55,7 @@ Everything else is computed from the three sources.
 
 - **Names:** the names use simple title case. A name reads `Edm`, not `EDM`.
 - **Conflicting parents:** some genres have parents from two sources where no parent is an ancestor of another. This repo keeps all of them. The `confidence` field helps you choose.
-- **Isolated genres:** <!--count:isolated-->289<!--/count--> genres have no parent and no child.
+- **Isolated genres:** <!--count:isolated-->282<!--/count--> genres have no parent and no child.
 - **Statistical links:** Discogs links come from co-occurrence on releases. They are not editorial decisions.
 - **Wikidata errors:** Wikidata "subclass of" links contain errors. This repo passes them on. Two-step links have `confidence: medium`; some lead to a broad parent, such as Brass Band to Orchestral.
 - **Review list:** <!--count:proposals-->212<!--/count--> possible parents in `data/proposals.csv` are not checked. Most lead to a very broad family, such as Latin or Folk, through a regional group.

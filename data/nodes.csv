@@ -625,7 +625,7 @@ deep-tech,Deep Tech,false,musicbrainz,CC0-1.0,musicbrainz,82c2ef18-d28a-48fa-992
 deep-techno,Deep Techno,false,discogs,CC0-1.0,discogs|musicbrainz,6d9ae1bf-be62-4cf4-aa70-f6f831eea80f,Q106521662,Deep Techno,style,electronic|techno
 delta-blues,Delta Blues,false,discogs,CC0-1.0,discogs|musicbrainz,b0702eb4-2951-4e1f-bbcd-dd9b0ec63c7c,Q1127539,Delta Blues,style,blues|country-blues
 dembow,Dembow,false,musicbrainz,CC0-1.0,musicbrainz,3c63b017-05b2-4a64-a724-1ef50119e1ac,Q16491869,,,reggaeton
-demostyle,Demostyle,false,musicbrainz,CC0-1.0,musicbrainz,7a13c4bb-5385-47ee-ba7f-d93755f511a3,Q125799361,,,
+demostyle,Demostyle,false,musicbrainz,CC0-1.0,musicbrainz,7a13c4bb-5385-47ee-ba7f-d93755f511a3,Q125799361,,,tracker-music
 dennery-segment,Dennery Segment,false,musicbrainz,CC0-1.0,musicbrainz,69059728-4972-43d8-86d2-e0c7f081f9af,Q108297227,,,soca
 denpa,Denpa,false,musicbrainz,CC0-1.0,musicbrainz,36f9bf8f-716a-4297-9bae-380b0a17b0f4,Q11660484,,,j-pop|pop
 depressive-black-metal,Depressive Black Metal,false,discogs,CC0-1.0,discogs|musicbrainz,8b6f2489-4f8a-4bff-80d6-9f39ef672493,Q28949059,Depressive Black Metal,style,black-metal|rock
@@ -1198,7 +1198,7 @@ kakawin,Kakawin,false,musicbrainz,CC0-1.0,musicbrainz,1aa9ef73-2d01-4bd6-9cc2-b6
 kalattut,Kalattut,false,musicbrainz,CC0-1.0,musicbrainz,7fecd5af-d284-4e76-8074-7c565f2839c8,Q122658157,,,
 kalindula,Kalindula,false,musicbrainz,CC0-1.0,musicbrainz,5bb3b18c-a301-4654-a11a-7e39ee36867e,Q1669802,,,
 kalon-ny-fahiny,Kalon'ny Fahiny,false,musicbrainz,CC0-1.0,musicbrainz,f23423bb-3bfe-4e90-b7df-ab2479e82e7d,Q114702536,,,operetta
-kan-ha-diskan,Kan Ha Diskan,false,musicbrainz,CC0-1.0,musicbrainz,4b22710f-968d-45af-9b6c-24061eed9974,Q3083000,,,
+kan-ha-diskan,Kan Ha Diskan,false,musicbrainz,CC0-1.0,musicbrainz,4b22710f-968d-45af-9b6c-24061eed9974,Q3083000,,,folk
 kaneka,Kaneka,false,musicbrainz,CC0-1.0,musicbrainz,89559e4a-22ad-43ac-a83d-07189b954a6b,Q3192617,,,
 kankyō-ongaku,Kankyō Ongaku,false,musicbrainz,CC0-1.0,musicbrainz,d5541aec-ffc2-4bc5-834d-d72f0718996a,Q112159506,,,ambient
 kantan-chamorrita,Kantan Chamorrita,false,musicbrainz,CC0-1.0,musicbrainz,93cdfa86-adef-4a9a-b9ce-970decf7aedd,Q6365333,,,
@@ -1238,6 +1238,7 @@ koplo,Koplo,false,musicbrainz,CC0-1.0,musicbrainz,8040d6f5-c378-4ef3-9d3f-5585a1
 korean-ballad,Korean Ballad,false,musicbrainz,CC0-1.0,musicbrainz,9973ee00-9ccb-4aac-b8b4-2cd2666f42ea,Q55648025,,,pop
 korean-classical,Korean Classical,false,musicbrainz,CC0-1.0,musicbrainz,47791b14-968a-4f20-bd4d-3326b10d5b0f,Q708228,,,classical
 korean-court-music,Korean Court Music,false,discogs,CC0-1.0,discogs,,,Korean Court Music,style,folk-world-and-country
+korean-folk,Korean Folk,false,hand,CC-BY-4.0,hand,,,,,folk
 korean-revolutionary-opera,Korean Revolutionary Opera,false,musicbrainz,CC0-1.0,musicbrainz,c9f8b4ce-1f3b-4c6e-aa46-805e8672a7c0,Q196077,,,beijing-opera|chinese-opera
 kouta,Kouta,false,musicbrainz,CC0-1.0,musicbrainz,ab5f045c-2394-4856-8fa7-d9a60b1fe638,Q11459349,,,
 krakowiak,Krakowiak,false,musicbrainz,CC0-1.0,musicbrainz,f1ce6ddd-0a12-4bbb-98af-4735b3cffccf,Q648283,,,
@@ -1457,7 +1458,7 @@ movie-effects,Movie Effects,false,discogs,CC0-1.0,discogs,,,Movie Effects,style,
 movimiento-alterado,Movimiento Alterado,false,musicbrainz,CC0-1.0,musicbrainz,e628eb45-1490-4800-ae13-9ab66aaca4cb,Q109406736,,,narcocorrido|norteño
 mozarabic-chant,Mozarabic Chant,false,musicbrainz,CC0-1.0,musicbrainz,b04c4c80-a4fa-400f-af1a-13525ea1ea0c,Q2956246,,,plainchant
 mpb,MPB,false,discogs,CC0-1.0,discogs|musicbrainz,7b447f98-1e94-4e57-9bb8-373743fbcdd8,Q1046768,MPB,style,latin
-muak,Muak,false,musicbrainz,CC0-1.0,musicbrainz,f6eb3f68-a017-4a36-ad72-e2d941fd122d,Q4207331,,,
+muak,Muak,false,musicbrainz,CC0-1.0,musicbrainz,f6eb3f68-a017-4a36-ad72-e2d941fd122d,Q4207331,,,korean-folk
 mugham,Mugham,false,discogs,CC0-1.0,discogs|musicbrainz,94338c63-5167-4e6b-ad36-38cbaca22583,Q1474372,Mugham,style,folk-world-and-country|islamic-modal-music
 mugithi,Mugithi,false,musicbrainz,CC0-1.0,musicbrainz,0401f5fd-ae88-4b39-a003-a5dfddeb9a7d,Q17115009,,,
 muiñeira,Muiñeira,false,musicbrainz,CC0-1.0,musicbrainz,6f4d5347-ef06-43ab-ba33-6ba36425ebf0,Q1550501,,,
@@ -1655,7 +1656,7 @@ palingsound,Palingsound,false,musicbrainz,CC0-1.0,musicbrainz,3e61a9eb-4bd3-4d0a
 palm-wine,Palm-wine,false,musicbrainz,CC0-1.0,musicbrainz,6815b113-e7b7-4a2d-82b7-159183cc4022,Q5480212,,,
 palo-de-mayo,Palo De Mayo,false,musicbrainz,CC0-1.0,musicbrainz,6f45b405-2629-4a5f-8534-ac3b1ffa1b0c,Q16615430,,,
 pandilla,Pandilla,false,musicbrainz,CC0-1.0,musicbrainz,8b8ed2e9-5eee-45de-b37c-00a7f0d099d2,Q140369829,,,
-pansori,Pansori,false,musicbrainz,CC0-1.0,musicbrainz,12758167-7628-4cd0-811d-3d461b31a4be,Q482981,,,
+pansori,Pansori,false,musicbrainz,CC0-1.0,musicbrainz,12758167-7628-4cd0-811d-3d461b31a4be,Q482981,,,korean-folk
 paramaribop,Paramaribop,false,musicbrainz,CC0-1.0,musicbrainz,34983571-5e75-4a91-93c6-be77cdbdf239,Q2178442,,,jazz
 parang,Parang,false,musicbrainz,CC0-1.0,musicbrainz,453abf01-c366-49f0-aeda-be6c3ad720e5,Q3365745,,,folk
 parlour-music,Parlour Music,false,musicbrainz,CC0-1.0,musicbrainz,95028731-1bcb-427f-bab4-19b223096152,Q7139128,,,
@@ -1789,7 +1790,7 @@ psytrance,Psy-Trance,true,discogs,CC0-1.0,discogs|musicbrainz,b3cccf71-e843-4546
 pub-rock,Pub Rock,false,discogs,CC0-1.0,discogs|musicbrainz,86c3d53d-c9db-44a2-930c-d3145cbf7b7b,Q1431327,Pub Rock,style,rock
 public-broadcast,Public Broadcast,false,discogs,CC0-1.0,discogs,,,Public Broadcast,style,non-music|pop|rock
 public-service-announcement,Public Service Announcement,false,discogs,CC0-1.0,discogs,,,Public Service Announcement,style,non-music
-puirt-à-beul,Puirt À Beul,false,musicbrainz,CC0-1.0,musicbrainz,89562d34-9c86-4fba-84db-d6da813ae779,Q1540495,,,
+puirt-à-beul,Puirt À Beul,false,musicbrainz,CC0-1.0,musicbrainz,89562d34-9c86-4fba-84db-d6da813ae779,Q1540495,,,folk
 pumpcore,Pumpcore,false,musicbrainz,CC0-1.0,musicbrainz,156557a7-d3fe-4dfc-9129-256b3237cfa4,Q137442001,,,modern-hardtek
 pungmul,Pungmul,false,musicbrainz,CC0-1.0,musicbrainz,db868b8c-08fd-43e3-9269-12a7fc0a7db9,Q497674,,,
 punk,Punk,false,discogs,CC0-1.0,discogs|musicbrainz,8cc9b280-230b-4a3a-b1e2-8acab0744dd3,Q25554481,Punk,style,rock
@@ -1943,8 +1944,9 @@ sambalanço,Sambalanço,false,musicbrainz,CC0-1.0,musicbrainz,185d3df1-4d9a-4109
 sambass,Sambass,false,musicbrainz,CC0-1.0,musicbrainz,ea1dbc68-c880-4487-8656-6c273acb948e,Q3179786,,,drum-and-bass|liquid-funk
 sample-drill,Sample Drill,false,musicbrainz,CC0-1.0,musicbrainz,57a2964f-bf1d-41ad-99b1-3a09e4082e5c,Q110643230,,,drill|new-york-drill
 sampledelia,Sampledelia,false,musicbrainz,CC0-1.0,musicbrainz,1384a044-7eff-4fb3-b948-a74703cf4010,Q7410145,,,electronic
+sampler-based-music,Sampler-based Music,false,hand,CC-BY-4.0,hand,,,,,bit-music
 samri,Samri,false,musicbrainz,CC0-1.0,musicbrainz,530a1b0e-d457-4f44-ae75-c0f835e4d98a,Q7410295,,,
-sanjo,Sanjo,false,musicbrainz,CC0-1.0,musicbrainz,435d3160-2564-4d79-a6d4-84e5769c7699,Q710917,,,
+sanjo,Sanjo,false,musicbrainz,CC0-1.0,musicbrainz,435d3160-2564-4d79-a6d4-84e5769c7699,Q710917,,,korean-folk
 sanjuanito,Sanjuanito,false,musicbrainz,CC0-1.0,musicbrainz,68e43846-3064-4bbe-93c8-6c12e70c7911,Q6120148,,,
 sankyoku,Sankyoku,false,discogs,CC0-1.0,discogs,,,Sankyoku,style,folk-world-and-country
 santé-engagé,Santé Engagé,false,musicbrainz,CC0-1.0,musicbrainz,691028c1-71a5-4fe6-8917-c1875bc21e6a,Q17088735,,,
@@ -2007,7 +2009,7 @@ sierreño,Sierreño,false,musicbrainz,CC0-1.0,musicbrainz,edd7dcee-0bb8-4d0a-b29
 sigidrigi,Sigidrigi,false,musicbrainz,CC0-1.0,musicbrainz,daa38e9e-5666-4e23-8fb8-3512743ed674,Q115812361,,,
 sigilkore,Sigilkore,false,musicbrainz,CC0-1.0,musicbrainz,655210c4-70ea-4fc5-ba32-281a3579de5a,Q115485183,,,trap
 sikuri,Sikuri,false,musicbrainz,CC0-1.0,musicbrainz,ccd48f9a-c498-4f1a-a09f-3992cfe97f3b,Q7513991,,,
-sinawi,Sinawi,false,musicbrainz,CC0-1.0,musicbrainz,9a3f7361-23e9-4e4e-a041-f8f0a1741c27,Q4216001,,,
+sinawi,Sinawi,false,musicbrainz,CC0-1.0,musicbrainz,9a3f7361-23e9-4e4e-a041-f8f0a1741c27,Q4216001,,,korean-folk
 sinfonia-concertante,Sinfonia Concertante,false,musicbrainz,CC0-1.0,musicbrainz,3759c812-1331-4b7a-8e5d-3f4aaffaaad2,Q1136846,,,concerto|symphony|western-classical
 singeli,Singeli,false,discogs,CC0-1.0,discogs|musicbrainz,78aa8c4a-4846-43ed-a34e-cea07d1f556c,Q65330805,Singeli,style,edm|electronic|folk-world-and-country
 singer-songwriter,Singer-songwriter,true,musicbrainz,CC0-1.0,musicbrainz,455f264b-db00-4716-991d-fbd32dc24523,Q89363113,,,
@@ -2250,6 +2252,7 @@ township-jive,Township Jive,false,musicbrainz,CC0-1.0,musicbrainz,e8f8ba46-a9c8-
 toypop,Toypop,false,musicbrainz,CC0-1.0,musicbrainz,837937c0-cf1d-403c-ac7f-6432bb2d21ad,Q133687529,,,
 toytown-pop,Toytown Pop,false,musicbrainz,CC0-1.0,musicbrainz,03db4625-33c4-4169-9fd6-2aedc43660ef,Q133862566,,,pop
 toytown-techno,Toytown Techno,false,musicbrainz,CC0-1.0,musicbrainz,b3d3eddf-092e-482c-8d77-63dee15ad982,Q22909461,,,edm
+tracker-music,Tracker Music,false,hand,CC-BY-4.0,hand,,,,,sampler-based-music
 tradi-moderne-congolais,Tradi-moderne Congolais,false,musicbrainz,CC0-1.0,musicbrainz,7a037a49-90c8-45b4-9a5c-6d5c9f43b299,Q98528236,,,
 tradi-moderne-ivoirien,Tradi-moderne Ivoirien,false,musicbrainz,CC0-1.0,musicbrainz,059a4b6f-4195-4d34-b09f-31923c555368,Q125854050,,,
 traditional-black-gospel,Traditional Black Gospel,false,musicbrainz,CC0-1.0,musicbrainz,90a57b35-f01e-4935-b54e-a40fe8fd3bf3,Q880270,,,gospel

@@ -175,7 +175,7 @@ def build(src: Path):
         if k in disc_id:
             ext["discogs_name"], ext["discogs_kind"] = disc_id[k]
         nodes.append({"key": k, "name": n["name"], "tag_level": bool(n["tag_level"]), "source": n["source"],
-                      "licence": spdx(n["licence"]), "seen_in": seen, "external": ext})
+                      "licence": HAND_LICENCE if n["source"] == "hand" else spdx(n["licence"]), "seen_in": seen, "external": ext})
     links = []
     for e in sorted(edges_in, key=lambda e: (e["child"], e["parent"], e["source"])):
         used.add(e["source"])

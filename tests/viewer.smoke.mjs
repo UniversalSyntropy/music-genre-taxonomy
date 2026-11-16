@@ -93,7 +93,7 @@ async function run(name, type) {
       const c = await p2.evaluate(() => { const b = document.querySelector('#cloud').getBoundingClientRect(), s = document.querySelector('#svg').getBoundingClientRect();
         return { n: document.querySelectorAll('#cloud circle.dot').length, dx: (b.left + b.right) / 2 - (s.left + s.right) / 2, dy: (b.top + b.bottom) / 2 - (s.top + s.bottom) / 2,
           treeHidden: getComputedStyle(document.querySelector('#nodes')).display === 'none', sel: document.querySelectorAll('#cloud circle.dot.sel').length }; });
-      ok(c.n === 2450 && c.treeHidden, `point cloud shows 2,450 dots and hides the tree (${c.n})`);
+      ok(c.n === 2453 && c.treeHidden, `point cloud shows 2,453 dots and hides the tree (${c.n})`);
       ok(Math.abs(c.dx) < 3 && Math.abs(c.dy) < 3, `point cloud centre is at the page centre (${c.dx.toFixed(1)}, ${c.dy.toFixed(1)})`);
       ok(c.sel === 1, 'point cloud marks the selected genre');
       const vis = () => p2.evaluate(() => Array.from(document.querySelectorAll('#cloud circle.dot.root')).filter((e) => getComputedStyle(e).display !== 'none').length);
@@ -195,7 +195,7 @@ async function run(name, type) {
     // sitemap
     const sm = await (await fetch(BASE + '/sitemap.xml')).text();
     const n = (sm.match(/<loc>/g) || []).length;
-    ok(n === 2452, `sitemap.xml holds ${n} URLs`);
+    ok(n === 2455, `sitemap.xml holds ${n} URLs`);
 
     // data failure message (its own errors are expected)
     const bad = await ctx.newPage();
