@@ -20,7 +20,7 @@ from pathlib import Path
 import yaml
 
 SCHEMA_ID = "https://universalsyntropy.github.io/music-genre-taxonomy/schema/taxonomy.schema.json"
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.1.0"
 REPO_URL = "https://github.com/UniversalSyntropy/music-genre-taxonomy"
 SPDX = {"CC0": "CC0-1.0"}
 SPDX_URL = {
@@ -29,11 +29,16 @@ SPDX_URL = {
 }
 SOURCE_INFO = {
     "discogs": ("Discogs data dumps (genres and styles)", "https://data.discogs.com/"),
-    "musicbrainz": ("MusicBrainz genres", "https://musicbrainz.org/genres"),
+    "musicbrainz": ("MusicBrainz genres and genre relationships (core data dump)", "https://musicbrainz.org/doc/MusicBrainz_Database/Download"),
     "wikidata": ("Wikidata subclass-of statements", "https://www.wikidata.org/"),
     "hand": ("Hand-added aliases", REPO_URL),
 }
 HAND_LICENCE = "CC-BY-4.0"
+# Link confidence from (source, basis). high: a source states the link. medium: a short chain of stated links (Wikidata, 2 steps).
+# low: a statistic (Discogs co-occurrence), which is no statement of hierarchy.
+CONFIDENCE = {("wikidata", "sourced"): "high", ("musicbrainz", "sourced"): "high", ("hand", "hand"): "high",
+              ("wikidata", "derived"): "medium", ("discogs", "derived"): "low"}
+PROPOSAL_COLS = ["child", "parent", "depth", "evidence"]
 
 
 def normal(name: str) -> str:
@@ -67,6 +72,10 @@ def build(src: Path):
     mbg = load_json(src / "data" / "inputs" / "musicbrainz-genres.json")["genres"]
     wd = load_json(src / "data" / "inputs" / "wikidata-subclass.json")["edges"]
     dg = load_json(src / "data" / "inputs" / "discogs-genres.json")
+    rel_path = src / "data" / "inputs" / "musicbrainz-relations.json"
+    mb_wd = load_json(rel_path)["wikidata"] if rel_path.exists() else []
+    prop_path = src / "data" / "proposals.yaml"
+    props = (load_yaml(prop_path) or {}).get("proposals", []) if prop_path.exists() else []
     stats = defaultdict(int)
 
     def ok(code):
@@ -114,9 +123,12 @@ def build(src: Path):
     for e in wd:
         mb_to_q[e["child_mb"]].add(e["child_qid"])
         mb_to_q[e["parent_mb"]].add(e["parent_qid"])
+    mb_link_q = defaultdict(set)  # MusicBrainz genre -> Wikidata item, from the MusicBrainz side (used when P8052 gives none)
+    for r in mb_wd:
+        mb_link_q[r["mb"]].add(r["qid"])
     wd_id = {}
     for k, i in mb_id.items():
-        qs = mb_to_q.get(i)
+        qs = mb_to_q.get(i) or mb_link_q.get(i)
         if qs:
             if len(qs) > 1:
                 stats["wd_conflicts"] += 1
@@ -168,7 +180,8 @@ def build(src: Path):
     for e in sorted(edges_in, key=lambda e: (e["child"], e["parent"], e["source"])):
         used.add(e["source"])
         links.append({"child": e["child"], "parent": e["parent"], "relation": e["relation"], "source": e["source"],
-                      "licence": spdx(e["licence"]), "basis": e["basis"], "evidence": e["evidence"]})
+                      "licence": spdx(e["licence"]), "basis": e["basis"], "confidence": CONFIDENCE[(e["source"], e["basis"])],
+                      "evidence": e["evidence"]})
     aliases = []
     for a in ali_in:
         used.add(a["source"])
@@ -185,8 +198,10 @@ def build(src: Path):
         lic = HAND_LICENCE if code == "hand" else spdx(inp["licence"])
         sources.append({"code": code, "name": nm, "url": url, "licence": lic, "licence_url": SPDX_URL[lic],
                         "retrieved": str(inp["retrieved"])})
+    proposals = sorted(({c: r[c] for c in PROPOSAL_COLS} for r in props if r["child"] in keys and r["parent"] in keys),
+                       key=lambda r: (r["child"], r["parent"]))
     return {
-        "tree_version": str(tree["tree_version"]), "nodes": nodes, "links": links, "aliases": aliases,
+        "tree_version": str(tree["tree_version"]), "nodes": nodes, "links": links, "aliases": aliases, "proposals": proposals,
         "sources": sources, "stats": dict(stats), "mb_unmatched": unmatched_mb,
     }
 
@@ -255,14 +270,15 @@ def main():
                 "|".join(n["seen_in"]), n["external"].get("musicbrainz_id", ""), n["external"].get("wikidata_id", ""),
                 n["external"].get("discogs_name", ""), n["external"].get("discogs_kind", ""),
                 "|".join(sorted(set(parents[n["key"]])))] for n in d["nodes"]])
-    write_csv(out / "links.csv", ["child", "parent", "relation", "source", "licence", "basis", "evidence"],
-              [[l[c] for c in ("child", "parent", "relation", "source", "licence", "basis", "evidence")] for l in d["links"]])
+    link_cols = ("child", "parent", "relation", "source", "licence", "basis", "evidence", "confidence")   # new column last: old readers keep working
+    write_csv(out / "links.csv", list(link_cols), [[l[c] for c in link_cols] for l in d["links"]])
+    write_csv(out / "proposals.csv", PROPOSAL_COLS, [[r[c] for c in PROPOSAL_COLS] for r in d["proposals"]])
     write_csv(out / "aliases.csv", ["name", "normal", "node", "source", "licence"],
               [[x[c] for c in ("name", "normal", "node", "source", "licence")] for x in d["aliases"]])
 
     N = d["nodes"]
     print(f"nodes {len(N)}  links {len(d['links'])}  aliases {len(d['aliases'])}  "
-          f"tag_level {sum(n['tag_level'] for n in N)}  version {version}")
+          f"tag_level {sum(n['tag_level'] for n in N)}  proposals {len(d['proposals'])}  version {version}")
     print(f"dropped: nodes {d['stats'].get('nodes_dropped', 0)}, links {d['stats'].get('links_dropped', 0)}, "
           f"aliases {d['stats'].get('aliases_dropped', 0)}")
     for kind in ("musicbrainz_id", "wikidata_id", "discogs_name"):

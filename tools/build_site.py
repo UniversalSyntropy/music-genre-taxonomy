@@ -165,7 +165,8 @@ def main() -> int:
             aliases[a["node"]].append(a["name"])
 
     def porder(l):
-        return (0 if l["source"] == "wikidata" else 1, l["parent"])
+        rank = {("wikidata", "sourced"): 0, ("musicbrainz", "sourced"): 1, ("wikidata", "derived"): 2}   # same order as the viewer
+        return (rank.get((l["source"], l["basis"]), 3), l["parent"])
 
     for k in parents:
         parents[k].sort(key=porder)
@@ -257,7 +258,7 @@ def main() -> int:
             h.append("<ul class=\"plain\">\n")
             for l in ps:
                 h.append(f"<li><a href=\"{url_key(l['parent'])}.html\">{escape(nodes[l['parent']]['name'])}</a>"
-                         f" <span class=\"small\">(source: {escape(SRC_NAMES.get(l['source'], l['source']))}, {escape(l['basis'])}; {escape(l['evidence'])})</span></li>\n")
+                         f" <span class=\"small\">(source: {escape(SRC_NAMES.get(l['source'], l['source']))}, {escape(l['basis'])}, {escape(l['confidence'])} confidence; {escape(l['evidence'])})</span></li>\n")
             h.append("</ul>\n")
         else:
             h.append("<p>None. This genre sits at the top of the tree.</p>\n")

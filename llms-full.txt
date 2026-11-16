@@ -25,7 +25,7 @@ Open the [live viewer](https://universalsyntropy.github.io/music-genre-taxonomy/
 | --- | --- |
 | Explore the genre tree | [Live viewer](https://universalsyntropy.github.io/music-genre-taxonomy/) and the [viewer guide](docs/viewer.md) |
 | Load the data in code | [`data/taxonomy.json`](data/taxonomy.json) and the [data guide](docs/data-guide.md) |
-| Open the data in a spreadsheet | [`nodes.csv`](data/nodes.csv), [`links.csv`](data/links.csv), [`aliases.csv`](data/aliases.csv) |
+| Open the data in a spreadsheet | [`nodes.csv`](data/nodes.csv), [`links.csv`](data/links.csv), [`aliases.csv`](data/aliases.csv), [`proposals.csv`](data/proposals.csv) (review list) |
 | Validate the file | [JSON Schema](schema/taxonomy.schema.json) |
 | Check sources and licences | [Sources](docs/sources.md) |
 | Give an LLM the whole project | [`llms.txt`](llms.txt) or [`llms-full.txt`](llms-full.txt) |
@@ -95,21 +95,22 @@ More recipes (children, all ancestors, alias lookup rules) are in the [data guid
 | Item | Count |
 | --- | --- |
 | Genres (nodes) | <!--count:nodes-->2,450<!--/count--> |
-| Parent links | <!--count:links-->2,938<!--/count--> |
-| Name aliases | <!--count:aliases-->2,993<!--/count--> |
-| Tag-level genres | <!--count:tag_level-->135<!--/count--> |
-| Genres with no parent (roots) | <!--count:roots-->557<!--/count--> |
-| Genres with no parent and no child | <!--count:isolated-->481<!--/count--> |
-| Genres with two or more different parents | <!--count:multi_parent-->709<!--/count--> |
+| Parent links | <!--count:links-->4,732<!--/count--> |
+| Name aliases | <!--count:aliases-->3,002<!--/count--> |
+| Tag-level genres | <!--count:tag_level-->136<!--/count--> |
+| Genres with no parent (roots) | <!--count:roots-->348<!--/count--> |
+| Genres with no parent and no child | <!--count:isolated-->300<!--/count--> |
+| Genres with two or more different parents | <!--count:multi_parent-->862<!--/count--> |
 | Names from MusicBrainz / Discogs | <!--count:nodes_musicbrainz-->1,684<!--/count--> / <!--count:nodes_discogs-->766<!--/count--> |
-| Links from Wikidata / Discogs | <!--count:links_wikidata-->1,845<!--/count--> / <!--count:links_discogs-->1,093<!--/count--> |
-| Genres with a MusicBrainz id / Wikidata id / Discogs name | <!--count:with_musicbrainz_id-->2,221<!--/count--> / <!--count:with_wikidata_id-->1,655<!--/count--> / <!--count:with_discogs_name-->766<!--/count--> |
+| Links from Wikidata / MusicBrainz / Discogs | <!--count:links_wikidata-->2,036<!--/count--> / <!--count:links_musicbrainz-->1,603<!--/count--> / <!--count:links_discogs-->1,093<!--/count--> |
+| Links with confidence high / medium / low | <!--count:links_high-->3,487<!--/count--> / <!--count:links_medium-->152<!--/count--> / <!--count:links_low-->1,093<!--/count--> |
+| Genres with a MusicBrainz id / Wikidata id / Discogs name | <!--count:with_musicbrainz_id-->2,221<!--/count--> / <!--count:with_wikidata_id-->2,216<!--/count--> / <!--count:with_discogs_name-->766<!--/count--> |
 
 ## Sources and licences
 
 | Source | What this repo takes | Licence |
 | --- | --- | --- |
-| [MusicBrainz](https://musicbrainz.org/genres) | Genre names, ids, aliases | CC0 |
+| [MusicBrainz](https://musicbrainz.org/genres) | Genre names, ids, aliases, "subgenre of" links, Wikidata links | CC0 |
 | [Discogs data dumps](https://data.discogs.com/) | Genre and style names, co-occurrence links | CC0 |
 | [Wikidata](https://www.wikidata.org/) | "Subclass of" links | CC0 |
 
@@ -118,8 +119,8 @@ CC0 does not require credit. This repo gives credit anyway. This repo's own comp
 ## Known limits
 
 - **Names:** simple title case, so `Edm` not `EDM`.
-- **Links:** Discogs links are statistical, not editorial. Wikidata "subclass of" links contain errors that this repo passes on.
-- **Gaps:** <!--count:isolated-->481<!--/count--> genres have no link. Some common tag spellings have no alias yet.
+- **Links:** Discogs links are statistical, not editorial, so they have `confidence: low`. Wikidata "subclass of" links contain errors that this repo passes on.
+- **Gaps:** <!--count:isolated-->300<!--/count--> genres have no link. Some common tag spellings have no alias yet.
 
 The full list is in [Sources](docs/sources.md#known-limits).
 
@@ -226,15 +227,30 @@ One link says "child is a sub-genre of parent". Every link carries its source an
 | `child` | string | Key of the narrower genre |
 | `parent` | string | Key of the broader genre |
 | `relation` | string | Always `subgenre_of` |
-| `source` | string | Code of the source that gave the link: `wikidata` or `discogs` |
+| `source` | string | Code of the source that gave the link: `wikidata`, `musicbrainz` or `discogs` |
 | `licence` | string | SPDX id of this row |
 | `basis` | string | `sourced`: the source states the link. `derived`: this repo computed it from source data. |
+| `confidence` | string | `high`, `medium` or `low`. See the rule below. Added in schema 1.1.0. |
 | `evidence` | string | Text that shows why the link exists |
 
 Evidence examples:
 
 - `wikidata Q341364 subclass of Q20502`: a Wikidata statement.
+- `wikidata Q30 subclass of Q31 subclass of Q2`: a chain of two Wikidata statements. The middle item is not a genre in this data set.
+- `musicbrainz <child id> subgenre of <parent id>`: a MusicBrainz relationship, with both MusicBrainz genre ids.
 - `co-occurrence 1.00 of 26187 releases`: a Discogs style and genre occur together on nearly all releases in the dump.
+
+Confidence rule. The value follows from `source` and `basis` only. It does not count sources.
+
+| Confidence | Links | Rule |
+| --- | --- | --- |
+| `high` | <!--count:links_high-->3,487<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of" |
+| `medium` | <!--count:links_medium-->152<!--/count--> | A chain of two Wikidata "subclass of" statements |
+| `low` | <!--count:links_low-->1,093<!--/count--> | A statistic: Discogs co-occurrence. Co-occurrence does not state a hierarchy |
+
+## Proposals
+
+[`data/proposals.csv`](../data/proposals.csv) lists <!--count:proposals-->212<!--/count--> possible parents that are not links. Each row is a genre in this data set three or four Wikidata "subclass of" steps up. Columns: `child`, `parent`, `depth`, `evidence`. Use the file as a review list. Do not read it as a parent link.
 
 The same child and parent pair can come from two sources. That gives two link rows. Count distinct parents, not rows.
 
@@ -367,8 +383,8 @@ The function returns `None` when no ancestor is tag-level.
 
 ## DAG caveats
 
-- **Many parents:** <!--count:multi_parent-->709<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
-- **Roots:** <!--count:roots-->557<!--/count--> genres have no parent. <!--count:isolated-->481<!--/count--> of them have no child either.
+- **Many parents:** <!--count:multi_parent-->862<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
+- **Roots:** <!--count:roots-->348<!--/count--> genres have no parent. <!--count:isolated-->300<!--/count--> of them have no child either.
 - **No cycles:** `tools/check.py` tests that the graph has no cycle.
 - **Duplicate rows:** a pair from two sources has two rows. Use a set of parents.
 
@@ -419,13 +435,14 @@ This page says where each row comes from, how the tree is built, what a person m
 | Source | Taken | Licence | Official licence page | Retrieved |
 | --- | --- | --- | --- | --- |
 | MusicBrainz genres | Genre names (<!--count:nodes_musicbrainz-->1,684<!--/count--> nodes), MusicBrainz ids, name aliases | CC0 | [Data license](https://musicbrainz.org/doc/About/Data_License) | 2026-11-15 |
+| MusicBrainz core data dump | "Subgenre of" links (<!--count:links_musicbrainz-->1,603<!--/count-->), genre to Wikidata links | CC0 | [Data license](https://musicbrainz.org/doc/About/Data_License) | 2026-11-16 (dump 20261114-002230) |
 | Discogs data dumps | Genre and style names (<!--count:nodes_discogs-->766<!--/count--> nodes), co-occurrence links (<!--count:links_discogs-->1,093<!--/count-->), name aliases | CC0 | [Discogs data dumps](https://data.discogs.com/) | 2026-11-15 (dump stamp 20261101) |
-| Wikidata | "Subclass of" links (<!--count:links_wikidata-->1,845<!--/count-->), Wikidata ids | CC0 | [Wikidata:Licensing](https://www.wikidata.org/wiki/Wikidata:Licensing) | 2026-11-15 |
+| Wikidata | "Subclass of" links (<!--count:links_wikidata-->2,036<!--/count-->), Wikidata ids | CC0 | [Wikidata:Licensing](https://www.wikidata.org/wiki/Wikidata:Licensing) | 2026-11-15; ancestor chains 2026-11-16 |
 | This repo | Compilation, schema, three hand aliases, documents | CC BY 4.0 | [LICENSE-docs](../LICENSE-docs) | 2026-11-15 |
 
 What each licence page says (read on 2026-11-15):
 
-- **MusicBrainz:** "The core data of the database is licensed under the CC0." The MusicBrainz database page lists genres as core data. Tags and genre votes on entities are supplementary data under a non-commercial licence. This repo takes the genre list only, not the votes.
+- **MusicBrainz:** "The core data of the database is licensed under the CC0." The MusicBrainz database page lists genres as core data. Tags and genre votes on entities are supplementary data under a non-commercial licence. This repo takes the genre list and the genre-to-genre and genre-to-Wikidata relationships only, not the votes.
 - **Discogs:** "This data is made available under the CC0 No Rights Reserved license."
 - **Wikidata:** "All structured data (i.e. the main, Property, Lexeme, and EntitySchema namespaces) is released into the public domain." Wikidata describes this as CC0.
 
@@ -440,8 +457,11 @@ CC0 asks for no credit. This repo gives credit anyway. If you reuse this data, u
 The pipeline that derives the tree is not in this repo. This repo holds the output and the tools that build the public files from it.
 
 1. **Names.** MusicBrainz genres and Discogs genres and styles give the genre names. A genre in both lists is one node.
-2. **Links.** Wikidata gives a link when the genre has a "subclass of" statement. Discogs gives a link when a style and a genre occur together on nearly all releases in the dump. The evidence field holds the figure, for example `co-occurrence 1.00 of 26187 releases`.
-3. **Ids.** The build matches names to MusicBrainz ids. A Wikidata id comes from the match between a MusicBrainz genre and a Wikidata item. A Discogs name comes from an exact or normal-form match.
+2. **Links.** The build takes links from three sources:
+   - **Wikidata:** a link when the genre has a "subclass of" statement. When the direct parent is not a genre in this data set, the build walks up the "subclass of" statements. The nearest genre one step up gives a `sourced` link. The nearest genre two steps up gives a `derived` link. A genre three or four steps up goes to `data/proposals.csv` only.
+   - **MusicBrainz:** a link for each "subgenre of" relationship in the core data dump.
+   - **Discogs:** a link when a style and a genre occur together on nearly all releases in the dump. The evidence field holds the figure, for example `co-occurrence 1.00 of 26187 releases`.
+3. **Ids.** The build matches names to MusicBrainz ids. A Wikidata id comes from the match between a MusicBrainz genre and a Wikidata item, read from the Wikidata side first and from the MusicBrainz side when Wikidata has none. A Discogs name comes from an exact or normal-form match.
 4. **Aliases.** Every MusicBrainz and Discogs spelling becomes an alias with its normal form.
 5. **Filter.** The build drops any row whose source is not marked as publishable in the input list.
 6. **Output.** `python tools/build.py --source DIR` writes the JSON and CSV files. The same input gives the same bytes.
@@ -454,17 +474,18 @@ Then run `python tools/check.py` and `python tools/build_site.py`. The check too
 | --- | --- |
 | Three aliases | `Goa` to `goa-trance`, `Drum n Bass` to `drum-and-bass`, `House Music` to `house`. Source code `hand`. |
 | An ignore list | A list of source entries that the pipeline skips. It lives in the private pipeline input. |
-| The tag-level rule | A person decided which genres are tag-level. <!--count:tag_level-->135<!--/count--> nodes carry the mark. |
+| The tag-level rule | A person decided which genres are tag-level. <!--count:tag_level-->136<!--/count--> nodes carry the mark. |
 
 Everything else is computed from the three sources.
 
 ## Known limits
 
 - **Names:** the names use simple title case. A name reads `Edm`, not `EDM`.
-- **Conflicting parents:** 32 genres have a Wikidata parent and a Discogs parent where no parent is an ancestor of another and none is shared. This repo keeps both.
-- **Isolated genres:** <!--count:isolated-->481<!--/count--> genres have no parent and no child.
+- **Conflicting parents:** some genres have parents from two sources where no parent is an ancestor of another. This repo keeps all of them. The `confidence` field helps you choose.
+- **Isolated genres:** <!--count:isolated-->300<!--/count--> genres have no parent and no child.
 - **Statistical links:** Discogs links come from co-occurrence on releases. They are not editorial decisions.
-- **Wikidata errors:** Wikidata "subclass of" links contain errors. This repo passes them on.
+- **Wikidata errors:** Wikidata "subclass of" links contain errors. This repo passes them on. Two-step links have `confidence: medium`; some lead to a broad parent, such as Brass Band to Orchestral.
+- **Review list:** <!--count:proposals-->212<!--/count--> possible parents in `data/proposals.csv` are not checked. Most lead to a very broad family, such as Latin or Folk, through a regional group.
 - **Missing aliases:** some common tag spellings have no alias yet.
 - **Single tag-level mark:** one rule decides tag-level. Your use case can need a different cut.
 - **Opinion:** genre classification is a matter of opinion. See [DISCLAIMER.md](../DISCLAIMER.md).
@@ -507,7 +528,8 @@ The viewer is a web page that draws the genre tree. Open it at [universalsyntrop
 
 - **Filled dot:** a tag-level genre. It is a good value for a file's genre tag.
 - **Hollow dot:** a genre that is not tag level. It is broader or narrower than a usual file tag.
-- **One place per genre:** the tree shows each genre once, under its nearest parent. The detail card lists every parent.
+- **Solid line:** the parent comes from Wikidata or MusicBrainz. **Dashed line:** the parent comes from Discogs co-occurrence.
+- **One place per genre:** the tree shows each genre once, under its most confident parent: Wikidata, then MusicBrainz, then two-step Wikidata, then Discogs. The detail card lists every parent with its confidence.
 
 ## Detail card
 
@@ -679,16 +701,35 @@ FILE: CHANGELOG.md
 
 All notable changes to the data, schema, documents and tools. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The data version follows semantic versioning as the [data guide](docs/data-guide.md#versions-and-pinning) describes.
 
+## [1.1.0] - 2026-11-16
+
+More genres have a parent. Isolated genres go down from 481 to <!--count:isolated-->300<!--/count-->, and roots go down from 557 to <!--count:roots-->348<!--/count-->.
+
+### Added
+
+- **MusicBrainz links:** <!--count:links_musicbrainz-->1,603<!--/count--> "subgenre of" links from the MusicBrainz core data dump (CC0).
+- **Wikidata ids from MusicBrainz:** a genre whose Wikidata item has no MusicBrainz genre id now takes its Wikidata id from the MusicBrainz side. Wikidata ids go up from 1,655 to <!--count:with_wikidata_id-->2,216<!--/count-->.
+- **Two-step Wikidata links:** when the direct Wikidata parent is not a genre in this data set, the build takes the nearest genre two "subclass of" steps up (<!--count:links_medium-->152<!--/count--> links, basis `derived`).
+- **Field `confidence`** on each link: `high` (<!--count:links_high-->3,487<!--/count-->), `medium` (<!--count:links_medium-->152<!--/count-->) or `low` (<!--count:links_low-->1,093<!--/count-->). The data guide gives the rule. `links.csv` has it as the last column.
+- **Review list:** `data/proposals.csv` holds <!--count:proposals-->212<!--/count--> possible parents three or four Wikidata steps up. They are not links.
+
+### Changed
+
+- **Schema 1.1.0:** `confidence` is a required link field.
+- **Counts:** <!--count:links-->4,732<!--/count--> links, <!--count:aliases-->3,002<!--/count--> aliases, <!--count:tag_level-->136<!--/count--> tag-level genres.
+
+`schema_version` 1.1.0, `version` 1.1.0, `tree_version` `a94079cc6db8`.
+
 ## [1.0.0] - 2026-11-15
 
 First public release.
 
 ### Added
 
-- **Data:** <!--count:nodes-->2,450<!--/count--> genres, <!--count:links-->2,938<!--/count--> parent links and <!--count:aliases-->2,993<!--/count--> aliases in `data/taxonomy.json`, with CSV copies of each table.
-- **Tag level:** <!--count:tag_level-->135<!--/count--> genres marked as tag-level.
+- **Data:** 2,450 genres, 2,938 parent links and 2,993 aliases in `data/taxonomy.json`, with CSV copies of each table.
+- **Tag level:** 135 genres marked as tag-level.
 - **Sources:** names from MusicBrainz and Discogs, links from Wikidata and Discogs. Every link has a source, licence, basis and evidence.
-- **Ids:** MusicBrainz id on <!--count:with_musicbrainz_id-->2,221<!--/count--> genres, Wikidata id on <!--count:with_wikidata_id-->1,655<!--/count-->, Discogs name on <!--count:with_discogs_name-->766<!--/count-->.
+- **Ids:** MusicBrainz id on 2,221 genres, Wikidata id on 1,655, Discogs name on 766.
 - **Schema:** JSON Schema 1.0.0 in `schema/taxonomy.schema.json`.
 - **Viewer:** a web viewer, one static page per genre and website metadata for search engines.
 - **Tools:** `tools/build.py`, `tools/check.py`, `tools/build_site.py` and `tools/llms_full.py`.
@@ -696,4 +737,5 @@ First public release.
 
 `schema_version` 1.0.0, `version` 1.0.0, `tree_version` `47461e523d86`.
 
+[1.1.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.1.0
 [1.0.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.0.0

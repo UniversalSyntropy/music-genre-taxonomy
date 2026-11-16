@@ -58,15 +58,30 @@ One link says "child is a sub-genre of parent". Every link carries its source an
 | `child` | string | Key of the narrower genre |
 | `parent` | string | Key of the broader genre |
 | `relation` | string | Always `subgenre_of` |
-| `source` | string | Code of the source that gave the link: `wikidata` or `discogs` |
+| `source` | string | Code of the source that gave the link: `wikidata`, `musicbrainz` or `discogs` |
 | `licence` | string | SPDX id of this row |
 | `basis` | string | `sourced`: the source states the link. `derived`: this repo computed it from source data. |
+| `confidence` | string | `high`, `medium` or `low`. See the rule below. Added in schema 1.1.0. |
 | `evidence` | string | Text that shows why the link exists |
 
 Evidence examples:
 
 - `wikidata Q341364 subclass of Q20502`: a Wikidata statement.
+- `wikidata Q30 subclass of Q31 subclass of Q2`: a chain of two Wikidata statements. The middle item is not a genre in this data set.
+- `musicbrainz <child id> subgenre of <parent id>`: a MusicBrainz relationship, with both MusicBrainz genre ids.
 - `co-occurrence 1.00 of 26187 releases`: a Discogs style and genre occur together on nearly all releases in the dump.
+
+Confidence rule. The value follows from `source` and `basis` only. It does not count sources.
+
+| Confidence | Links | Rule |
+| --- | --- | --- |
+| `high` | <!--count:links_high-->3,487<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of" |
+| `medium` | <!--count:links_medium-->152<!--/count--> | A chain of two Wikidata "subclass of" statements |
+| `low` | <!--count:links_low-->1,093<!--/count--> | A statistic: Discogs co-occurrence. Co-occurrence does not state a hierarchy |
+
+## Proposals
+
+[`data/proposals.csv`](../data/proposals.csv) lists <!--count:proposals-->212<!--/count--> possible parents that are not links. Each row is a genre in this data set three or four Wikidata "subclass of" steps up. Columns: `child`, `parent`, `depth`, `evidence`. Use the file as a review list. Do not read it as a parent link.
 
 The same child and parent pair can come from two sources. That gives two link rows. Count distinct parents, not rows.
 
@@ -199,8 +214,8 @@ The function returns `None` when no ancestor is tag-level.
 
 ## DAG caveats
 
-- **Many parents:** <!--count:multi_parent-->709<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
-- **Roots:** <!--count:roots-->557<!--/count--> genres have no parent. <!--count:isolated-->481<!--/count--> of them have no child either.
+- **Many parents:** <!--count:multi_parent-->862<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
+- **Roots:** <!--count:roots-->348<!--/count--> genres have no parent. <!--count:isolated-->300<!--/count--> of them have no child either.
 - **No cycles:** `tools/check.py` tests that the graph has no cycle.
 - **Duplicate rows:** a pair from two sources has two rows. Use a set of parents.
 

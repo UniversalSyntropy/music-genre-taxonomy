@@ -69,6 +69,11 @@ def stats(doc):
         "nodes_discogs": sum(1 for n in nodes if n["source"] == "discogs"),
         "links_wikidata": sum(1 for l in links if l["source"] == "wikidata"),
         "links_discogs": sum(1 for l in links if l["source"] == "discogs"),
+        "links_musicbrainz": sum(1 for l in links if l["source"] == "musicbrainz"),
+        "links_high": sum(1 for l in links if l.get("confidence") == "high"),
+        "links_medium": sum(1 for l in links if l.get("confidence") == "medium"),
+        "links_low": sum(1 for l in links if l.get("confidence") == "low"),
+        "proposals": len(doc.get("proposals", [])),
         "with_musicbrainz_id": sum(1 for n in nodes if ext(n, "musicbrainz_id")),
         "with_wikidata_id": sum(1 for n in nodes if ext(n, "wikidata_id")),
         "with_discogs_name": sum(1 for n in nodes if ext(n, "discogs_name")),
@@ -137,6 +142,17 @@ def check_integrity(doc, data_path: Path):
     for k in ("nodes", "links", "aliases", "tag_level"):
         if doc["counts"][k] != st[k]:
             fail(f"Integrity: counts.{k} is {doc['counts'][k]} but the data has {st[k]}.")
+    # confidence follows from source and basis (tools/build.py CONFIDENCE)
+    rule = {("wikidata", "sourced"): "high", ("musicbrainz", "sourced"): "high", ("hand", "hand"): "high",
+            ("wikidata", "derived"): "medium", ("discogs", "derived"): "low"}
+    for l in links:
+        if rule.get((l["source"], l["basis"])) != l.get("confidence"):
+            fail(f"Integrity: link {l['child']} -> {l['parent']} ({l['source']}, {l['basis']}) has confidence {l.get('confidence')!r}.")
+    # proposals: review list, never links
+    known = set(keys)
+    for r in doc.get("proposals", []):
+        if r["child"] not in known or r["parent"] not in known:
+            fail(f"Proposals: {r['child']} -> {r['parent']} names a key that is not a node.")
     # CSV
     d = data_path.parent
     for name, n in (("nodes.csv", len(nodes)), ("links.csv", len(links)), ("aliases.csv", len(aliases))):
@@ -261,6 +277,10 @@ def main():
         print(f"FAIL: cannot read {dp}: {e}")
         return 1
     if check_schema(doc):
+        pp = dp.parent / "proposals.csv"           # the review list sits beside the data file, outside the schema
+        if pp.exists():
+            with open(pp, encoding="utf-8", newline="") as f:
+                doc["proposals"] = list(csv.DictReader(f))
         st = check_integrity(doc, dp)
     else:
         st = None

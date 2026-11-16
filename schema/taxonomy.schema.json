@@ -71,7 +71,7 @@
    "type": "array",
    "items": {
     "type": "object", "additionalProperties": false,
-    "required": ["child", "parent", "relation", "source", "licence", "basis", "evidence"],
+    "required": ["child", "parent", "relation", "source", "licence", "basis", "confidence", "evidence"],
     "properties": {
      "child": {"description": "Key of the narrower genre.", "type": "string"},
      "parent": {"description": "Key of the broader genre.", "type": "string"},
@@ -79,6 +79,7 @@
      "source": {"description": "Code of the source that gave the link.", "$ref": "#/$defs/sourceCode"},
      "licence": {"description": "SPDX licence id of the link row.", "$ref": "#/$defs/licence"},
      "basis": {"description": "sourced: stated by the source. derived: computed from source data.", "enum": ["sourced", "derived"]},
+     "confidence": {"description": "high: a source states the link. medium: a chain of two stated Wikidata subclass links. low: computed from a statistic, such as Discogs co-occurrence.", "enum": ["high", "medium", "low"]},
      "evidence": {"description": "Short text that shows why the link exists, such as a Wikidata statement or a Discogs co-occurrence figure.", "type": "string", "minLength": 1}
     }
    }

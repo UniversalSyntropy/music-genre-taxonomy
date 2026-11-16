@@ -99,7 +99,7 @@ async function run(name, type) {
       const vis = () => p2.evaluate(() => Array.from(document.querySelectorAll('#cloud circle.dot.root')).filter((e) => getComputedStyle(e).display !== 'none').length);
       ok((await vis()) === 1, 'root genres are hidden at the start; the selected root (Pop) still shows');
       await p2.check('#roots'); await p2.waitForTimeout(500);
-      { const v = await vis(); ok(v > 50 && v < 100, `the "Show root genres" box shows the root genres that have sub-genres (${v})`); }
+      { const v = await vis(); ok(v > 20 && v < 100, `the "Show root genres" box shows the root genres that have sub-genres (${v})`); }
       await p2.uncheck('#roots'); await p2.waitForTimeout(500);
       await p2.fill('#q', 'K Pop'); await p2.locator('#hits button').first().click(); await p2.waitForTimeout(800);
       ok((await cardName(p2)) === 'K-pop' && (await p2.locator('#cloud text.lab.sel').textContent()) === 'K-pop', 'search works in the point cloud');

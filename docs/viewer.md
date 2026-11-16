@@ -24,7 +24,8 @@ The viewer is a web page that draws the genre tree. Open it at [universalsyntrop
 
 - **Filled dot:** a tag-level genre. It is a good value for a file's genre tag.
 - **Hollow dot:** a genre that is not tag level. It is broader or narrower than a usual file tag.
-- **One place per genre:** the tree shows each genre once, under its nearest parent. The detail card lists every parent.
+- **Solid line:** the parent comes from Wikidata or MusicBrainz. **Dashed line:** the parent comes from Discogs co-occurrence.
+- **One place per genre:** the tree shows each genre once, under its most confident parent: Wikidata, then MusicBrainz, then two-step Wikidata, then Discogs. The detail card lists every parent with its confidence.
 
 ## Detail card
 

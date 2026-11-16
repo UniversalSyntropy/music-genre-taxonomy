@@ -29,7 +29,7 @@
   "name": "Music Genre Taxonomy",
   "description": "A taxonomy of 2,450 music genres and subgenres with sourced parent links, aliases and links to Discogs, MusicBrainz and Wikidata.",
   "url": "https://universalsyntropy.github.io/music-genre-taxonomy/",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "isAccessibleForFree": true,
   "keywords": ["music genres", "subgenres", "taxonomy", "genre tree", "music metadata", "Discogs", "MusicBrainz", "Wikidata", "open data"],
@@ -218,7 +218,7 @@ svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
   <div class="legend">
     <span><i class="dot t"></i>Tag level (can be a file tag)</span>
     <span><i class="dot"></i>Other genre</span>
-    <span><i class="ln"></i>Parent from Wikidata</span>
+    <span><i class="ln"></i>Parent from Wikidata or MusicBrainz</span>
     <span><i class="ln d"></i>Parent from Discogs</span>
     <span class="tip">Drag to move. Scroll or pinch to zoom. Click a name to open it.</span>
   </div>
@@ -237,6 +237,7 @@ svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
 <script>
 "use strict";
 var SRC = {discogs:'Discogs', musicbrainz:'MusicBrainz', wikidata:'Wikidata', hand:'Hand-added'};
+function rank(p){ return p.source === 'wikidata' && p.basis === 'sourced' ? 0 : p.source === 'musicbrainz' ? 1 : p.source === 'wikidata' ? 2 : 3; }
 var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var ms = function(n){ return reduce ? 0 : n; };
 var $ = function(id){ return document.getElementById(id); };
@@ -271,13 +272,13 @@ function start(D){
   });
   D.links.forEach(function(l){
     var a = N.get(l.child), b = N.get(l.parent);
-    if (a && b) a.parents.push({key:l.parent, source:l.source, basis:l.basis, evidence:l.evidence});
+    if (a && b) a.parents.push({key:l.parent, source:l.source, basis:l.basis, confidence:l.confidence, evidence:l.evidence});
   });
   D.aliases.forEach(function(a){ var n = N.get(a.node); if (n && a.name !== n.name) n.aka.push(a.name); });
-  /* One home per genre: Wikidata parent first (closer), then Discogs, then key order. */
+  /* One home per genre: the most confident parent first (Wikidata, MusicBrainz, two-step Wikidata, Discogs), then key order. */
   N.forEach(function(n){
     n.parents.sort(function(a, b){
-      return (a.source === 'wikidata' ? 0 : 1) - (b.source === 'wikidata' ? 0 : 1) || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
+      return rank(a) - rank(b) || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
     });
     if (n.parents.length) { n.home = n.parents[0]; N.get(n.home.key).kids.push(n); }
   });
@@ -456,7 +457,7 @@ function start(D){
     if (n.seen.length) row('Seen in', n.seen.map(function(c){ return SRC[c] || c; }).join(', '));
     if (n.parents.length) row(n.parents.length > 1 ? 'Parents' : 'Parent', n.parents.map(function(p){
       var b = el('button', N.get(p.key).name, 'jump'); b.type = 'button';
-      b.append(el('small', ' (' + (SRC[p.source] || p.source) + ', ' + p.basis + ')'));
+      b.append(el('small', ' (' + (SRC[p.source] || p.source) + ', ' + p.basis + (p.confidence ? ', ' + p.confidence + ' confidence' : '') + ')'));
       b.title = p.evidence || '';
       b.addEventListener('click', function(){ go(p.key, false); });
       return b;
