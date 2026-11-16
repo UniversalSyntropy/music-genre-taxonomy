@@ -182,6 +182,7 @@ aor,arena-rock,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q16527140 subclass 
 aor,pop,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.30 of 39482 releases,low
 aor,rock,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.98 of 39482 releases,low
 aor,rock,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz aca1caab-09d1-44b5-ae84-590ff1d218fc subgenre of 0e3fc579-2d24-4f20-9dae-736e1ec78798,high
+apala,yoruba,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Apala says a genre developed by the Yoruba people; https://www.wikidata.org/wiki/Q617338 subclass of Yoruba music (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 appalachian-folk,folk,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 16f76639-3520-4fa8-beb3-9da32cdd2a26 subgenre of a91eed3a-fdd0-494e-ade0-95ea4117f6eb,high
 appalachian-music,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 4190 releases,low
 aquacrunk,edm,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz b50429c4-e790-4689-a5be-12b9591f51d0 subgenre of 3976e9ba-16d0-461d-b732-99408a0374ba,high
@@ -657,6 +658,8 @@ cabo-zouk,zouk,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 932278bb-3214
 cabo-zouk,zouk,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q16534955 subclass of Q227045,high
 cachaca,cumbia,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz e53f68f0-0ad6-4bfd-ac20-aabab84d0603 subgenre of 7cd4173c-fef8-4e99-a527-98a25b6487c0,high
 cachaca,cumbia,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q5957561 subclass of Q723418,high
+cadence-lypso,cadence-rampa,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Cadence-lypso says a fusion of cadence rampa from Haiti, jazz, blues and calypso (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
+cadence-lypso,calypso,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Cadence-lypso says a fusion of cadence rampa from Haiti, jazz, blues and calypso (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 caipira,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.99 of 1701 releases,low
 caipira,latin,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.40 of 1701 releases,low
 cajun,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.99 of 7309 releases,low
@@ -1209,6 +1212,7 @@ delta-blues,blues,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.99 of 9833
 delta-blues,blues,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz b0702eb4-2951-4e1f-bbcd-dd9b0ec63c7c subgenre of fe12b346-a10e-450f-bf81-fa20894b5ea2,high
 delta-blues,blues,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1127539 subclass of Q9759,high
 delta-blues,country-blues,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1127539 subclass of Q649823,high
+dembow,reggaeton,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Dominican_dembow says mostly described as a subgenre or derivative form of reggaeton (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 dennery-segment,soca,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 69059728-4972-43d8-86d2-e0c7f081f9af subgenre of b251cd9a-990c-49f6-8da3-db3457aa2114,high
 dennery-segment,soca,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q108297227 subclass of Q1051735,high
 denpa,j-pop,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q11660484 subclass of Q131578,high
@@ -1580,6 +1584,7 @@ filipino-rondalla,latin,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q122034415
 filk,contemporary-folk,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 18a0d235-c8e0-4575-b0dc-e3bb0cc2ad2c subgenre of c11e4253-a888-4a2a-adde-c274b748d0b3,high
 filk,contemporary-folk,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q1414130 subclass of Q19672555 subclass of Q106298881,medium
 filk,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.96 of 356 releases,low
+filmi,soundtrack,subgenre_of,hand,CC-BY-4.0,sourced,"https://www.wikidata.org/wiki/Q544440 subclass of soundtrack; https://en.wikipedia.org/wiki/Indian_film_music says music written and performed for Indian cinema (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 finnish-tango,tango,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 5766201d-d707-4289-94b9-ff8a79fd7d61 subgenre of 267b14aa-3e3c-4615-803c-0255a81c8203,high
 flamenco,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.63 of 39367 releases,low
 flamenco,latin,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.66 of 39367 releases,low
@@ -1692,6 +1697,7 @@ frevo-elétrico,frevo,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 799414
 frevo-elétrico,frevo,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q134589282 subclass of Q1455932,high
 fugue,western-classical,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 95398f48-c101-41f0-b134-c14ba928ac17 subgenre of bf9955d6-c3eb-466d-95ca-30f3848fc9ea,high
 fugue,western-classical,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q181014 subclass of Q9730,high
+fuji,yoruba,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Fuji_music says a genre of Yoruba popular music; https://www.wikidata.org/wiki/Q3509353 subclass of Yoruba music (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 full-on,psytrance,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 0d89844c-d79e-427a-96ef-8117dd2769c5 subgenre of b3cccf71-e843-4546-87fa-728055ba3147,high
 full-on,psytrance,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q10286190 subclass of Q622871,high
 funaná,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.99 of 674 releases,low
@@ -1999,6 +2005,7 @@ hands-up,euro-trance,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q733804 subcl
 hanmai,hip-hop,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q97169418 subclass of Q6010 subclass of Q11401,medium
 haozi,work-song,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 019526df-0501-4825-980d-d60be8a2e4bc subgenre of 4d95a70b-1efa-4f8e-9161-781621a2f1a3,high
 haozi,work-song,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q136031262 subclass of Q502658,high
+hapa-haole,hawaiian,subgenre_of,hand,CC-BY-4.0,sourced,"https://www.wikidata.org/wiki/Q123028778 subclass of music of Hawaii (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 happy-hardcore,electronic,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 42082 releases,low
 happy-hardcore,hardcore-techno,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz bd477a3e-9235-4597-9ce5-3caa994baef7 subgenre of 3308d0b0-3c7f-45e2-b835-5c2a0d433f02,high
 happy-hardcore,hardcore-techno,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q339906 subclass of Q388906,high
@@ -3777,6 +3784,7 @@ rōkyoku,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrenc
 rōkyoku,pop,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.28 of 230 releases,low
 sacred-steel,gospel,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 63431b5d-a30a-4092-8566-0cb1e7126b96 subgenre of 08289b42-7e41-4987-9263-c28bb4c59da0,high
 sacred-steel,gospel,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q7397320 subclass of Q106085531 subclass of Q180268,medium
+saeta,flamenco,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Saeta_(flamenco); https://www.wikidata.org/wiki/Q958982 subclass of cante jondo and instance of palo (a flamenco form) (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 salegy,folk-world-and-country,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.99 of 1060 releases,low
 salegy,pop,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.30 of 1060 releases,low
 salsa,latin,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 65581 releases,low
@@ -3977,6 +3985,7 @@ skweee,edm,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q888137 subclass of Q85
 skweee,electro,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz f3bab7c4-d649-4738-8a9a-d3874650c485 subgenre of 60f00d05-df4d-496e-8f5a-c45c03a56ad4,high
 skweee,electronic,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 621 releases,low
 skweee,hip-hop,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 0.31 of 621 releases,low
+slack-key-guitar,hawaiian,subgenre_of,hand,CC-BY-4.0,sourced,"https://www.wikidata.org/wiki/Q98528264 subclass of music of Hawaii (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 slacker-rock,indie-rock,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz f2e920a2-a2b4-4688-b9c4-913224e9f140 subgenre of ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7,high
 slacker-rock,indie-rock,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q108123046 subclass of Q183504,high
 slam-death-metal,brutal-death-metal,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz d985286b-6296-4f89-91af-03cb97db7324 subgenre of 12d11d01-cecc-4f9b-8d3a-99e4590952fe,high
@@ -4384,6 +4393,7 @@ thumri,hindustani-classical,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 
 thumri,hindustani-classical,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q69596 subclass of Q1770695,high
 tibetan-buddhist-chant,mantra,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 8e1493f8-6c07-4244-9bb2-d790ee938de1 subgenre of 539dc6b1-a191-4a0e-adca-01ae434a2f1d,high
 tibetan-buddhist-chant,mantra,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q124670108 subclass of Q131510,high
+tiento,renaissance,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Tiento says a genre originating in Spain in the mid-15th century, analogous to the fantasia and ricercare (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 timba,latin,subgenre_of,discogs,CC0-1.0,derived,co-occurrence 1.00 of 1320 releases,low
 timba,salsa,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 6b8e3c88-add3-4b27-b2ec-a2135edf6e95 subgenre of 717f442d-59d1-4349-a14e-c4874acd3509,high
 timba,salsa,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q371745 subclass of Q208239,high
@@ -4487,6 +4497,7 @@ trova-yucateca,regional-mexicano,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbr
 trova-yucateca,regional-mexicano,subgenre_of,wikidata,CC0-1.0,derived,wikidata Q5643998 subclass of Q16942070 subclass of Q7309098,medium
 truck-driving-country,country,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 319c30ff-fed2-4960-be69-9e616c284ee5 subgenre of 5f665615-7fb3-49d8-b541-62a7b239edbe,high
 truck-driving-country,country,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q7847156 subclass of Q83440,high
+tumba-francesa,afro-cuban,subgenre_of,hand,CC-BY-4.0,sourced,"https://en.wikipedia.org/wiki/Tumba_francesa says a secular Afro-Cuban genre of dance, song, and drumming (checked 2026-11-16; candidate from an AI review, verified against the cited page)",high
 turbo-folk,folk-pop,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 7789edaa-93e9-4a1c-ac84-9ba7eee97c8b subgenre of abb2374f-30e5-4d3e-b417-2caf78ef1f6c,high
 turkish-classical,islamic-modal-music,subgenre_of,musicbrainz,CC0-1.0,sourced,musicbrainz 8a8bdf57-d3dd-4c2a-86a9-2eab2775c728 subgenre of 3e298bf0-de7b-4d66-ac14-b8f82e379291,high
 turkish-classical,islamic-modal-music,subgenre_of,wikidata,CC0-1.0,sourced,wikidata Q1518063 subclass of Q98528260,high

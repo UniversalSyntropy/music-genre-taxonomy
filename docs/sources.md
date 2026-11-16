@@ -45,6 +45,7 @@ Then run `python tools/check.py` and `python tools/build_site.py`. The check too
 | Item | What |
 | --- | --- |
 | Three aliases | `Goa` to `goa-trance`, `Drum n Bass` to `drum-and-bass`, `House Music` to `house`. Source code `hand`. |
+| Hand links | <!--count:links_hand-->11<!--/count--> parent links, source code `hand`. Each reason names the Wikipedia or Wikidata page that states the link. |
 | An ignore list | A list of source entries that the pipeline skips. It lives in the private pipeline input. |
 | The tag-level rule | A person decided which genres are tag-level. <!--count:tag_level-->136<!--/count--> nodes carry the mark. |
 
@@ -54,7 +55,7 @@ Everything else is computed from the three sources.
 
 - **Names:** the names use simple title case. A name reads `Edm`, not `EDM`.
 - **Conflicting parents:** some genres have parents from two sources where no parent is an ancestor of another. This repo keeps all of them. The `confidence` field helps you choose.
-- **Isolated genres:** <!--count:isolated-->300<!--/count--> genres have no parent and no child.
+- **Isolated genres:** <!--count:isolated-->289<!--/count--> genres have no parent and no child.
 - **Statistical links:** Discogs links come from co-occurrence on releases. They are not editorial decisions.
 - **Wikidata errors:** Wikidata "subclass of" links contain errors. This repo passes them on. Two-step links have `confidence: medium`; some lead to a broad parent, such as Brass Band to Orchestral.
 - **Review list:** <!--count:proposals-->212<!--/count--> possible parents in `data/proposals.csv` are not checked. Most lead to a very broad family, such as Latin or Folk, through a regional group.

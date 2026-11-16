@@ -92,7 +92,7 @@ animal-sounds,Animal Sounds,false,musicbrainz,CC0-1.0,musicbrainz,6ce4f333-ee9b-
 anison,Anison,false,discogs,CC0-1.0,discogs,,,Anison,style,pop|stage-and-screen
 anti-folk,Antifolk,true,discogs,CC0-1.0,discogs|musicbrainz,19c3396c-edab-4bf7-ac53-6057788f0a48,Q574651,Antifolk,style,contemporary-folk|folk-world-and-country|rock
 aor,AOR,false,discogs,CC0-1.0,discogs|musicbrainz,aca1caab-09d1-44b5-ae84-590ff1d218fc,Q16527140,AOR,style,arena-rock|pop|rock
-apala,Apala,false,musicbrainz,CC0-1.0,musicbrainz,a85ecafe-2c43-47df-8dc2-2877b7094556,Q617338,,,
+apala,Apala,false,musicbrainz,CC0-1.0,musicbrainz,a85ecafe-2c43-47df-8dc2-2877b7094556,Q617338,,,yoruba
 appalachian-folk,Appalachian Folk,false,musicbrainz,CC0-1.0,musicbrainz,16f76639-3520-4fa8-beb3-9da32cdd2a26,Q108616106,,,folk
 appalachian-music,Appalachian Music,false,discogs,CC0-1.0,discogs,,,Appalachian Music,style,folk-world-and-country
 aquacrunk,Aquacrunk,false,musicbrainz,CC0-1.0,musicbrainz,b50429c4-e790-4689-a5be-12b9591f51d0,Q123922710,,,edm|wonky
@@ -332,7 +332,7 @@ ca-trù,Ca Trù,false,musicbrainz,CC0-1.0,musicbrainz,9bba0b69-1f7e-40cf-83db-c9
 cabaret,Cabaret,false,discogs,CC0-1.0,discogs|musicbrainz,b8a07a90-2b50-4257-8f1e-69846b582432,Q111535905,Cabaret,style,musical|pop|stage-and-screen
 cabo-zouk,Cabo Zouk,false,musicbrainz,CC0-1.0,musicbrainz,932278bb-3214-4936-8896-e8dea057ab98,Q16534955,,,zouk
 cachaca,Cachaca,false,musicbrainz,CC0-1.0,musicbrainz,e53f68f0-0ad6-4bfd-ac20-aabab84d0603,Q5957561,,,cumbia
-cadence-lypso,Cadence Lypso,false,musicbrainz,CC0-1.0,musicbrainz,e05ce570-eb7a-4037-9391-3ac34a8033f9,Q2932658,,,
+cadence-lypso,Cadence Lypso,false,musicbrainz,CC0-1.0,musicbrainz,e05ce570-eb7a-4037-9391-3ac34a8033f9,Q2932658,,,cadence-rampa|calypso
 cadence-rampa,Cadence Rampa,false,musicbrainz,CC0-1.0,musicbrainz,8da28d3e-6354-4655-8f03-f1ac09bd1612,Q3191747,,,
 caipira,Caipira,false,discogs,CC0-1.0,discogs,,,Caipira,style,folk-world-and-country|latin
 cajun,Cajun,false,discogs,CC0-1.0,discogs|musicbrainz,0af301ff-3e33-4f5f-934f-5916cfc04157,Q1026089,Cajun,style,folk-world-and-country
@@ -624,7 +624,7 @@ deep-soul,Deep Soul,false,musicbrainz,CC0-1.0,musicbrainz,9d180bd4-f0a8-4062-b30
 deep-tech,Deep Tech,false,musicbrainz,CC0-1.0,musicbrainz,82c2ef18-d28a-48fa-992e-793328bcc117,Q112829330,,,tech-house
 deep-techno,Deep Techno,false,discogs,CC0-1.0,discogs|musicbrainz,6d9ae1bf-be62-4cf4-aa70-f6f831eea80f,Q106521662,Deep Techno,style,electronic|techno
 delta-blues,Delta Blues,false,discogs,CC0-1.0,discogs|musicbrainz,b0702eb4-2951-4e1f-bbcd-dd9b0ec63c7c,Q1127539,Delta Blues,style,blues|country-blues
-dembow,Dembow,false,musicbrainz,CC0-1.0,musicbrainz,3c63b017-05b2-4a64-a724-1ef50119e1ac,Q16491869,,,
+dembow,Dembow,false,musicbrainz,CC0-1.0,musicbrainz,3c63b017-05b2-4a64-a724-1ef50119e1ac,Q16491869,,,reggaeton
 demostyle,Demostyle,false,musicbrainz,CC0-1.0,musicbrainz,7a13c4bb-5385-47ee-ba7f-d93755f511a3,Q125799361,,,
 dennery-segment,Dennery Segment,false,musicbrainz,CC0-1.0,musicbrainz,69059728-4972-43d8-86d2-e0c7f081f9af,Q108297227,,,soca
 denpa,Denpa,false,musicbrainz,CC0-1.0,musicbrainz,36f9bf8f-716a-4297-9bae-380b0a17b0f4,Q11660484,,,j-pop|pop
@@ -797,7 +797,7 @@ fijiri,Fijiri,false,musicbrainz,CC0-1.0,musicbrainz,39ed8ae3-fcf0-402d-999a-28e0
 filin,Filin,false,musicbrainz,CC0-1.0,musicbrainz,7678f757-523b-4b7f-aee8-5f393eb5c8ed,Q5393053,,,bolero
 filipino-rondalla,Filipino Rondalla,false,musicbrainz,CC0-1.0,musicbrainz,dd3de55e-e952-46e2-9b32-a9777de88884,Q122034415,,,latin
 filk,Filk,false,discogs,CC0-1.0,discogs|musicbrainz,18a0d235-c8e0-4575-b0dc-e3bb0cc2ad2c,Q1414130,Filk,style,contemporary-folk|folk-world-and-country
-filmi,Filmi,false,musicbrainz,CC0-1.0,musicbrainz,aa457e7c-614f-4396-b79a-cf94c7c970d2,Q544440,,,
+filmi,Filmi,false,musicbrainz,CC0-1.0,musicbrainz,aa457e7c-614f-4396-b79a-cf94c7c970d2,Q544440,,,soundtrack
 finnish-tango,Finnish Tango,false,musicbrainz,CC0-1.0,musicbrainz,5766201d-d707-4289-94b9-ff8a79fd7d61,Q1762761,,,tango
 flamenco,Flamenco,true,discogs,CC0-1.0,discogs|musicbrainz,961c6dad-8cf0-47ab-bc09-ccd011f9ef28,Q9764,Flamenco,style,folk-world-and-country|latin
 flamenco-jazz,Flamenco Jazz,false,musicbrainz,CC0-1.0,musicbrainz,93ebcf80-bbe0-4e0d-ba0c-0591df462d91,Q1426909,,,jazz|nuevo-flamenco
@@ -847,7 +847,7 @@ frevo-de-bloco,Frevo De Bloco,false,musicbrainz,CC0-1.0,musicbrainz,21295cd9-a4e
 frevo-de-rua,Frevo De Rua,false,musicbrainz,CC0-1.0,musicbrainz,4dece336-1f30-473b-84ee-5f1979d6a174,Q130600756,,,frevo
 frevo-elétrico,Frevo Elétrico,false,musicbrainz,CC0-1.0,musicbrainz,79941409-5b1f-49ab-a56b-b054a0957989,Q134589282,,,frevo
 fugue,Fugue,false,musicbrainz,CC0-1.0,musicbrainz,95398f48-c101-41f0-b134-c14ba928ac17,Q181014,,,western-classical
-fuji,Fuji,false,musicbrainz,CC0-1.0,musicbrainz,ff15d4f5-e6d6-4f25-9622-46b9bf4298cd,Q3509353,,,
+fuji,Fuji,false,musicbrainz,CC0-1.0,musicbrainz,ff15d4f5-e6d6-4f25-9622-46b9bf4298cd,Q3509353,,,yoruba
 full-on,Full-on,true,musicbrainz,CC0-1.0,musicbrainz,0d89844c-d79e-427a-96ef-8117dd2769c5,Q10286190,,,psytrance
 funaná,Funaná,false,discogs,CC0-1.0,discogs|musicbrainz,dd1c765a-f220-412b-82c2-0a1ee33ca2d1,Q3090876,Funaná,style,folk-world-and-country
 funeral-doom-metal,Funeral Doom Metal,false,discogs,CC0-1.0,discogs|musicbrainz,20d04371-4b82-41be-9a56-fd0833d99a85,Q2738113,Funeral Doom Metal,style,doom-metal|rock
@@ -997,7 +997,7 @@ hamburger-schule,Hamburger Schule,false,musicbrainz,CC0-1.0,musicbrainz,073f0dc7
 hands-up,Hands Up,true,discogs,CC0-1.0,discogs|musicbrainz,e7e26200-8939-4623-af75-32ba5e04e854,Q733804,Hands Up,style,edm|electronic|euro-trance
 hanmai,Hanmai,false,musicbrainz,CC0-1.0,musicbrainz,b440457c-962b-4fdd-afc5-449644098142,Q97169418,,,hip-hop
 haozi,Haozi,false,musicbrainz,CC0-1.0,musicbrainz,019526df-0501-4825-980d-d60be8a2e4bc,Q136031262,,,work-song
-hapa-haole,Hapa Haole,false,musicbrainz,CC0-1.0,musicbrainz,27720af4-dc09-42b5-b0bb-39cf7b51fd36,Q123028778,,,
+hapa-haole,Hapa Haole,false,musicbrainz,CC0-1.0,musicbrainz,27720af4-dc09-42b5-b0bb-39cf7b51fd36,Q123028778,,,hawaiian
 happy-hardcore,Happy Hardcore,true,discogs,CC0-1.0,discogs|musicbrainz,bd477a3e-9235-4597-9ce5-3caa994baef7,Q339906,Happy Hardcore,style,electronic|hardcore-techno
 harana,Harana,false,musicbrainz,CC0-1.0,musicbrainz,42b69b3e-26df-4287-9243-c0af7e228217,Q25339674,,,
 harawi,Harawi,false,musicbrainz,CC0-1.0,musicbrainz,2879da65-b662-4254-aa8f-984a52103766,Q5654316,,,
@@ -1917,7 +1917,7 @@ rōkyoku,Rōkyoku,false,discogs,CC0-1.0,discogs|musicbrainz,cf0da746-de1f-4120-8
 sa-idi,Sa'idi,false,musicbrainz,CC0-1.0,musicbrainz,39eb0fb1-f88c-407f-bc71-1a02f6318bfc,Q133826466,,,
 sacred-harp,Sacred Harp,false,musicbrainz,CC0-1.0,musicbrainz,7de0cdcc-9ea2-487f-a9e8-66c317395bbf,Q7397088,,,
 sacred-steel,Sacred Steel,false,musicbrainz,CC0-1.0,musicbrainz,63431b5d-a30a-4092-8566-0cb1e7126b96,Q7397320,,,gospel
-saeta,Saeta,false,musicbrainz,CC0-1.0,musicbrainz,0bf359d0-8a09-428d-b807-f884586dc8f2,Q958982,,,
+saeta,Saeta,false,musicbrainz,CC0-1.0,musicbrainz,0bf359d0-8a09-428d-b807-f884586dc8f2,Q958982,,,flamenco
 salegy,Salegy,false,discogs,CC0-1.0,discogs|musicbrainz,9fdf0204-4d5f-4dae-82fd-c36c49fb67cc,Q3032090,Salegy,style,folk-world-and-country|pop
 salsa,Salsa,false,discogs,CC0-1.0,discogs|musicbrainz,717f442d-59d1-4349-a14e-c4874acd3509,Q208239,Salsa,style,latin
 salsa-choke,Salsa Choke,false,musicbrainz,CC0-1.0,musicbrainz,bec0194d-b9ec-4c82-86fd-4a390ec06d61,Q20016116,,,salsa
@@ -2027,7 +2027,7 @@ skinhead-reggae,Skinhead Reggae,false,musicbrainz,CC0-1.0,musicbrainz,c966bc7d-d
 skizzo,Skizzo,false,musicbrainz,CC0-1.0,musicbrainz,f9827dea-a0bc-4c2c-b91f-8bb9a20f1ed4,Q141149482,,,new-beat
 skullstep,Skullstep,false,musicbrainz,CC0-1.0,musicbrainz,c3c86aa0-cd5a-4fcc-9c35-179415787b6c,Q108716407,,,darkstep
 skweee,Skweee,false,discogs,CC0-1.0,discogs|musicbrainz,f3bab7c4-d649-4738-8a9a-d3874650c485,Q888137,Skweee,style,edm|electro|electronic|hip-hop
-slack-key-guitar,Slack-key Guitar,false,musicbrainz,CC0-1.0,musicbrainz,266f3930-a0a9-4f96-8327-9b866debd043,Q98528264,,,
+slack-key-guitar,Slack-key Guitar,false,musicbrainz,CC0-1.0,musicbrainz,266f3930-a0a9-4f96-8327-9b866debd043,Q98528264,,,hawaiian
 slacker-rock,Slacker Rock,false,musicbrainz,CC0-1.0,musicbrainz,f2e920a2-a2b4-4688-b9c4-913224e9f140,Q108123046,,,indie-rock
 slam-death-metal,Slam Death Metal,false,musicbrainz,CC0-1.0,musicbrainz,d985286b-6296-4f89-91af-03cb97db7324,Q6130346,,,brutal-death-metal
 slam-poetry,Slam Poetry,false,musicbrainz,CC0-1.0,musicbrainz,75858b59-7e15-45f9-b209-90d442572fc1,Q2293670,,,poetry
@@ -2228,7 +2228,7 @@ thrashcore,Thrashcore,false,musicbrainz,CC0-1.0,musicbrainz,e8a3ec42-4427-4365-8
 thug-rap,Thug Rap,false,discogs,CC0-1.0,discogs,,,Thug Rap,style,hip-hop
 thumri,Thumri,false,musicbrainz,CC0-1.0,musicbrainz,47d61cdb-55c0-4220-b420-8903afe0a1a1,Q69596,,,hindustani-classical
 tibetan-buddhist-chant,Tibetan Buddhist Chant,false,musicbrainz,CC0-1.0,musicbrainz,8e1493f8-6c07-4244-9bb2-d790ee938de1,Q124670108,,,mantra
-tiento,Tiento,false,musicbrainz,CC0-1.0,musicbrainz,c1772694-541d-4c97-8460-820fdf38b494,Q632964,,,
+tiento,Tiento,false,musicbrainz,CC0-1.0,musicbrainz,c1772694-541d-4c97-8460-820fdf38b494,Q632964,,,renaissance
 timba,Timba,false,discogs,CC0-1.0,discogs|musicbrainz,6b8e3c88-add3-4b27-b2ec-a2135edf6e95,Q371745,Timba,style,latin|salsa
 timbila,Timbila,false,musicbrainz,CC0-1.0,musicbrainz,530fa580-cb71-4226-8325-3946b011c3e1,Q2159891,,,
 tin-pan-alley,Tin Pan Alley,false,musicbrainz,CC0-1.0,musicbrainz,7fab1fe6-4338-4364-907a-2757782c2756,Q1121111,,,traditional-pop
@@ -2295,7 +2295,7 @@ tsapiky,Tsapiky,false,musicbrainz,CC0-1.0,musicbrainz,54f634c3-4a8b-46ba-9953-ed
 tsonga-disco,Tsonga Disco,false,musicbrainz,CC0-1.0,musicbrainz,345e9b20-5601-43c7-86c2-0229b6110e8b,Q108667604,,,
 tsugaru-jamisen,Tsugaru-jamisen,false,musicbrainz,CC0-1.0,musicbrainz,8483ef4e-09f8-4f92-bc69-e20af93bdcb3,Q3541635,,,
 tumba,Tumba,false,musicbrainz,CC0-1.0,musicbrainz,8e17124b-12e6-4f7d-b56b-7a243691a62d,Q2738469,,,
-tumba-francesa,Tumba Francesa,false,musicbrainz,CC0-1.0,musicbrainz,24d32ead-f5b6-49d1-9fef-1bd91812fee6,Q976802,,,
+tumba-francesa,Tumba Francesa,false,musicbrainz,CC0-1.0,musicbrainz,24d32ead-f5b6-49d1-9fef-1bd91812fee6,Q976802,,,afro-cuban
 tumbélé,Tumbélé,false,musicbrainz,CC0-1.0,musicbrainz,156959a9-b80f-4f10-8901-52f9829c1271,Q108556409,,,
 turbo-folk,Turbo-folk,false,musicbrainz,CC0-1.0,musicbrainz,7789edaa-93e9-4a1c-ac84-9ba7eee97c8b,Q786815,,,folk-pop
 turkish-classical,Turkish Classical,false,musicbrainz,CC0-1.0,musicbrainz,8a8bdf57-d3dd-4c2a-86a9-2eab2775c728,Q1518063,,,islamic-modal-music

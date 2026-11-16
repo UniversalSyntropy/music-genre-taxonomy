@@ -36,7 +36,7 @@ SOURCE_INFO = {
 HAND_LICENCE = "CC-BY-4.0"
 # Link confidence from (source, basis). high: a source states the link. medium: a short chain of stated links (Wikidata, 2 steps).
 # low: a statistic (Discogs co-occurrence), which is no statement of hierarchy.
-CONFIDENCE = {("wikidata", "sourced"): "high", ("musicbrainz", "sourced"): "high", ("hand", "hand"): "high",
+CONFIDENCE = {("wikidata", "sourced"): "high", ("musicbrainz", "sourced"): "high", ("hand", "sourced"): "high",
               ("wikidata", "derived"): "medium", ("discogs", "derived"): "low"}
 PROPOSAL_COLS = ["child", "parent", "depth", "evidence"]
 
@@ -179,8 +179,10 @@ def build(src: Path):
     links = []
     for e in sorted(edges_in, key=lambda e: (e["child"], e["parent"], e["source"])):
         used.add(e["source"])
+        hand = e["source"] == "hand"   # a hand link cites a page that states it, so its basis is sourced; own rows are CC BY 4.0
+        basis = "sourced" if hand else e["basis"]
         links.append({"child": e["child"], "parent": e["parent"], "relation": e["relation"], "source": e["source"],
-                      "licence": spdx(e["licence"]), "basis": e["basis"], "confidence": CONFIDENCE[(e["source"], e["basis"])],
+                      "licence": HAND_LICENCE if hand else spdx(e["licence"]), "basis": basis, "confidence": CONFIDENCE[(e["source"], basis)],
                       "evidence": e["evidence"]})
     aliases = []
     for a in ali_in:

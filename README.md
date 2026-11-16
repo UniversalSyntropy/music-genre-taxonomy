@@ -87,15 +87,15 @@ More recipes (children, all ancestors, alias lookup rules) are in the [data guid
 | Item | Count |
 | --- | --- |
 | Genres (nodes) | <!--count:nodes-->2,450<!--/count--> |
-| Parent links | <!--count:links-->4,732<!--/count--> |
+| Parent links | <!--count:links-->4,743<!--/count--> |
 | Name aliases | <!--count:aliases-->3,002<!--/count--> |
 | Tag-level genres | <!--count:tag_level-->136<!--/count--> |
-| Genres with no parent (roots) | <!--count:roots-->348<!--/count--> |
-| Genres with no parent and no child | <!--count:isolated-->300<!--/count--> |
-| Genres with two or more different parents | <!--count:multi_parent-->862<!--/count--> |
+| Genres with no parent (roots) | <!--count:roots-->338<!--/count--> |
+| Genres with no parent and no child | <!--count:isolated-->289<!--/count--> |
+| Genres with two or more different parents | <!--count:multi_parent-->863<!--/count--> |
 | Names from MusicBrainz / Discogs | <!--count:nodes_musicbrainz-->1,684<!--/count--> / <!--count:nodes_discogs-->766<!--/count--> |
 | Links from Wikidata / MusicBrainz / Discogs | <!--count:links_wikidata-->2,036<!--/count--> / <!--count:links_musicbrainz-->1,603<!--/count--> / <!--count:links_discogs-->1,093<!--/count--> |
-| Links with confidence high / medium / low | <!--count:links_high-->3,487<!--/count--> / <!--count:links_medium-->152<!--/count--> / <!--count:links_low-->1,093<!--/count--> |
+| Links with confidence high / medium / low | <!--count:links_high-->3,498<!--/count--> / <!--count:links_medium-->152<!--/count--> / <!--count:links_low-->1,093<!--/count--> |
 | Genres with a MusicBrainz id / Wikidata id / Discogs name | <!--count:with_musicbrainz_id-->2,221<!--/count--> / <!--count:with_wikidata_id-->2,216<!--/count--> / <!--count:with_discogs_name-->766<!--/count--> |
 
 ## Sources and licences
@@ -112,7 +112,7 @@ CC0 does not require credit. This repo gives credit anyway. This repo's own comp
 
 - **Names:** simple title case, so `Edm` not `EDM`.
 - **Links:** Discogs links are statistical, not editorial, so they have `confidence: low`. Wikidata "subclass of" links contain errors that this repo passes on.
-- **Gaps:** <!--count:isolated-->300<!--/count--> genres have no link. Some common tag spellings have no alias yet.
+- **Gaps:** <!--count:isolated-->289<!--/count--> genres have no link. Some common tag spellings have no alias yet.
 
 The full list is in [Sources](docs/sources.md#known-limits).
 

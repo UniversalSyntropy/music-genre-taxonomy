@@ -6,7 +6,7 @@ Use the JSON file for code. Each node has a stable `key`. Each link goes from `c
 
 ## Data
 
-- [taxonomy.json](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/taxonomy.json): the full data set: sources, <!--count:nodes-->2,450<!--/count--> nodes, <!--count:links-->4,732<!--/count--> links, <!--count:aliases-->3,002<!--/count--> aliases
+- [taxonomy.json](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/taxonomy.json): the full data set: sources, <!--count:nodes-->2,450<!--/count--> nodes, <!--count:links-->4,743<!--/count--> links, <!--count:aliases-->3,002<!--/count--> aliases
 - [nodes.csv](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/nodes.csv): one row per genre, with ids and a parents column
 - [links.csv](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/links.csv): one row per parent link, with source, basis, evidence and confidence (high, medium, low)
 - [aliases.csv](https://raw.githubusercontent.com/UniversalSyntropy/music-genre-taxonomy/main/data/aliases.csv): one row per name spelling, with its normal form

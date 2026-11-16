@@ -2,22 +2,35 @@
 
 All notable changes to the data, schema, documents and tools. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The data version follows semantic versioning as the [data guide](docs/data-guide.md#versions-and-pinning) describes.
 
-## [1.1.0] - 2026-11-16
-
-More genres have a parent. Isolated genres go down from 481 to <!--count:isolated-->300<!--/count-->, and roots go down from 557 to <!--count:roots-->348<!--/count-->.
+## [1.1.1] - 2026-11-16
 
 ### Added
 
-- **MusicBrainz links:** <!--count:links_musicbrainz-->1,603<!--/count--> "subgenre of" links from the MusicBrainz core data dump (CC0).
-- **Wikidata ids from MusicBrainz:** a genre whose Wikidata item has no MusicBrainz genre id now takes its Wikidata id from the MusicBrainz side. Wikidata ids go up from 1,655 to <!--count:with_wikidata_id-->2,216<!--/count-->.
-- **Two-step Wikidata links:** when the direct Wikidata parent is not a genre in this data set, the build takes the nearest genre two "subclass of" steps up (<!--count:links_medium-->152<!--/count--> links, basis `derived`).
-- **Field `confidence`** on each link: `high` (<!--count:links_high-->3,487<!--/count-->), `medium` (<!--count:links_medium-->152<!--/count-->) or `low` (<!--count:links_low-->1,093<!--/count-->). The data guide gives the rule. `links.csv` has it as the last column.
-- **Review list:** `data/proposals.csv` holds <!--count:proposals-->212<!--/count--> possible parents three or four Wikidata steps up. They are not links.
+- **Hand links:** 11 parent links for 10 isolated genres, with source `hand`. Each one names the Wikipedia or Wikidata page that states it. Candidates came from an AI review of the isolated genres, and each was checked against the cited page. Isolated genres go down from 300 to <!--count:isolated-->289<!--/count-->.
+
+### Changed
+
+- **Counts:** <!--count:links-->4,743<!--/count--> links; confidence `high` on <!--count:links_high-->3,498<!--/count-->.
+- **Hand links in the files:** licence CC BY 4.0 and basis `sourced`, the same as the other rows this repo makes. No schema change.
+
+`schema_version` 1.1.0, `version` 1.1.1, `tree_version` `c9b1909cbab4`.
+
+## [1.1.0] - 2026-11-16
+
+More genres have a parent. Isolated genres go down from 481 to 300, and roots go down from 557 to 348.
+
+### Added
+
+- **MusicBrainz links:** 1,603 "subgenre of" links from the MusicBrainz core data dump (CC0).
+- **Wikidata ids from MusicBrainz:** a genre whose Wikidata item has no MusicBrainz genre id now takes its Wikidata id from the MusicBrainz side. Wikidata ids go up from 1,655 to 2,216.
+- **Two-step Wikidata links:** when the direct Wikidata parent is not a genre in this data set, the build takes the nearest genre two "subclass of" steps up (152 links, basis `derived`).
+- **Field `confidence`** on each link: `high` (3,487), `medium` (152) or `low` (1,093). The data guide gives the rule. `links.csv` has it as the last column.
+- **Review list:** `data/proposals.csv` holds 212 possible parents three or four Wikidata steps up. They are not links.
 
 ### Changed
 
 - **Schema 1.1.0:** `confidence` is a required link field.
-- **Counts:** <!--count:links-->4,732<!--/count--> links, <!--count:aliases-->3,002<!--/count--> aliases, <!--count:tag_level-->136<!--/count--> tag-level genres.
+- **Counts:** 4,732 links, 3,002 aliases, 136 tag-level genres.
 
 `schema_version` 1.1.0, `version` 1.1.0, `tree_version` `a94079cc6db8`.
 
@@ -38,5 +51,6 @@ First public release.
 
 `schema_version` 1.0.0, `version` 1.0.0, `tree_version` `47461e523d86`.
 
+[1.1.1]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.1.1
 [1.1.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.1.0
 [1.0.0]: https://github.com/UniversalSyntropy/music-genre-taxonomy/releases/tag/v1.0.0

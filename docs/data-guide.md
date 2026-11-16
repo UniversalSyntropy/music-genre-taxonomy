@@ -58,7 +58,7 @@ One link says "child is a sub-genre of parent". Every link carries its source an
 | `child` | string | Key of the narrower genre |
 | `parent` | string | Key of the broader genre |
 | `relation` | string | Always `subgenre_of` |
-| `source` | string | Code of the source that gave the link: `wikidata`, `musicbrainz` or `discogs` |
+| `source` | string | Code of the source that gave the link: `wikidata`, `musicbrainz`, `discogs` or `hand` (a checked link that cites its page in `evidence`) |
 | `licence` | string | SPDX id of this row |
 | `basis` | string | `sourced`: the source states the link. `derived`: this repo computed it from source data. |
 | `confidence` | string | `high`, `medium` or `low`. See the rule below. Added in schema 1.1.0. |
@@ -75,7 +75,7 @@ Confidence rule. The value follows from `source` and `basis` only. It does not c
 
 | Confidence | Links | Rule |
 | --- | --- | --- |
-| `high` | <!--count:links_high-->3,487<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of" |
+| `high` | <!--count:links_high-->3,498<!--/count--> | A source states the link: Wikidata one step, MusicBrainz "subgenre of", or a hand link that cites the page |
 | `medium` | <!--count:links_medium-->152<!--/count--> | A chain of two Wikidata "subclass of" statements |
 | `low` | <!--count:links_low-->1,093<!--/count--> | A statistic: Discogs co-occurrence. Co-occurrence does not state a hierarchy |
 
@@ -214,8 +214,8 @@ The function returns `None` when no ancestor is tag-level.
 
 ## DAG caveats
 
-- **Many parents:** <!--count:multi_parent-->862<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
-- **Roots:** <!--count:roots-->348<!--/count--> genres have no parent. <!--count:isolated-->300<!--/count--> of them have no child either.
+- **Many parents:** <!--count:multi_parent-->863<!--/count--> genres have two or more distinct parents. A tree drawing shows each genre once, under one parent. The viewer picks the nearest parent. The data keeps all parents.
+- **Roots:** <!--count:roots-->338<!--/count--> genres have no parent. <!--count:isolated-->289<!--/count--> of them have no child either.
 - **No cycles:** `tools/check.py` tests that the graph has no cycle.
 - **Duplicate rows:** a pair from two sources has two rows. Use a set of parents.
 

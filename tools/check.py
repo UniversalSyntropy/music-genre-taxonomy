@@ -70,6 +70,7 @@ def stats(doc):
         "links_wikidata": sum(1 for l in links if l["source"] == "wikidata"),
         "links_discogs": sum(1 for l in links if l["source"] == "discogs"),
         "links_musicbrainz": sum(1 for l in links if l["source"] == "musicbrainz"),
+        "links_hand": sum(1 for l in links if l["source"] == "hand"),
         "links_high": sum(1 for l in links if l.get("confidence") == "high"),
         "links_medium": sum(1 for l in links if l.get("confidence") == "medium"),
         "links_low": sum(1 for l in links if l.get("confidence") == "low"),
@@ -143,7 +144,7 @@ def check_integrity(doc, data_path: Path):
         if doc["counts"][k] != st[k]:
             fail(f"Integrity: counts.{k} is {doc['counts'][k]} but the data has {st[k]}.")
     # confidence follows from source and basis (tools/build.py CONFIDENCE)
-    rule = {("wikidata", "sourced"): "high", ("musicbrainz", "sourced"): "high", ("hand", "hand"): "high",
+    rule = {("wikidata", "sourced"): "high", ("musicbrainz", "sourced"): "high", ("hand", "sourced"): "high",
             ("wikidata", "derived"): "medium", ("discogs", "derived"): "low"}
     for l in links:
         if rule.get((l["source"], l["basis"])) != l.get("confidence"):
