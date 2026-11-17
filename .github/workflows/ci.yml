@@ -24,6 +24,7 @@ jobs:
           cache-dependency-path: tools/requirements.txt
       - run: pip install -r tools/requirements.txt
       - run: python tools/check.py
+      - run: python -m pytest tests/test_suggest.py -q
       - run: python tools/build_site.py
       - uses: actions/setup-node@v5
         with:

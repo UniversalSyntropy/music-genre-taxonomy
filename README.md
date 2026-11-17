@@ -147,7 +147,7 @@ Use [`CITATION.cff`](CITATION.cff). GitHub shows a "Cite this repository" button
 
 ## Contribute
 
-Found a wrong link or a missing genre? Open an issue with the form. Read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+Found a wrong link? Use the "Suggest a change" link on a genre page or in the viewer. For a missing genre, open an issue with the form. Read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## Licence
 

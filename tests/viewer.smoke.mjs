@@ -66,6 +66,17 @@ async function run(name, type) {
     }
     ok(await page.locator('#nodes g.node.sel').count() === 1, 'the selected node is drawn');
     ok(await page.locator('#card a.page').getAttribute('href') === 'genre/techno.html', 'card links to the genre page');
+    {
+      const sug1 = await page.locator('#card a.sug').getAttribute('href');
+      ok(/template=suggest-link\.yml/.test(sug1) && /child=techno(&|$)/.test(sug1), 'card has a suggest link for techno');
+      await page.fill('#q', 'house');
+      const h2 = page.locator('#hits button').filter({ hasText: /^House/ }).first();
+      await h2.waitFor();
+      await h2.click();
+      await page.waitForFunction((old) => { const a = document.querySelector('#card a.sug'); return a && a.getAttribute('href') !== old; }, sug1);
+      const sug2 = await page.locator('#card a.sug').getAttribute('href');
+      ok(/template=suggest-link\.yml/.test(sug2) && !/child=techno(&|$)/.test(sug2), 'suggest link follows the selected genre');
+    }
 
     // card links
     const links = await page.locator('#card .links a').evaluateAll((as) => as.map((a) => ({ t: a.textContent.replace(' ↗', ''), h: a.href, target: a.target, rel: a.rel })));
@@ -183,6 +194,13 @@ async function run(name, type) {
     const ld = await page.locator('script[type="application/ld+json"]').evaluateAll((s) => s.map((x) => JSON.parse(x.textContent)));
     ok(ld.some((j) => j['@type'] === 'DefinedTerm' && j.name === 'Techno') && ld.some((j) => j['@type'] === 'BreadcrumbList'), 'JSON-LD parses (DefinedTerm, BreadcrumbList)');
     ok((await page.locator('h1').innerText()) === 'Techno', 'genre page h1');
+    {
+      const sh = await page.locator('main a', { hasText: 'Suggest a parent for this genre' }).getAttribute('href');
+      ok(/template=suggest-link\.yml/.test(sh) && /child=techno(&|$)/.test(sh) && /change=Add\+a\+parent/.test(sh), 'genre page has the prefilled suggest link');
+      const sa = await page.goto(BASE + '/genre/acid-house.html');
+      ok(sa.status() === 200 && /child=acid-house(&|$)/.test(await page.locator('main a', { hasText: 'Suggest a parent' }).getAttribute('href')), 'acid-house page suggest link uses child=acid-house');
+      await page.goto(BASE + '/genre/techno.html');
+    }
     await page.click('text=Open in the tree viewer');
     await ready(page);
     await page.locator('#card:not([hidden])').waitFor();

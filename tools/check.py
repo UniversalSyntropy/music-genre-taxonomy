@@ -267,6 +267,89 @@ def check_md_links(files, root):
                     fail(f"Link: {p.relative_to(root).as_posix()}:{i} points to '{t}', which does not exist.")
 
 
+CONTRIB_URL_RE = re.compile(r"^https://[A-Za-z0-9.-]+\.[A-Za-z]{2,}(/[A-Za-z0-9._~%!$&'()*+,;=:@/?#-]*)?$")
+
+
+def check_contrib(doc):
+    """Check contrib/hand-links.yaml. Returns a summary string, or None when the file is absent."""
+    p = ROOT / "contrib" / "hand-links.yaml"
+    if not p.exists():
+        return None
+    try:
+        import yaml
+        d = yaml.safe_load(p.read_text(encoding="utf-8"))
+    except Exception as e:
+        fail(f"Contrib: cannot read {p.name}: {type(e).__name__}")
+        return None
+    if not isinstance(d, dict) or set(d) != {"version", "add_edges", "remove_edges"}:
+        fail("Contrib: the file must have exactly the keys version, add_edges and remove_edges.")
+        return None
+    if d["version"] != 1 or isinstance(d["version"], bool):
+        fail("Contrib: version must be 1.")
+    names = {n["key"]: n["name"] for n in doc["nodes"]}
+    doc_pairs = {(l["child"], l["parent"]) for l in doc["links"]}
+    want = ("child", "child_name", "parent", "parent_name", "source_url", "issue")
+    pairs = {}
+    for lst in ("add_edges", "remove_edges"):
+        items = d[lst]
+        if not isinstance(items, list):
+            fail(f"Contrib: {lst} must be a list.")
+            return None
+        seen = []
+        for i, e in enumerate(items):
+            w = f"Contrib: {lst}[{i}]"
+            if not isinstance(e, dict) or set(e) != set(want):
+                fail(f"{w} must have exactly the keys {', '.join(want)}.")
+                continue
+            if not all(isinstance(e[k], str) for k in want[:5]) or not isinstance(e["issue"], int) \
+                    or isinstance(e["issue"], bool) or e["issue"] < 1:
+                fail(f"{w} has a value of the wrong type (issue must be a positive integer).")
+                continue
+            for k, nk in (("child", "child_name"), ("parent", "parent_name")):
+                if e[k] not in names:
+                    fail(f"{w} {k} '{e[k]}' is not a node.")
+                elif e[nk] != names[e[k]]:
+                    fail(f"{w} {nk} does not match the node name.")
+            if len(e["source_url"]) > 300 or not CONTRIB_URL_RE.fullmatch(e["source_url"]):
+                fail(f"{w} has a source_url that is not a plain https link.")
+            if e["child"] == e["parent"]:
+                fail(f"{w} links a node to itself.")
+            seen.append((e["child"], e["parent"]))
+        if len(set(seen)) != len(seen):
+            fail(f"Contrib: {lst} has a duplicate (child, parent) pair.")
+        if seen != sorted(seen):
+            fail(f"Contrib: {lst} is not sorted by (child, parent).")
+        pairs[lst] = set(seen)
+    edges = (doc_pairs | pairs["add_edges"]) - pairs["remove_edges"]
+    up = defaultdict(list)
+    for c, pa in edges:
+        up[c].append(pa)
+    state = {}
+    cyc = None
+    for root in list(up):
+        if root in state or cyc:
+            continue
+        state[root] = 1
+        stack = [(root, iter(up[root]))]
+        while stack and not cyc:
+            n, it = stack[-1]
+            for m in it:
+                if state.get(m) == 1:
+                    cyc = m
+                    break
+                if m not in state:
+                    state[m] = 1
+                    stack.append((m, iter(up.get(m, ()))))
+                    break
+            else:
+                state[n] = 2
+                stack.pop()
+    if cyc:
+        fail(f"Contrib: the links make a cycle through '{cyc}'.")
+    have = len(pairs["add_edges"] & doc_pairs)
+    return f"contrib: add {len(pairs['add_edges'])} ({have} already in the data), remove {len(pairs['remove_edges'])}"
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data", default=str(ROOT / "data" / "taxonomy.json"), help="data file to check")
@@ -278,12 +361,14 @@ def main():
     except Exception as e:
         print(f"FAIL: cannot read {dp}: {e}")
         return 1
+    contrib_line = None
     if check_schema(doc):
         pp = dp.parent / "proposals.csv"           # the review list sits beside the data file, outside the schema
         if pp.exists():
             with open(pp, encoding="utf-8", newline="") as f:
                 doc["proposals"] = list(csv.DictReader(f))
         st = check_integrity(doc, dp)
+        contrib_line = check_contrib(doc)
     else:
         st = None
     files = git_files(ROOT)
@@ -296,7 +381,9 @@ def main():
             print("FAIL:", e)
         print(f"{len(errors)} problem(s) found.")
         return 1
-    print("OK: schema, integrity, CSV, privacy, doc counts and links all pass.")
+    print("OK: schema, integrity, contrib, CSV, privacy, doc counts and links all pass.")
+    if contrib_line:
+        print("  " + contrib_line)
     if st:
         print("  " + ", ".join(f"{k} {v}" for k, v in st.items()))
     return 0

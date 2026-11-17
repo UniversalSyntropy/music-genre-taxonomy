@@ -1,0 +1,58 @@
+name: Suggest a link
+description: Add or remove one parent link for one genre. An automatic check runs and a pull request opens.
+title: "Suggest: "
+labels: ["suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        An automatic check runs on this form. If it passes, a pull request opens. A maintainer decides.
+        Each suggestion needs a public source that states the link.
+  - type: dropdown
+    id: change
+    attributes:
+      label: Change
+      options:
+        - Add a parent
+        - Remove a parent
+    validations:
+      required: true
+  - type: input
+    id: child
+    attributes:
+      label: Genre key
+      description: The key shown under the genre name, for example acid-house.
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: Parent key
+      description: The key of the parent genre, for example house.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Public source URL
+      description: A public page that states the link, for example a Wikipedia, Wikidata or MusicBrainz page. Use https. Do not use a closed source.
+    validations:
+      required: true
+  - type: textarea
+    id: note
+    attributes:
+      label: Note
+      description: Optional. Add context for the maintainer.
+  - type: checkboxes
+    id: licence
+    attributes:
+      label: Licence
+      options:
+        - label: I agree that this suggestion is published under CC BY 4.0.
+          required: true
+  - type: checkboxes
+    id: upstream
+    attributes:
+      label: Upstream
+      options:
+        - label: I fixed it in Wikidata or MusicBrainz first, or I cannot.

@@ -1,5 +1,5 @@
 name: Wrong link
-description: A genre has a parent that is wrong, or a parent is missing.
+description: A genre has a parent that is wrong, or a parent is missing. For one parent link, use the "Suggest a link" form instead.
 title: "Wrong link: "
 labels: ["data"]
 body:

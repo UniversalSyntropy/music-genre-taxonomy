@@ -16,7 +16,7 @@ import unicodedata
 from collections import defaultdict, deque
 from html import escape
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://universalsyntropy.github.io/music-genre-taxonomy/"
@@ -284,7 +284,13 @@ def main() -> int:
         for t, u in ext_links(n):
             h.append(f"<li><a href=\"{escape(u, quote=True)}\" target=\"_blank\" rel=\"noopener noreferrer\">{escape(t)}</a> <span class=\"small\">(opens in a new tab)</span></li>\n")
         h.append("</ul>\n")
-        h.append(f"<p><a class=\"btn\" href=\"../?g={url_key(key)}\">Open in the tree viewer</a></p>\n</main>\n{foot('../')}</body>\n</html>\n")
+        h.append(f"<p><a class=\"btn\" href=\"../?g={url_key(key)}\">Open in the tree viewer</a></p>\n")
+        sug = f"{REPO}/issues/new?" + urlencode({"template": "suggest-link.yml", "change": "Add a parent", "child": key, "title": "Suggest: " + n["name"]})
+        h.append("<h2>Suggest a change</h2>\n"
+                 f"<p><a class=\"btn\" href=\"{escape(sug, quote=True)}\">Suggest a parent for this genre</a> "
+                 f"<a href=\"{REPO}/issues/new/choose\">Report another problem</a></p>\n"
+                 "<p class=\"small\">You need a GitHub account. Each suggestion needs a public source.</p>\n")
+        h.append(f"</main>\n{foot('../')}</body>\n</html>\n")
         (out / "genre" / f"{key}.html").write_text("".join(h), encoding="utf-8")
 
     # ---- A to Z index ----

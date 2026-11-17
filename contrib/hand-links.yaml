@@ -1,0 +1,5 @@
+# Contributed links. One entry per accepted suggestion. tools/suggest.py writes this file; do not edit by hand.
+# Each entry: child and parent are node keys; the names are the node names at the time of the suggestion.
+version: 1
+add_edges: []
+remove_edges: []

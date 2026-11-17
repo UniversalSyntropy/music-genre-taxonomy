@@ -2,6 +2,12 @@
 
 All notable changes to the data, schema, documents and tools. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The data version follows semantic versioning as the [data guide](docs/data-guide.md#versions-and-pinning) describes.
 
+## [Unreleased]
+
+### Added
+
+- **Suggest route:** each genre page and the viewer link to a prefilled issue form, "Suggest a link". A GitHub Action checks the issue and opens a pull request that edits `contrib/hand-links.yaml`. A maintainer decides. The data version does not change.
+
 ## [1.2.0] - 2026-11-16
 
 ### Added

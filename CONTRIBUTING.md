@@ -6,8 +6,27 @@ You can report a wrong link or a missing genre without writing code. This page s
 
 Use an issue form:
 
-- [Wrong link](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=wrong-link.yml): a genre has a parent that is wrong, or lacks one.
+- [Suggest a link](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=suggest-link.yml): add or remove one parent link for one genre. Each genre page and the viewer link to this form with the genre key filled in.
+- [Wrong link](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=wrong-link.yml): a genre has a parent that is wrong, or lacks one, and the case is not one parent link.
 - [Missing genre](https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=missing-genre.yml): a genre or a name spelling is not in the data.
+
+## What happens to a suggestion
+
+The suggest form starts an automatic check. The check tests five things:
+
+- **Keys:** the genre key and the parent key both exist in the data.
+- **Cycle:** the new link does not make a genre its own ancestor.
+- **Duplicate:** the link is not in the data yet.
+- **Source:** the source URL is a public https address.
+- **Licence:** the licence box is ticked.
+
+If the check passes, a pull request opens. It edits `contrib/hand-links.yaml`. A tool writes this file. Do not edit it by hand.
+
+If the check fails, edit the issue to correct it. The check runs again. After the pull request opens, an edit to the issue does not change it. To suggest something different, close the issue and open a new one.
+
+A maintainer reviews the pull request and merges it. The data files are generated. The link appears in them at the next data release, not at the merge.
+
+Every suggestion is published under CC BY 4.0. The form asks you to agree.
 
 A good report holds:
 

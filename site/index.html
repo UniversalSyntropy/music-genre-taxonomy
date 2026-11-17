@@ -148,7 +148,8 @@ svg.cloud #links,svg.cloud #nodes,svg:not(.cloud) #cloud{display:none}
 #card .links a{color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;text-decoration:none;font-size:13px}
 #card .links a:hover{border-color:var(--ink);color:var(--ink)}
 #card .note{color:var(--muted);font-size:12px;margin:8px 0 0}
-#card .page{display:inline-block;margin-top:10px}
+#card .page,#card .sug{display:inline-block;margin-top:10px}
+#card .sug{margin-left:14px}
 #card .x{position:absolute;top:6px;right:6px;width:36px;border:0;background:none;font-size:20px;line-height:1;padding:0}
 .pill{display:inline-block;border:1px solid var(--ink);color:var(--ink);border-radius:99px;padding:0 8px;font-size:12px;font-weight:650}
 .foot{padding:6px max(16px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
@@ -478,6 +479,8 @@ function start(D){
     L.forEach(function(p){ var a = el('a', p[0] + ' ↗'); a.href = p[1]; a.target = '_blank'; a.rel = 'noopener noreferrer'; box.append(a); });
     card.append(box, el('p', 'Each link opens in a new tab.', 'note'));
     var pg = el('a', 'Open the page for this genre', 'page'); pg.href = 'genre/' + encodeURIComponent(n.key) + '.html'; card.append(pg);
+    var sg = el('a', 'Suggest a change', 'sug'); sg.href = 'https://github.com/UniversalSyntropy/music-genre-taxonomy/issues/new?template=suggest-link.yml&change=' + encodeURIComponent('Add a parent') + '&child=' + encodeURIComponent(n.key) + '&title=' + encodeURIComponent('Suggest: ' + n.name);
+    sg.target = '_blank'; sg.rel = 'noopener noreferrer'; sg.title = 'Opens in a new tab'; card.append(sg);
     setUrl(n.key);
   }
 

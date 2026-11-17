@@ -238,6 +238,23 @@ def write_csv(path: Path, header, rows):
         w.writerows(rows)
 
 
+def check_contrib_copy(src: Path, repo_root: Path):
+    """The plugin must build the tree with the public contrib file. Exit with the fix if the copy is stale."""
+    pub = repo_root / "contrib" / "hand-links.yaml"
+    copy = src / "data" / "contrib.yaml"
+    pub_bytes = pub.read_bytes() if pub.exists() else None
+    entries = 0
+    if pub_bytes is not None:
+        d = yaml.safe_load(pub_bytes.decode("utf-8")) or {}
+        entries = len(d.get("add_edges") or []) + len(d.get("remove_edges") or [])
+    fix = f"cp contrib/hand-links.yaml {src}/data/contrib.yaml, then rebuild the tree in the pipeline."
+    if copy.exists():
+        if copy.read_bytes() != pub_bytes:
+            sys.exit(f"error: {copy} differs from contrib/hand-links.yaml. Fix: {fix}")
+    elif entries:
+        sys.exit(f"error: contrib/hand-links.yaml has {entries} entries but {copy} is missing. Fix: {fix}")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--source", default=os.environ.get("GENRE_SOURCE_DIR"), help="source dir (or env GENRE_SOURCE_DIR)")
@@ -260,6 +277,7 @@ def main():
     if not re.fullmatch(r"\d+\.\d+\.\d+", version):
         ap.error("version must look like 1.2.3")
 
+    check_contrib_copy(Path(a.source), Path(__file__).resolve().parent.parent)
     d = build(Path(a.source))
     write_json(out / "taxonomy.json", d, version)
     parents = defaultdict(list)
