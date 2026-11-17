@@ -1,5 +1,6 @@
 # Contributed links. One entry per accepted suggestion. tools/suggest.py writes this file; do not edit by hand.
 # Each entry: child and parent are node keys; the names are the node names at the time of the suggestion.
 version: 1
-add_edges: []
+add_edges:
+  - {child: 2-step, child_name: 2-step, parent: 2-tone, parent_name: 2 Tone, source_url: "https://www.wikidata.org/wiki/Q9759", issue: 1}
 remove_edges: []
